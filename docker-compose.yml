@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: eduvial_db
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  api_backend:
+    image: node:18
+    container_name: eduvial_api
+    working_dir: /app
+    # Sincroniza tu carpeta local con el contenedor para ver cambios en tiempo real
+    volumes:
+      - ./backend:/app
+      - ./frontend:/app/frontend
+    ports:
+      - "3000:3000"
+    # Ejecuta el servidor en modo desarrollo
+    command: npm run dev
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/eduvial
+
+volumes:
+  mongo_data:
