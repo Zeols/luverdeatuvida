@@ -51,31 +51,38 @@
               >
               <a
                 class="nav-link"
+                :class="{ active: seccionActual === 'quienes' }"
+                href="#"
+                @click.prevent="cambiarSeccion('quienes')"
+                >Quiénes Somos</a
+              >
+              <a
+                class="nav-link"
                 :class="{ active: seccionActual === 'simulador' }"
                 href="#"
                 @click.prevent="cambiarSeccion('simulador')"
-                >Simulador Interactivo</a
+                >Simulador</a
               >
               <a
                 class="nav-link"
                 :class="{ active: seccionActual === 'normas' }"
                 href="#"
                 @click.prevent="cambiarSeccion('normas')"
-                >Biblioteca de Señales</a
+                >Señales</a
               >
               <a
                 class="nav-link"
                 :class="{ active: seccionActual === 'test' }"
                 href="#"
                 @click.prevent="cambiarSeccion('test')"
-                >Test de Licencia</a
+                >Test Vial</a
               >
               <a
                 class="nav-link"
                 :class="{ active: seccionActual === 'estadisticas' }"
                 href="#"
                 @click.prevent="cambiarSeccion('estadisticas')"
-                >Estadísticas</a
+                >Datos Reales</a
               >
               <a
                 class="nav-link"
@@ -89,7 +96,7 @@
                 :class="{ active: seccionActual === 'importancia' }"
                 href="#"
                 @click.prevent="cambiarSeccion('importancia')"
-                >Importancia</a
+                >Propósito</a
               >
             </div>
           </div>
@@ -142,104 +149,175 @@
       </section>
 
       <section v-if="seccionActual === 'simulador'" class="container my-5">
-        <div class="text-center mb-4">
-          <h2 class="fw-bold">Simulador de Situaciones Reales</h2>
-          <p class="text-muted">
-            Interactúa con los elementos de la carretera y toma las decisiones
-            correctas.
-          </p>
-        </div>
-        <div class="d-flex justify-content-center">
-          <div
-            class="contenedor-juego position-relative border border-4 border-white rounded shadow-lg w-100"
-          >
+        <div class="d-flex flex-column align-items-center">
+          <div class="contenedor-juego position-relative shadow-lg w-100">
             <div
-              class="marcador-responsive position-absolute top-0 end-0 m-2 p-2 bg-white border border-dark rounded fw-bold shadow-sm custom-badge"
+              class="marcador-responsive position-absolute top-0 end-0 m-2 p-2 bg-white fw-bold shadow-sm custom-badge"
             >
               Puntos: <span class="text-verde">{{ puntuacion }}</span>
             </div>
 
             <button
               v-if="!completados.semaforo"
-              @click="evaluarSemaforo"
               class="btn btn-warning position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-semaforo"
             >
               <i class="fa-solid fa-traffic-light me-1"></i> Semáforo
             </button>
             <button
               v-if="!completados.alto"
-              @click="evaluarAlto"
               class="btn btn-danger position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-alto"
             >
               <i class="fa-solid fa-circle-stop me-1"></i> ALTO
             </button>
             <button
               v-if="!completados.bus"
-              @click="evaluarBus"
               class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-parada"
             >
               <i class="fa-solid fa-bus me-1"></i> Parada
             </button>
             <button
               v-if="!completados.peatonal"
-              @click="evaluarPeatonal"
               class="btn btn-light position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-peatonal"
             >
               <i class="fa-solid fa-person-walking me-1"></i> Peatonal
             </button>
+
+            <div
+              class="personaje"
+              :style="{ top: personaje.y + '%', left: personaje.x + '%' }"
+            ></div>
           </div>
+
+          <div class="d-lg-none mt-4 text-center w-100">
+            <h6 class="text-muted fw-bold mb-2">
+              <i class="fa-solid fa-gamepad me-2"></i>Controles de Movimiento
+            </h6>
+            <div class="joystick-container mx-auto">
+              <button
+                class="btn-joy joy-up shadow-sm"
+                @touchstart.prevent="moverJoystick('up', true)"
+                @touchend.prevent="moverJoystick('up', false)"
+                @mousedown="moverJoystick('up', true)"
+                @mouseup="moverJoystick('up', false)"
+                @mouseleave="moverJoystick('up', false)"
+              >
+                <i class="fa-solid fa-caret-up"></i>
+              </button>
+              <button
+                class="btn-joy joy-left shadow-sm"
+                @touchstart.prevent="moverJoystick('left', true)"
+                @touchend.prevent="moverJoystick('left', false)"
+                @mousedown="moverJoystick('left', true)"
+                @mouseup="moverJoystick('left', false)"
+                @mouseleave="moverJoystick('left', false)"
+              >
+                <i class="fa-solid fa-caret-left"></i>
+              </button>
+              <button
+                class="btn-joy joy-right shadow-sm"
+                @touchstart.prevent="moverJoystick('right', true)"
+                @touchend.prevent="moverJoystick('right', false)"
+                @mousedown="moverJoystick('right', true)"
+                @mouseup="moverJoystick('right', false)"
+                @mouseleave="moverJoystick('right', false)"
+              >
+                <i class="fa-solid fa-caret-right"></i>
+              </button>
+              <button
+                class="btn-joy joy-down shadow-sm"
+                @touchstart.prevent="moverJoystick('down', true)"
+                @touchend.prevent="moverJoystick('down', false)"
+                @mousedown="moverJoystick('down', true)"
+                @mouseup="moverJoystick('down', false)"
+                @mouseleave="moverJoystick('down', false)"
+              >
+                <i class="fa-solid fa-caret-down"></i>
+              </button>
+            </div>
+          </div>
+          <p class="d-none d-lg-block mt-3 text-muted fw-bold">
+            <i class="fa-regular fa-keyboard me-2"></i>Usa las teclas W A S D o
+            las flechas para moverte.
+          </p>
         </div>
       </section>
 
-      <section v-if="seccionActual === 'normas'" class="container my-5">
-        <h2 class="fw-bold text-center mb-4">
-          Biblioteca de Señales de Tránsito
-        </h2>
+      <section
+        v-if="seccionActual === 'normas'"
+        class="container my-5 animate__animated animate__fadeIn"
+      >
+        <div class="text-center mb-5">
+          <h2 class="fw-bold" style="color: var(--asfalto)">
+            <i class="fa-solid fa-signs-post text-verde me-2"></i>Biblioteca de
+            Señales
+          </h2>
+          <p class="text-muted">
+            Conocer el lenguaje de las calles es el primer paso para evitar
+            accidentes.
+          </p>
+        </div>
+
         <div class="row g-4">
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-              <div class="card-body text-center">
-                <i
-                  class="fa-solid fa-circle-stop text-rojo mb-3 icon-badge"
-                ></i>
-                <h5 class="card-title fw-bold">Señales Reglamentarias</h5>
-                <p class="card-text text-muted">
-                  Indican prohibiciones o restricciones físicas en la vía. Su
-                  violación constituye una infracción de tránsito (Ej: ALTO, No
-                  Entrar).
-                </p>
+            <div
+              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
+            >
+              <div class="forma-senal forma-octagono">
+                <i class="fa-solid fa-hand"></i>
               </div>
+              <h5 class="card-title fw-bold" style="color: var(--rojo-alto)">
+                Señales Reglamentarias
+              </h5>
+              <p class="card-text text-muted mt-3">
+                Indican prohibiciones o restricciones físicas en la vía. Su
+                violación constituye una infracción de tránsito.
+                <br /><br /><strong>Forma:</strong> Generalmente circulares u
+                octágonos con rojo.
+              </p>
             </div>
           </div>
+
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-              <div class="card-body text-center">
-                <i
-                  class="fa-solid fa-triangle-exclamation text-amarillo mb-3 icon-badge"
-                ></i>
-                <h5 class="card-title fw-bold">Señales Preventivas</h5>
-                <p class="card-text text-muted">
-                  Advierten a los usuarios sobre la existencia de peligros
-                  potenciales en la carretera y su naturaleza (Ej: Zona Escolar,
-                  Curva Peligrosa).
-                </p>
+            <div
+              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
+            >
+              <div class="forma-senal forma-rombo">
+                <i class="fa-solid fa-car-burst"></i>
               </div>
+              <h5
+                class="card-title fw-bold"
+                style="color: var(--amarillo-preventivo)"
+              >
+                Señales Preventivas
+              </h5>
+              <p class="card-text text-muted mt-3">
+                Advierten a los usuarios sobre la existencia de peligros
+                potenciales en la carretera y su naturaleza.
+                <br /><br /><strong>Forma:</strong> Rombos amarillos con
+                símbolos negros.
+              </p>
             </div>
           </div>
+
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
-              <div class="card-body text-center">
-                <i
-                  class="fa-solid fa-circle-info text-primary mb-3"
-                  style="font-size: 3rem"
-                ></i>
-                <h5 class="card-title fw-bold">Señales Informativas</h5>
-                <p class="card-text text-muted">
-                  Guían al conductor en su ruta, proporcionando datos sobre
-                  destinos, direcciones, sitios de interés y servicios (Ej:
-                  Paradas de bus, Hospitales).
-                </p>
+            <div
+              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
+            >
+              <div class="forma-senal forma-rectangulo">
+                <i class="fa-solid fa-hospital"></i>
               </div>
+              <h5
+                class="card-title fw-bold"
+                style="color: var(--asfalto-claro)"
+              >
+                Señales Informativas
+              </h5>
+              <p class="card-text text-muted mt-3">
+                Guían al conductor en su ruta, proporcionando datos sobre
+                destinos, direcciones, sitios de interés y servicios.
+                <br /><br /><strong>Forma:</strong> Rectángulos azules, verdes o
+                marrones.
+              </p>
             </div>
           </div>
         </div>
@@ -584,6 +662,119 @@
           </div>
         </div>
       </section>
+      <section
+        v-if="seccionActual === 'quienes'"
+        class="container my-5 animate__animated animate__fadeIn"
+      >
+        <div class="row align-items-center mb-5 g-5">
+          <div class="col-lg-6">
+            <h2 class="display-5 fw-bold mb-4" style="color: var(--asfalto)">
+              ¿Quiénes Somos?
+            </h2>
+            <p class="lead text-muted">
+              Somos un grupo de estudiantes de undécimo grado del Centro
+              educativo Hna. Maura Clarke, comprometido con promover la
+              educación vial mediante el uso de herramientas tecnológicas
+              innovadoras. Nuestro proyecto busca fomentar el conocimiento, la
+              prevención y el respeto de las normas de tránsito, creando
+              conciencia en los jóvenes y la sociedad para contribuir a una
+              convivencia vial más segura, responsable y orientada a la
+              reducción de accidentes de tránsito.
+            </p>
+            <p class="text-muted"></p>
+          </div>
+          <div class="col-lg-6 text-center">
+            <div class="bg-white p-4 rounded-4 shadow-sm border d-inline-block">
+              <img
+                src="assets/img/logo.png"
+                alt="Luz Verde a tu Vida Logo"
+                class="img-fluid"
+                style="max-height: 250px"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row g-4 text-center mt-2 justify-content-center">
+          <div class="col-md-6">
+            <div
+              class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover"
+            >
+              <i
+                class="fa-solid fa-lightbulb mb-3 icon-badge"
+                style="color: var(--amarillo-preventivo)"
+              ></i>
+              <h4 class="fw-bold" style="color: var(--asfalto)">
+                Nuestra Visión
+              </h4>
+              <p class="text-muted mb-0">
+                Ser un proyecto educativo innovador que inspire a los jóvenes y
+                a la sociedad a utilizar la tecnología como medio de aprendizaje
+                y concientización, logrando fortalecer la cultura de educación
+                vial y contribuir a la reducción de accidentes de tránsito
+                mediante la información y la participación activa de los
+                usuarios.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div
+              class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover"
+            >
+              <i
+                class="fa-solid fa-bullseye mb-3 icon-badge"
+                style="color: var(--rojo-alto)"
+              ></i>
+              <h4 class="fw-bold" style="color: var(--asfalto)">
+                Nuestra Misión
+              </h4>
+              <p class="text-muted mb-0">
+                Desarrollar un sitio web que promueva la educación vial en los
+                usuarios, utilizando herramientas tecnológicas innovadoras para
+                fomentar el conocimiento, la prevención y el respeto de las
+                normas de tránsito, contribuyendo así a una convivencia vial más
+                segura y responsable.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer
+        class="bg-asfalto text-white py-4 mt-5 border-top border-4"
+        style="border-color: var(--verde-semaforo) !important"
+      >
+        <div class="container">
+          <div class="row align-items-center g-4 text-center text-md-start">
+            <div class="col-md-6">
+              <h5
+                class="fw-bold mb-2 d-flex align-items-center justify-content-center justify-content-md-start"
+              >
+                <img
+                  src="assets/img/logo.png"
+                  alt="Logo"
+                  height="30"
+                  class="me-2 bg-white rounded p-1"
+                />
+                Luz Verde a tu Vida
+              </h5>
+              <p class="text-white-50 small mb-0">
+                Proyecto de feria científica XXVI, elaborado por los estudiantes
+                del colegio Hna. Maura Clarke.
+              </p>
+            </div>
+
+            <div class="col-md-6 text-center text-md-end">
+              <p class="text-white-50 small mb-0">
+                &copy; 2026 Todos los derechos reservados.<br />
+                <span class="text-verde fw-bold"
+                  >La seguridad vial salva vidas.</span
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>

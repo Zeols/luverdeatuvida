@@ -2,11 +2,11 @@
    Variables de Paleta de Colores Corporativos
 ========================================= */
 :root {
-  --verde-semaforo: #00a859;
-  --amarillo-preventivo: #f1c40f;
-  --rojo-alto: #e74c3c;
-  --asfalto: #2c3e50;
-  --asfalto-claro: #4e5d6c;
+  --verde-semaforo: #2a9d8f; /* Verde esmeralda mate: transmite seguridad y tranquilidad */
+  --amarillo-preventivo: #e9c46a; /* Amarillo mostaza: advierte sin deslumbrar */
+  --rojo-alto: #e76f51; /* Rojo terracota: llama la atención pero es cálido */
+  --asfalto: #264653; /* Azul pizarra oscuro: mucho más elegante que el gris oscuro para el texto y navbar */
+  --asfalto-claro: #457b9d; /* Azul acero: para botones secundarios o bordes */
 }
 
 /* Clases de Utilidad de Color Personalizadas */
@@ -68,88 +68,253 @@
 .icon-badge {
   font-size: 3rem;
 }
-
 /* =========================================
-   Fondo Vectorial 2D del Simulador (Caricatura)
+   Fondo Vectorial 2D del Simulador (Paisaje Mejorado)
 ========================================= */
 .contenedor-juego {
-  max-width: 800px;
-  aspect-ratio: 4 / 3;
-  /* Capa 1: Cielo y Nubes vectoriales */
+  max-width: 900px;
+  aspect-ratio: 16 / 9; /* Formato más panorámico, ideal para pantallas */
+  border-radius: 15px !important;
+  border: 5px solid var(--asfalto) !important;
+  /* Capa 1: Sol, Nubes, Cielo azul y Césped verde */
   background:
-    radial-gradient(circle at 20% 20%, #fff 2%, transparent 3%),
-    radial-gradient(circle at 25% 18%, #fff 3%, transparent 4%),
-    radial-gradient(circle at 23% 22%, #fff 4%, transparent 5%),
-    radial-gradient(circle at 28% 22%, #fff 3%, transparent 4%),
+    /* Sol */
+    radial-gradient(circle at 85% 15%, #f9d71c 5%, transparent 6%),
+    /* Nubes */ radial-gradient(circle at 20% 20%, #fff 3%, transparent 4%),
+    radial-gradient(circle at 25% 18%, #fff 4%, transparent 5%),
+    radial-gradient(circle at 30% 20%, #fff 3%, transparent 4%),
+    radial-gradient(circle at 70% 25%, #fff 2%, transparent 3%),
+    radial-gradient(circle at 75% 22%, #fff 3.5%, transparent 4.5%),
+    /* Fondo: Cielo suave terminando en áreas verdes (césped) */
     linear-gradient(
-      to bottom,
-      #87ceeb 0%,
-      #bae1f2 50%,
-      #2ecc71 50%,
-      #27ae60 60%,
-      #555555 60%
-    ) !important;
+        to bottom,
+        #87ceeb 0%,
+        /* Cielo arriba */ #e0f6ff 40%,
+        /* Cielo claro cerca del horizonte */ #7cb342 40%,
+        /* Montañas/Césped claro */ #558b2f 55%,
+        /* Césped oscuro cerca de la carretera */ #333333 55%
+          /* Base para la carretera */
+      ) !important;
   overflow: hidden;
+  touch-action: none; /* Bloquea el scroll táctil de la pantalla si arrastran el dedo dentro del juego */
 }
 
-/* Capa 2: Dibujo de Carretera, Líneas y Paso Peatonal */
+/* Capa 2: La Carretera y el Paso Peatonal bien definidos */
 .contenedor-juego::after {
   content: "";
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 40%;
-  /* Crea las líneas intermitentes amarillas y las franjas blancas del paso de cebra */
+  height: 45%; /* La carretera ocupa casi la mitad de abajo */
   background: 
-    /* Franjas del Paso Peatonal (Derecha) */
-    linear-gradient(to right, #fff 30%, transparent 30%) 70% 60% / 120px 40px
-      no-repeat,
-    linear-gradient(to right, #fff 30%, transparent 30%) 70% 20% / 120px 40px
-      no-repeat,
-    /* Línea Amarilla de Discontinuidad Central */
-    linear-gradient(to right, var(--amarillo-preventivo) 50%, transparent 50%)
-      repeat-x center 10% / 80px 8px,
-    /* Capa base del pavimento asfalto */ #333333;
+    /* Franjas Blancas del Paso Peatonal (Cebra) orientadas para cruzar la calle */
+    linear-gradient(to bottom, #fff 15px, transparent 15px) 50% 50% / 80px 35px
+      repeat-y,
+    /* Línea Amarilla Intermitente Superior */
+    linear-gradient(to right, var(--amarillo-preventivo) 30px, transparent 30px)
+      center 20% / 60px 4px repeat-x,
+    /* Línea Amarilla Intermitente Inferior */
+    linear-gradient(to right, var(--amarillo-preventivo) 30px, transparent 30px)
+      center 80% / 60px 4px repeat-x,
+    /* Color base del Asfalto */ #34495e;
   z-index: 1;
 }
 
 /* =========================================
    Botones de Puntos de Control Interactivos
 ========================================= */
+/* Animación de "latido" para llamar la atención de los niños */
+@keyframes latido {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.4);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
 .punto-interactivo {
   z-index: 10 !important;
-  transition:
-    transform 0.2s ease-in-out,
-    box-shadow 0.2s;
+  animation: latido 2s infinite; /* Aplicamos la animación */
+  border-radius: 25px; /* Bordes bien redondeados estilo "píldora" */
   font-size: clamp(0.7rem, 2vw, 1rem);
-  padding: clamp(4px, 1.5vw, 10px) clamp(8px, 2vw, 15px);
+  padding: clamp(6px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .punto-interactivo:hover {
+  animation: none; /* Se detiene la animación al poner el mouse */
   transform: scale(1.1);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Posicionamiento Absoluto Limpio sobre el canvas del juego */
+/* Posicionamiento Absoluto Ajustado al nuevo formato 16/9 */
 .btn-semaforo {
-  top: 25%;
-  left: 35%;
+  top: 15%;
+  left: 25%;
 }
 .btn-alto {
-  top: 45%;
+  top: 35%;
   left: 75%;
 }
 .btn-parada {
-  top: 52%;
-  left: 5%;
+  top: 45%;
+  left: 8%;
 }
 .btn-peatonal {
-  top: 72%;
-  left: 45%;
+  top: 65%;
+  left: 42%;
 }
 
 .marcador-responsive {
-  font-size: clamp(0.8rem, 2.5vw, 1.1rem);
-  z-index: 5;
+  font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+  z-index: 15;
+  border: 3px solid var(--asfalto) !important;
+  border-radius: 12px !important;
+}
+/* Efecto suave para las tarjetas de la sección Quiénes Somos */
+.transition-hover {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.transition-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* =========================================
+   Formas Geométricas para Señales de Tránsito
+========================================= */
+.forma-senal {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Señal Reglamentaria: Octágono Rojo (Estilo ALTO) */
+.forma-octagono {
+  background-color: var(--rojo-alto);
+  clip-path: polygon(
+    30% 0%,
+    70% 0%,
+    100% 30%,
+    100% 70%,
+    70% 100%,
+    30% 100%,
+    0% 70%,
+    0% 30%
+  );
+  border: 4px solid white; /* Borde interior simulado */
+}
+
+/* Señal Preventiva: Rombo Amarillo */
+.forma-rombo {
+  background-color: var(--amarillo-preventivo);
+  color: var(--asfalto); /* Texto/Icono oscuro para contrastar con amarillo */
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  border: 4px solid var(--asfalto); /* Borde negro típico de advertencia */
+}
+
+/* Señal Informativa: Rectángulo Azul/Verde */
+.forma-rectangulo {
+  background-color: var(--asfalto-claro);
+  border-radius: 12px;
+  width: 120px; /* Un poco más ancho */
+  height: 90px;
+  border: 3px solid white;
+}
+
+.forma-senal i {
+  font-size: 2.5rem;
+}
+/* Diseño de la Cruceta (D-Pad) */
+.joystick-container {
+  display: grid;
+  grid-template-columns: 60px 60px 60px;
+  grid-template-rows: 60px 60px 60px;
+  gap: 5px;
+  width: max-content;
+}
+
+.btn-joy {
+  background-color: var(--asfalto-claro);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none; /* Evita que el texto se seleccione en el celular */
+  touch-action: none; /* Mejora la respuesta táctil en móviles */
+}
+
+.btn-joy:active {
+  background-color: var(--verde-semaforo);
+  transform: scale(0.95);
+}
+
+.joy-up {
+  grid-column: 2;
+  grid-row: 1;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.joy-left {
+  grid-column: 1;
+  grid-row: 2;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.joy-right {
+  grid-column: 3;
+  grid-row: 2;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.joy-down {
+  grid-column: 2;
+  grid-row: 3;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+/* =========================================
+   Personaje Jugable y Joystick
+========================================= */
+.personaje {
+  position: absolute;
+  width: 300px;  /* Tamaño por defecto (PC) */
+  height: 300px;
+  background-color: transparent; 
+  border: none; 
+  background-image: url('assets/img/sprite.png');
+  background-size: contain; 
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 20;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s;
+}
+
+/* Magia Responsiva: Si la pantalla mide 768px o menos (Teléfonos/Tablets) */
+@media (max-width: 768px) {
+  .personaje {
+    width: 120px;  /* Tamaño reducido perfecto para celulares */
+    height: 120px;
+  }
 }
