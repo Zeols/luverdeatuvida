@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 // OJO AQUÍ: Usamos la URL interna de Docker
 const MONGO_URI =
   process.env.MONGO_URI ||
-  "mongodb+srv://adminFeria:Feria%24%25@cluster0.exs0uwt.mongodb.net/eduvial?appName=Cluster0"; 
+  "mongodb+srv://adminFeria:feria%24%25@cluster0.exs0uwt.mongodb.net/eduvial?appName=Cluster0"; 
   
   // 1. Middlewares (Siempre van primero)app.use(cors());
 app.use(express.json());
