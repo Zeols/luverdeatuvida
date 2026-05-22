@@ -6,13 +6,15 @@ const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// OJO AQUÍ: Usamos la URL interna de Docker
+// OJO AQUÍ: Usamos la URL de MongoDB Atlas
 const MONGO_URI =
   process.env.MONGO_URI ||
-  "mongodb+srv://adminFeria:feria%24%25@cluster0.exs0uwt.mongodb.net/eduvial?appName=Cluster0"; 
-  
-  // 1. Middlewares (Siempre van primero)app.use(cors());
+  "mongodb+srv://adminFeria:feria%24%25@cluster0.exs0uwt.mongodb.net/eduvial?appName=Cluster0";
+
+// 1. Middlewares (Siempre van primero)
+app.use(cors());
 app.use(express.json());
+
 // Busca la carpeta frontend desde la raíz del directorio de trabajo
 app.use(express.static(path.join(process.cwd(), "frontend")));
 
