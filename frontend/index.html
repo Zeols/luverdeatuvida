@@ -328,64 +328,69 @@
         class="container my-5 animate__animated animate__fadeIn"
       >
         <h2 class="fw-bold text-center mb-4">
-          <i class="fa-solid fa-file-signature text-verde me-2"></i>Test de
-          Preparación (Licencia)
+          <i class="fa-solid fa-check-to-slot text-verde me-2"></i>Desafío de
+          Conocimientos Viales
         </h2>
         <div class="row justify-content-center">
           <div class="col-md-8">
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm border-0 rounded-4">
               <div class="card-body p-4">
                 <div v-if="!testIniciado" class="text-center">
-                  <p class="text-muted mb-4">
-                    Mide tus conocimientos antes de ir a tránsito. Ingresa tu
-                    nombre para comenzar.
+                  <p class="text-muted mb-4 fs-5">
+                    Demuestra qué tan buen peatón y conductor eres. Ingresa tu
+                    nombre para comenzar el desafío.
                   </p>
                   <input
                     type="text"
                     v-model="nombreUsuario"
-                    class="form-control mb-3"
+                    class="form-control form-control-lg mb-3 rounded-3"
                     placeholder="Tu Nombre"
                   />
                   <button
                     @click="iniciarTest"
-                    class="btn btn-success btn-lg w-100"
+                    class="btn btn-success btn-lg w-100 fw-bold rounded-3"
                     :disabled="!nombreUsuario"
                   >
-                    Comenzar Test
+                    Comenzar Desafío
                   </button>
                 </div>
+
                 <div v-else-if="testIniciado && !testTerminado">
-                  <h5 class="mb-3">
+                  <h5 class="mb-3 text-muted fw-bold">
                     Pregunta {{ preguntaActual + 1 }} de {{ preguntasTest.length
                     }}
                   </h5>
-                  <p class="lead">{{ preguntasTest[preguntaActual].texto }}</p>
-                  <div class="d-grid gap-2 mt-4">
+                  <p class="lead fw-semibold">
+                    {{ preguntasTest[preguntaActual].texto }}
+                  </p>
+
+                  <div class="d-grid gap-3 mt-4">
                     <button
                       v-for="(opcion, index) in preguntasTest[preguntaActual].opciones"
                       :key="index"
                       @click="responderTest(index)"
-                      class="btn btn-outline-asfalto text-start p-3"
+                      class="btn btn-outline-asfalto text-start p-3 fw-medium rounded-3 shadow-sm"
                     >
                       {{ opcion }}
                     </button>
                   </div>
                 </div>
+
                 <div v-else class="text-center">
-                  <h3>¡Test Completado!</h3>
+                  <h3 class="fw-bold">¡Desafío Completado!</h3>
                   <p
-                    class="display-4 fw-bold"
+                    class="display-1 fw-bold my-4"
                     :class="puntuacionTest >= 70 ? 'text-success' : 'text-danger'"
                   >
                     {{ puntuacionTest }} / 100
                   </p>
-                  <p class="text-muted">
+                  <p class="text-muted fs-5">
                     Tus resultados han sido guardados para las estadísticas de
                     la feria.
                   </p>
                   <button
                     @click="reiniciarTest"
-                    class="btn btn-outline-success mt-3"
+                    class="btn btn-outline-success btn-lg mt-3 fw-bold rounded-pill px-5"
                   >
                     Intentar de nuevo
                   </button>

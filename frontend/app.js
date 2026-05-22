@@ -296,8 +296,9 @@ createApp({
         );
       }
     };
+
     // ==========================================
-    // 3. ESTADO Y LÓGICA DEL TEST (INTERACTIVO Y EDUCATIVO)
+    // 3. ESTADO Y LÓGICA DEL DESAFÍO VIAL (TEST)
     // ==========================================
     const nombreUsuario = ref("");
     const testIniciado = ref(false);
@@ -306,139 +307,90 @@ createApp({
     const respuestasCorrectasTest = ref(0);
     const puntuacionTest = ref(0);
     const preguntasTest = ref([]);
+    
+    // NUEVA VARIABLE: Rastrea si el usuario ya se equivocó en la pregunta actual
+    const intentoFallido = ref(false); 
 
-    // Banco maestro de preguntas ampliado y con explicaciones
-    const bancoPreguntas = [
-      {
-        texto:
-          "¿Qué indica una línea amarilla continua en el centro de la vía?",
-        opciones: [
-          "Se puede rebasar con precaución.",
-          "Prohibido rebasar.",
-          "Es una vía de un solo sentido.",
-        ],
-        respuestaCorrecta: "Prohibido rebasar.",
-        explicacion:
-          "La línea continua indica que no hay visibilidad o espacio seguro para adelantar. Cruzarla es causa frecuente de choques frontales.",
-      },
-      {
-        texto:
-          "¿Cuál es la velocidad máxima permitida en zonas escolares en Nicaragua?",
-        opciones: ["25 km/h", "45 km/h", "60 km/h"],
-        respuestaCorrecta: "25 km/h",
-        explicacion:
-          "A 25 km/h, un vehículo necesita menos metros para frenar totalmente, protegiendo la vida de los niños.",
-      },
-      {
-        texto: "Ante una señal de 'Ceda el Paso', usted debe:",
-        opciones: [
-          "Acelerar para pasar primero.",
-          "Detenerse completamente siempre.",
-          "Disminuir la velocidad y ceder el paso a los vehículos en la vía principal.",
-        ],
-        respuestaCorrecta:
-          "Disminuir la velocidad y ceder el paso a los vehículos en la vía principal.",
-        explicacion:
-          "A diferencia del ALTO, el Ceda el Paso te permite avanzar si no hay tráfico aproximándose.",
-      },
-      {
-        texto:
-          "¿Quién tiene la preferencia de paso en un paso peatonal (Paso de cebra)?",
-        opciones: [
-          "El vehículo más grande o pesado.",
-          "El peatón.",
-          "El que llegue primero a la intersección.",
-        ],
-        respuestaCorrecta: "El peatón.",
-        explicacion:
-          "El peatón es el eslabón más vulnerable de la vía y siempre tiene la prioridad absoluta en las zonas demarcadas.",
-      },
-      {
-        texto: "El uso del cinturón de seguridad es obligatorio para:",
-        opciones: [
-          "Solo para el conductor.",
-          "El conductor y el copiloto (asiento delantero).",
-          "Todos los ocupantes del vehículo.",
-        ],
-        respuestaCorrecta: "Todos los ocupantes del vehículo.",
-        explicacion:
-          "En caso de colisión, los pasajeros traseros sin cinturón se convierten en proyectiles mortales para los pasajeros delanteros.",
-      },
-    ];
-
-    // Función de mezcla (Fisher-Yates)
-    const mezclarArreglo = (arreglo) => {
-      let nuevoArreglo = [...arreglo];
-      for (let i = nuevoArreglo.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [nuevoArreglo[i], nuevoArreglo[j]] = [nuevoArreglo[j], nuevoArreglo[i]];
-      }
-      return nuevoArreglo;
-    };
+    // (Aquí mantienes tu const bancoPreguntas y tu const mezclarArreglo igual que antes...)
 
     const iniciarTest = () => {
       let preguntasMezcladas = mezclarArreglo(bancoPreguntas);
-      // Seleccionamos solo 5 preguntas por test (útil si luego agregas más al banco)
-      preguntasTest.value = preguntasMezcladas.slice(0, 5).map((p) => {
+      
+      preguntasTest.value = preguntasMezcladas.slice(0, 7).map((p) => {
         return {
           texto: p.texto,
-          opciones: mezclarArreglo(p.opciones),
+          opciones: mezclarArreglo(p.opciones), 
           respuestaCorrecta: p.respuestaCorrecta,
           explicacion: p.explicacion,
         };
       });
       testIniciado.value = true;
+      intentoFallido.value = false; // Reiniciamos el estado de fallos al empezar
     };
 
-    // Modificamos responderTest para dar retroalimentación educativa
     const responderTest = async (indiceOpcion) => {
       const pregunta = preguntasTest.value[preguntaActual.value];
       const respuestaElegida = pregunta.opciones[indiceOpcion];
       const esCorrecta = respuestaElegida === pregunta.respuestaCorrecta;
 
       if (esCorrecta) {
-        respuestasCorrectasTest.value++;
+        // Solo sumamos el punto si lo logró al primer intento
+        if (!intentoFallido.value) {
+          respuestasCorrectasTest.value++;
+        }
+
+        // Le mostramos la explicación educativa porque ya encontró la correcta
         await Swal.fire({
           title: "¡Correcto!",
           text: pregunta.explicacion,
           icon: "success",
-          confirmButtonColor: "var(--verde-semaforo)", // Usa color de tu paleta
+          confirmButtonColor: "var(--verde-semaforo)",
           confirmButtonText: "Siguiente Pregunta",
         });
-      } else {
-        await Swal.fire({
-          title: "Incorrecto",
-          html: `<p>La respuesta correcta era: <b>${pregunta.respuestaCorrecta}</b></p>
-                 <p class="text-muted mt-2"><i>${pregunta.explicacion}</i></p>`,
-          icon: "error",
-          confirmButtonColor: "var(--rojo-alto)",
-          confirmButtonText: "Entendido",
-        });
-      }
 
-      // Lógica de avance
-      if (preguntaActual.value < preguntasTest.value.length - 1) {
-        preguntaActual.value++;
-      } else {
-        testTerminado.value = true;
-        puntuacionTest.value = Math.round(
-          (respuestasCorrectasTest.value / preguntasTest.value.length) * 100,
-        );
+        // Preparamos la variable para la siguiente pregunta
+        intentoFallido.value = false;
 
-        try {
-          await fetch("/api/test-resultados", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              usuario: nombreUsuario.value,
-              puntuacion: puntuacionTest.value,
-              respuestasCorrectas: respuestasCorrectasTest.value,
-            }),
-          });
-          console.log("[INFO] Resultado enviado al backend correctamente.");
-        } catch (error) {
-          console.error("[ERROR] Guardando en BD:", error);
+        // Avanzar de pregunta o terminar el desafío
+        if (preguntaActual.value < preguntasTest.value.length - 1) {
+          preguntaActual.value++;
+        } else {
+          testTerminado.value = true;
+          // Calcula la puntuación basada en 100
+          puntuacionTest.value = Math.round((respuestasCorrectasTest.value / preguntasTest.value.length) * 100);
+
+          // Guardar resultado en el backend
+          try {
+            await fetch("/api/test-resultados", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                usuario: nombreUsuario.value,
+                puntuacion: puntuacionTest.value,
+                respuestasCorrectas: respuestasCorrectasTest.value,
+              }),
+            });
+            console.log("[INFO] Resultado del desafío guardado correctamente.");
+          } catch (error) {
+            console.error("[ERROR] No se pudo guardar el resultado:", error);
+          }
         }
+
+      } else {
+        // Marcamos que ya falló al menos una vez en esta pregunta para no darle el punto
+        intentoFallido.value = true;
+
+        // Le pedimos que intente de nuevo, pero NO le decimos cuál era la correcta
+        await Swal.fire({
+          title: "¡Casi!",
+          text: "Esa no es la respuesta correcta. ¡Analiza bien la situación e inténtalo de nuevo!",
+          icon: "warning",
+          confirmButtonColor: "var(--amarillo-preventivo)",
+          confirmButtonText: "Reintentar",
+        });
+        
+        // IMPORTANTE: Al no tener un "preguntaActual.value++" aquí, 
+        // el usuario se queda atrapado en la misma pregunta hasta que acierte.
       }
     };
 
@@ -448,9 +400,13 @@ createApp({
       preguntaActual.value = 0;
       respuestasCorrectasTest.value = 0;
       nombreUsuario.value = "";
+      intentoFallido.value = false; // Reiniciamos al volver a jugar
     };
 
+    // (El resto de tu código del export return { ... } se queda igual)
     // --- RETORNO AL TEMPLATE (EXPORTS) ---
+
+    
     return {
       seccionActual,
       cambiarSeccion,
