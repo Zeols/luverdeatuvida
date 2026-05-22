@@ -5,14 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luz Verde a tu Vida - Educación Vial</title>
 
+    <link rel="icon" type="image/png" href="assets/img/icono.png" />
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="bg-light">
@@ -75,7 +89,7 @@
                 :class="{ active: seccionActual === 'test' }"
                 href="#"
                 @click.prevent="cambiarSeccion('test')"
-                >Test Vial</a
+                >Desafío Vial</a
               >
               <a
                 class="nav-link"
@@ -148,7 +162,10 @@
         </div>
       </section>
 
-      <section v-if="seccionActual === 'simulador'" class="container my-5">
+      <section
+        v-if="seccionActual === 'simulador'"
+        class="container my-5 animate__animated animate__fadeIn"
+      >
         <div class="d-flex flex-column align-items-center">
           <div class="contenedor-juego position-relative shadow-lg w-100">
             <div
@@ -276,7 +293,6 @@
               </p>
             </div>
           </div>
-
           <div class="col-md-4">
             <div
               class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
@@ -298,7 +314,6 @@
               </p>
             </div>
           </div>
-
           <div class="col-md-4">
             <div
               class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
@@ -411,7 +426,9 @@
         </h2>
         <div class="row g-4 text-center">
           <div class="col-md-6">
-            <div class="p-4 bg-white rounded shadow-sm border">
+            <div
+              class="p-4 bg-white rounded shadow-sm border card transition-hover h-100"
+            >
               <i
                 class="fa-solid fa-motorcycle text-amarillo mb-3 icon-badge"
               ></i>
@@ -424,7 +441,9 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="p-4 bg-white rounded shadow-sm border">
+            <div
+              class="p-4 bg-white rounded shadow-sm border card transition-hover h-100"
+            >
               <i
                 class="fa-solid fa-beer-mug-empty text-rojo mb-3 icon-badge"
               ></i>
@@ -455,7 +474,9 @@
         </div>
         <div class="row g-4">
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 bg-light">
+            <div
+              class="card h-100 shadow-sm border-0 bg-light transition-hover"
+            >
               <div class="card-body">
                 <i class="fa-solid fa-quote-left text-verde mb-3 fs-2"></i>
                 <p class="card-text fst-italic">
@@ -473,7 +494,9 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 bg-light">
+            <div
+              class="card h-100 shadow-sm border-0 bg-light transition-hover"
+            >
               <div class="card-body">
                 <i class="fa-solid fa-quote-left text-rojo mb-3 fs-2"></i>
                 <p class="card-text fst-italic">
@@ -491,7 +514,9 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 bg-light">
+            <div
+              class="card h-100 shadow-sm border-0 bg-light transition-hover"
+            >
               <div class="card-body">
                 <i class="fa-solid fa-quote-left text-amarillo mb-3 fs-2"></i>
                 <p class="card-text fst-italic">
@@ -511,8 +536,10 @@
 
         <div class="row mt-5 justify-content-center">
           <div class="col-md-8">
-            <div class="card shadow border-0">
-              <div class="card-header bg-asfalto text-white text-center py-3">
+            <div class="card shadow border-0 rounded-4">
+              <div
+                class="card-header bg-asfalto text-white text-center py-3 rounded-top-4"
+              >
                 <h4 class="mb-0">
                   <i class="fa-solid fa-pen-to-square me-2"></i>Comparte tu
                   Historia
@@ -573,7 +600,7 @@
                   </div>
                   <button
                     type="submit"
-                    class="btn btn-success btn-lg w-100 fw-bold"
+                    class="btn btn-success btn-lg w-100 fw-bold rounded-3"
                   >
                     Enviar Testimonio
                   </button>
@@ -604,7 +631,7 @@
         </div>
         <div class="row g-4 justify-content-center">
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
               <div class="card-body text-center p-4">
                 <i
                   class="fa-solid fa-heart-pulse text-rojo mb-4 icon-badge"
@@ -620,7 +647,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
               <div class="card-body text-center p-4">
                 <i
                   class="fa-solid fa-handshake-angle text-primary mb-4 icon-badge"
@@ -636,7 +663,7 @@
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
               <div class="card-body text-center p-4">
                 <i
                   class="fa-solid fa-seedling text-success mb-4 icon-badge"
@@ -667,6 +694,7 @@
           </div>
         </div>
       </section>
+
       <section
         v-if="seccionActual === 'quienes'"
         class="container my-5 animate__animated animate__fadeIn"
@@ -686,10 +714,11 @@
               convivencia vial más segura, responsable y orientada a la
               reducción de accidentes de tránsito.
             </p>
-            <p class="text-muted"></p>
           </div>
           <div class="col-lg-6 text-center">
-            <div class="bg-white p-4 rounded-4 shadow-sm border d-inline-block">
+            <div
+              class="bg-white p-4 rounded-4 shadow-sm border d-inline-block transition-hover"
+            >
               <img
                 src="assets/img/logo.png"
                 alt="Luz Verde a tu Vida Logo"
@@ -702,7 +731,7 @@
         <div class="row g-4 text-center mt-2 justify-content-center">
           <div class="col-md-6">
             <div
-              class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover"
+              class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover card"
             >
               <i
                 class="fa-solid fa-lightbulb mb-3 icon-badge"
@@ -721,10 +750,9 @@
               </p>
             </div>
           </div>
-
           <div class="col-md-6">
             <div
-              class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover"
+              class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover card"
             >
               <i
                 class="fa-solid fa-bullseye mb-3 icon-badge"
@@ -768,7 +796,6 @@
                 del colegio Hna. Maura Clarke.
               </p>
             </div>
-
             <div class="col-md-6 text-center text-md-end">
               <p class="text-white-50 small mb-0">
                 &copy; 2026 Todos los derechos reservados.<br />

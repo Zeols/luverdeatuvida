@@ -319,3 +319,63 @@
   }
 }
 
+/* =========================================
+   Animaciones y Efectos Smooth (Interacción)
+========================================= */
+
+/* 1. Transición global suave para todos los enlaces y botones */
+a, button {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+/* 2. Efecto moderno en la Barra de Navegación */
+.nav-link {
+  position: relative;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-weight: 500;
+}
+
+/* El texto se ilumina y sube 2 píxeles suavemente */
+.nav-link:hover, .nav-link.active {
+  color: #fff !important;
+  transform: translateY(-2px);
+}
+
+/* Subrayado animado que crece desde el centro */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: 0;
+  left: 50%;
+  background-color: var(--verde-semaforo);
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+  border-radius: 5px;
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  width: 80%;
+}
+
+/* 3. Efecto flotante en las Tarjetas (Cards y Testimonios) */
+.card {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease !important;
+}
+
+/* Al pasar el mouse, la tarjeta "flota" hacia arriba con una sombra suave */
+.card:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 15px 35px rgba(38, 70, 83, 0.15) !important;
+}
+
+/* 4. Botón principal (verde) con efecto de crecimiento (Scale) */
+.btn-success {
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.btn-success:hover {
+  transform: scale(1.05); /* Crece un 5% */
+  box-shadow: 0 10px 20px rgba(42, 157, 143, 0.3) !important;
+}
