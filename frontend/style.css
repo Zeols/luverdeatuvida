@@ -302,13 +302,6 @@
   transition: transform 0.1s;
 }
 
-@media (max-width: 768px) {
-  .personaje {
-    width: 120px;
-    height: 120px;
-  }
-}
-
 /* =========================================
    Animaciones y Efectos Smooth
 ========================================= */
@@ -381,4 +374,27 @@ button {
   position: relative;
   height: 300px;
   width: 100%;
+}
+
+/* =========================================
+   Magia Responsiva (Celulares y Tablets)
+========================================= */
+@media (max-width: 768px) {
+  /* Achica al personaje en celulares */
+  .personaje {
+    width: 120px;
+    height: 120px;
+  }
+
+  /* Achica los botones del simulador (joystick) en celulares */
+  .joystick-container {
+    grid-template-columns: 45px 45px 45px;
+    grid-template-rows: 45px 45px 45px;
+    gap: 4px;
+  }
+
+  .btn-joy {
+    font-size: 1.2rem;
+    border-radius: 8px;
+  }
 }
