@@ -379,3 +379,26 @@ a, button {
   transform: scale(1.05); /* Crece un 5% */
   box-shadow: 0 10px 20px rgba(42, 157, 143, 0.3) !important;
 }
+
+/* =========================================
+   Nuevos Fondos de Sección (Colores Suaves)
+========================================= */
+.seccion-verde { 
+  background-color: rgba(42, 157, 143, 0.08) !important; 
+}
+.seccion-amarillo { 
+  background-color: rgba(233, 196, 106, 0.15) !important; 
+}
+.seccion-rojo { 
+  background-color: rgba(231, 111, 81, 0.08) !important; 
+}
+.bg-navbar-verde { 
+  background-color: var(--verde-semaforo) !important; 
+}
+
+/* Contenedor del gráfico para que no se deforme */
+.grafico-contenedor {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
