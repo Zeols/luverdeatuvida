@@ -382,19 +382,20 @@ button {
 @media (max-width: 768px) {
   /* Achica al personaje en celulares */
   .personaje {
-    width: 120px;
-    height: 120px;
+    width: 100px !important; /* Aún más pequeño para que haya más espacio */
+    height: 100px !important;
   }
 
   /* Achica los botones del simulador (joystick) en celulares */
   .joystick-container {
-    grid-template-columns: 45px 45px 45px;
-    grid-template-rows: 45px 45px 45px;
-    gap: 4px;
+    grid-template-columns: 40px 40px 40px !important; /* Cuadritos mucho más chiquitos */
+    grid-template-rows: 40px 40px 40px !important;
+    gap: 4px !important;
+    margin-bottom: 15px !important; /* Despega los botones del fondo */
   }
 
   .btn-joy {
-    font-size: 1.2rem;
-    border-radius: 8px;
+    font-size: 1.2rem !important; /* Íconos más pequeños */
+    border-radius: 8px !important;
   }
 }
