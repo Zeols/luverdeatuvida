@@ -402,3 +402,17 @@ a, button {
   height: 300px;
   width: 100%;
 }
+
+.btn-asfalto {
+  background-color: var(--asfalto);
+  color: white !important;
+  border-color: var(--asfalto-claro);
+  transition: all 0.3s ease;
+}
+
+.btn-asfalto:hover {
+  background-color: var(--asfalto-claro);
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
