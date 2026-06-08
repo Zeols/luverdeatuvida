@@ -2,16 +2,13 @@ const { createApp, ref, nextTick } = Vue;
 
 createApp({
   setup() {
-    // ==========================================
-    // CONFIGURACIÓN DE CONEXIÓN AL BACKEND
-    // ==========================================
+    // URL INTELIGENTE: Detecta si estás en tu PC o en la nube
     const API_URL =
       window.location.hostname === "127.0.0.1" ||
       window.location.hostname === "localhost"
         ? "http://localhost:3000/api"
         : "/api";
 
-    // --- NAVEGACIÓN ---
     const seccionActual = ref("inicio");
 
     const cambiarSeccion = (seccion) => {
@@ -19,15 +16,18 @@ createApp({
 
       if (seccion === "estadisticas") {
         cargarStatsTest();
-        renderizarGrafico();
+        renderizarGraficoCausas();
       }
       if (seccion === "test") {
         cargarStatsTest();
       }
+      if (seccion === "testimonios") {
+        cargarTestimonios();
+      }
     };
 
     // ==========================================
-    // 1. ESTADO Y LÓGICA DEL SIMULADOR
+    // 1. SIMULADOR
     // ==========================================
     const puntuacion = ref(0);
     const completados = ref({
@@ -44,9 +44,8 @@ createApp({
         setTimeout(() => {
           Swal.fire({
             title: "¡Zona Completada!",
-            text: "Has demostrado conocer todas las normas. ¡Buen trabajo!",
+            text: "¡Buen trabajo!",
             icon: "success",
-            confirmButtonText: "Genial",
             confirmButtonColor: "#264653",
           });
         }, 800);
@@ -267,26 +266,32 @@ createApp({
     };
 
     // ==========================================
-    // 2. LÓGICA DE GRÁFICOS Y ESTADÍSTICAS GLOBALES
+    // 2. ESTADÍSTICAS GLOBALES Y GRÁFICO DINÁMICO
     // ==========================================
-    let miGrafico = null;
-    let chartTestInstancia = null;
-    const totalRespuestasCorrectas = ref(0);
-    const totalRespuestasIncorrectas = ref(0);
+    let miGraficoCausas = null;
+    let chartDinamicoInstancia = null;
+    const statsTest = ref({
+      totalJugadores: 0,
+      correctas: 0,
+      incorrectas: 0,
+      aprobados: 0,
+      reprobados: 0,
+    });
+    const tipoGraficoDinamico = ref("aciertos"); // Controla qué muestra el gráfico
 
-    const renderizarGrafico = () => {
+    const renderizarGraficoCausas = () => {
       setTimeout(() => {
         const ctx = document.getElementById("graficoCausas");
         if (ctx) {
-          if (miGrafico) miGrafico.destroy();
-          miGrafico = new Chart(ctx, {
+          if (miGraficoCausas) miGraficoCausas.destroy();
+          miGraficoCausas = new Chart(ctx, {
             type: "doughnut",
             data: {
               labels: [
                 "Estado de Ebriedad",
                 "Exceso de Velocidad",
                 "Invasión de Carril",
-                "Otras Causas",
+                "Otras",
               ],
               datasets: [
                 {
@@ -301,73 +306,78 @@ createApp({
       }, 300);
     };
 
-    const renderizarGraficoTest = () => {
-      const ctx = document.getElementById("testChart");
-      if (!ctx) return;
-      if (chartTestInstancia) chartTestInstancia.destroy();
-
-      chartTestInstancia = new Chart(ctx, {
-        type: "doughnut",
-        data: {
-          labels: ["Aciertos", "Fallos"],
-          datasets: [
-            {
-              data: [
-                totalRespuestasCorrectas.value,
-                totalRespuestasIncorrectas.value,
-              ],
-              backgroundColor: [
-                "rgba(46, 204, 113, 0.8)",
-                "rgba(231, 76, 60, 0.8)",
-              ],
-              borderColor: ["rgba(46, 204, 113, 1)", "rgba(231, 76, 60, 1)"],
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { position: "bottom" },
-          },
-        },
-      });
-    };
-
     const cargarStatsTest = async () => {
       try {
         const res = await fetch(`${API_URL}/test-resultados`);
         if (res.ok) {
           const data = await res.json();
+          statsTest.value.totalJugadores = data.length;
           let aciertos = 0,
-            fallos = 0;
+            fallos = 0,
+            aprobados = 0,
+            reprobados = 0;
 
-          if (data && data.length > 0) {
-            data.forEach((test) => {
-              aciertos += test.respuestasCorrectas;
-              // Tu banco de preguntas tiene 9 preguntas, así que restamos de 9
-              fallos += 9 - test.respuestasCorrectas;
+          data.forEach((test) => {
+            aciertos += test.respuestasCorrectas;
+            fallos += 9 - test.respuestasCorrectas;
+            if (test.puntuacion >= 70) aprobados++;
+            else reprobados++;
+          });
+
+          statsTest.value.correctas = aciertos;
+          statsTest.value.incorrectas = fallos;
+          statsTest.value.aprobados = aprobados;
+          statsTest.value.reprobados = reprobados;
+
+          if (
+            seccionActual.value === "estadisticas" ||
+            seccionActual.value === "test"
+          ) {
+            nextTick(() => {
+              actualizarGraficoDinamico();
             });
           }
-          totalRespuestasCorrectas.value = aciertos;
-          totalRespuestasIncorrectas.value = fallos;
-
-          // Dibujar el gráfico del test si estamos en esa vista
-          nextTick(() => {
-            renderizarGraficoTest();
-          });
         }
       } catch (e) {
-        console.error(
-          "No se pudieron cargar las estadísticas del test de MongoDB:",
-          e,
-        );
+        console.error("Error cargando DB:", e);
       }
     };
 
+    const actualizarGraficoDinamico = () => {
+      const ctx = document.getElementById("graficoDinamico");
+      if (!ctx) return;
+      if (chartDinamicoInstancia) chartDinamicoInstancia.destroy();
+
+      let etiquetas = [];
+      let valores = [];
+      let colores = [];
+
+      if (tipoGraficoDinamico.value === "aciertos") {
+        etiquetas = ["Respuestas Correctas", "Respuestas Incorrectas"];
+        valores = [statsTest.value.correctas, statsTest.value.incorrectas];
+        colores = ["#2ecc71", "#e74c3c"]; // Verde y Rojo
+      } else {
+        etiquetas = ["Aprobados (70 o más)", "Reprobados (Menos de 70)"];
+        valores = [statsTest.value.aprobados, statsTest.value.reprobados];
+        colores = ["#3498db", "#f39c12"]; // Azul y Naranja
+      }
+
+      chartDinamicoInstancia = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: etiquetas,
+          datasets: [{ data: valores, backgroundColor: colores }],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: "bottom" } },
+        },
+      });
+    };
+
     // ==========================================
-    // 3. ESTADO Y LÓGICA DE TESTIMONIOS
+    // 3. TESTIMONIOS (CARGADOS DE MONGODB)
     // ==========================================
     const formTestimonio = ref({
       nombre: "",
@@ -375,6 +385,18 @@ createApp({
       tipoAccidente: "",
       historia: "",
     });
+    const listaTestimonios = ref([]); // Guarda los testimonios de la DB
+
+    const cargarTestimonios = async () => {
+      try {
+        const respuesta = await fetch(`${API_URL}/testimonios`);
+        if (respuesta.ok) {
+          listaTestimonios.value = await respuesta.json();
+        }
+      } catch (error) {
+        console.error("Error al cargar testimonios", error);
+      }
+    };
 
     const enviarTestimonio = async () => {
       try {
@@ -397,24 +419,15 @@ createApp({
             tipoAccidente: "",
             historia: "",
           };
-        } else {
-          Swal.fire(
-            "Error",
-            "Problema al guardar en la base de datos.",
-            "error",
-          );
+          cargarTestimonios(); // Refresca la lista automáticamente
         }
       } catch (error) {
-        Swal.fire(
-          "Error de Conexión",
-          "Asegúrate de que el servidor Node.js esté encendido.",
-          "error",
-        );
+        Swal.fire("Error", "No hay conexión al servidor.", "error");
       }
     };
 
     // ==========================================
-    // 4. ESTADO Y LÓGICA DEL DESAFÍO VIAL (TEST)
+    // 4. DESAFÍO VIAL (TEST)
     // ==========================================
     const nombreUsuario = ref("");
     const testIniciado = ref(false);
@@ -563,7 +576,6 @@ createApp({
 
       if (esCorrecta) {
         if (!intentoFallido.value) respuestasCorrectasTest.value++;
-
         await Swal.fire({
           title: "¡Correcto!",
           text: pregunta.explicacion,
@@ -580,7 +592,6 @@ createApp({
             (respuestasCorrectasTest.value / preguntasTest.value.length) * 100,
           );
           try {
-            // ¡Aquí es donde la magia ocurre y usamos "usuario" para que encaje con MongoDB!
             await fetch(`${API_URL}/test-resultados`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -590,7 +601,7 @@ createApp({
                 respuestasCorrectas: respuestasCorrectasTest.value,
               }),
             });
-            cargarStatsTest(); // Actualizar las estadísticas instantáneamente
+            cargarStatsTest();
           } catch (e) {
             console.error("Error guardando el test", e);
           }
@@ -638,11 +649,10 @@ createApp({
       reiniciarTest,
       personaje,
       moverJoystick,
-      totalRespuestasCorrectas,
-      totalRespuestasIncorrectas,
+      statsTest,
+      tipoGraficoDinamico,
+      actualizarGraficoDinamico,
+      listaTestimonios,
     };
   },
 }).mount("#app");
-
-
-

@@ -5,37 +5,32 @@
   --verde-semaforo: #2a9d8f; /* Verde esmeralda mate: transmite seguridad y tranquilidad */
   --amarillo-preventivo: #e9c46a; /* Amarillo mostaza: advierte sin deslumbrar */
   --rojo-alto: #e76f51; /* Rojo terracota: llama la atención pero es cálido */
-  --asfalto: #264653; /* Azul pizarra oscuro: mucho más elegante que el gris oscuro para el texto y navbar */
+  --asfalto: #264653; /* Azul pizarra oscuro: mucho más elegante que el gris oscuro */
   --asfalto-claro: #457b9d; /* Azul acero: para botones secundarios o bordes */
 }
 
-/* Clases de Utilidad de Color Personalizadas */
+/* =========================================
+   Clases de Utilidad de Color Personalizadas
+========================================= */
 .bg-asfalto {
   background-color: var(--asfalto) !important;
-}
-
-.btn-asfalto {
-  background-color: var(--asfalto-claro);
-  color: #fff;
-  border-color: var(--asfalto);
-}
-
-.btn-asfalto:hover {
-  background-color: var(--asfalto);
-  color: #fff;
 }
 
 .text-verde {
   color: var(--verde-semaforo) !important;
 }
+
 .text-amarillo {
-  color: var(--amarillo-preventive) !important;
+  color: var(--amarillo-preventivo) !important;
 }
+
 .text-rojo {
   color: var(--rojo-alto) !important;
 }
 
-/* Sobrescribir botones de Bootstrap con la paleta exacta */
+/* =========================================
+   Sobrescribir Botones de Bootstrap
+========================================= */
 .btn-success {
   background-color: var(--verde-semaforo) !important;
   border-color: var(--verde-semaforo) !important;
@@ -65,11 +60,26 @@
   color: #fff !important;
 }
 
+.btn-asfalto {
+  background-color: var(--asfalto);
+  color: white !important;
+  border-color: var(--asfalto-claro);
+  transition: all 0.3s ease;
+}
+
+.btn-asfalto:hover {
+  background-color: var(--asfalto-claro);
+  color: white !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .icon-badge {
   font-size: 3rem;
 }
+
 /* =========================================
-   Fondo Vectorial 2D del Simulador (Paisaje Mejorado)
+   Fondo Vectorial 2D del Simulador 
 ========================================= */
 .contenedor-juego {
   max-width: 900px;
@@ -78,53 +88,46 @@
   border: 5px solid var(--asfalto) !important;
   /* Capa 1: Sol, Nubes, Cielo azul y Césped verde */
   background:
-    /* Sol */
     radial-gradient(circle at 85% 15%, #f9d71c 5%, transparent 6%),
-    /* Nubes */ radial-gradient(circle at 20% 20%, #fff 3%, transparent 4%),
+    radial-gradient(circle at 20% 20%, #fff 3%, transparent 4%),
     radial-gradient(circle at 25% 18%, #fff 4%, transparent 5%),
     radial-gradient(circle at 30% 20%, #fff 3%, transparent 4%),
     radial-gradient(circle at 70% 25%, #fff 2%, transparent 3%),
     radial-gradient(circle at 75% 22%, #fff 3.5%, transparent 4.5%),
-    /* Fondo: Cielo suave terminando en áreas verdes (césped) */
     linear-gradient(
-        to bottom,
-        #87ceeb 0%,
-        /* Cielo arriba */ #e0f6ff 40%,
-        /* Cielo claro cerca del horizonte */ #7cb342 40%,
-        /* Montañas/Césped claro */ #558b2f 55%,
-        /* Césped oscuro cerca de la carretera */ #333333 55%
-          /* Base para la carretera */
-      ) !important;
+      to bottom,
+      #87ceeb 0%,
+      #e0f6ff 40%,
+      #7cb342 40%,
+      #558b2f 55%,
+      #333333 55%
+    ) !important;
   overflow: hidden;
-  touch-action: none; /* Bloquea el scroll táctil de la pantalla si arrastran el dedo dentro del juego */
+  touch-action: none; /* Bloquea el scroll táctil dentro del juego */
 }
 
-/* Capa 2: La Carretera y el Paso Peatonal bien definidos */
+/* Capa 2: La Carretera y el Paso Peatonal */
 .contenedor-juego::after {
   content: "";
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 45%; /* La carretera ocupa casi la mitad de abajo */
-  background: 
-    /* Franjas Blancas del Paso Peatonal (Cebra) orientadas para cruzar la calle */
+  height: 45%;
+  background:
     linear-gradient(to bottom, #fff 15px, transparent 15px) 50% 50% / 80px 35px
       repeat-y,
-    /* Línea Amarilla Intermitente Superior */
     linear-gradient(to right, var(--amarillo-preventivo) 30px, transparent 30px)
       center 20% / 60px 4px repeat-x,
-    /* Línea Amarilla Intermitente Inferior */
     linear-gradient(to right, var(--amarillo-preventivo) 30px, transparent 30px)
       center 80% / 60px 4px repeat-x,
-    /* Color base del Asfalto */ #34495e;
+    #34495e;
   z-index: 1;
 }
 
 /* =========================================
    Botones de Puntos de Control Interactivos
 ========================================= */
-/* Animación de "latido" para llamar la atención de los niños */
 @keyframes latido {
   0% {
     transform: scale(1);
@@ -142,8 +145,8 @@
 
 .punto-interactivo {
   z-index: 10 !important;
-  animation: latido 2s infinite; /* Aplicamos la animación */
-  border-radius: 25px; /* Bordes bien redondeados estilo "píldora" */
+  animation: latido 2s infinite;
+  border-radius: 25px;
   font-size: clamp(0.7rem, 2vw, 1rem);
   padding: clamp(6px, 1.5vw, 12px) clamp(12px, 2vw, 20px);
   text-transform: uppercase;
@@ -151,12 +154,11 @@
 }
 
 .punto-interactivo:hover {
-  animation: none; /* Se detiene la animación al poner el mouse */
+  animation: none;
   transform: scale(1.1);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Posicionamiento Absoluto Ajustado al nuevo formato 16/9 */
 .btn-semaforo {
   top: 15%;
   left: 25%;
@@ -180,6 +182,7 @@
   border: 3px solid var(--asfalto) !important;
   border-radius: 12px !important;
 }
+
 /* Efecto suave para las tarjetas de la sección Quiénes Somos */
 .transition-hover {
   transition:
@@ -205,7 +208,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Señal Reglamentaria: Octágono Rojo (Estilo ALTO) */
 .forma-octagono {
   background-color: var(--rojo-alto);
   clip-path: polygon(
@@ -218,22 +220,20 @@
     0% 70%,
     0% 30%
   );
-  border: 4px solid white; /* Borde interior simulado */
+  border: 4px solid white;
 }
 
-/* Señal Preventiva: Rombo Amarillo */
 .forma-rombo {
   background-color: var(--amarillo-preventivo);
-  color: var(--asfalto); /* Texto/Icono oscuro para contrastar con amarillo */
+  color: var(--asfalto);
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  border: 4px solid var(--asfalto); /* Borde negro típico de advertencia */
+  border: 4px solid var(--asfalto);
 }
 
-/* Señal Informativa: Rectángulo Azul/Verde */
 .forma-rectangulo {
   background-color: var(--asfalto-claro);
   border-radius: 12px;
-  width: 120px; /* Un poco más ancho */
+  width: 120px;
   height: 90px;
   border: 3px solid white;
 }
@@ -241,7 +241,10 @@
 .forma-senal i {
   font-size: 2.5rem;
 }
-/* Diseño de la Cruceta (D-Pad) */
+
+/* =========================================
+   Diseño de la Cruceta (D-Pad Movil)
+========================================= */
 .joystick-container {
   display: grid;
   grid-template-columns: 60px 60px 60px;
@@ -259,8 +262,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  user-select: none; /* Evita que el texto se seleccione en el celular */
-  touch-action: none; /* Mejora la respuesta táctil en móviles */
+  user-select: none;
+  touch-action: none;
 }
 
 .btn-joy:active {
@@ -294,16 +297,16 @@
 }
 
 /* =========================================
-   Personaje Jugable y Joystick
+   Personaje Jugable
 ========================================= */
 .personaje {
   position: absolute;
-  width: 300px;  /* Tamaño por defecto (PC) */
+  width: 300px;
   height: 300px;
-  background-color: transparent; 
-  border: none; 
-  background-image: url('assets/img/sprite.png');
-  background-size: contain; 
+  background-color: transparent;
+  border: none;
+  background-image: url("assets/img/sprite.png");
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   z-index: 20;
@@ -311,10 +314,9 @@
   transition: transform 0.1s;
 }
 
-/* Magia Responsiva: Si la pantalla mide 768px o menos (Teléfonos/Tablets) */
 @media (max-width: 768px) {
   .personaje {
-    width: 120px;  /* Tamaño reducido perfecto para celulares */
+    width: 120px;
     height: 120px;
   }
 }
@@ -322,114 +324,87 @@
 /* =========================================
    Animaciones y Efectos Smooth (Interacción)
 ========================================= */
-
-/* 1. Transición global suave para todos los enlaces y botones */
-a, button {
+a,
+button {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
 
-/* 2. Efecto moderno en la Barra de Navegación */
 .nav-link {
   position: relative;
   color: rgba(255, 255, 255, 0.7) !important;
   font-weight: 500;
 }
 
-/* El texto se ilumina y sube 2 píxeles suavemente */
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
   color: #fff !important;
   transform: translateY(-2px);
 }
 
-/* Subrayado animado que crece desde el centro */
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 0;
   height: 3px;
   bottom: 0;
   left: 50%;
-  background-color: var(--verde-semaforo);
+  background-color: #fff; /* Subrayado blanco en el menú verde */
   transition: all 0.3s ease-in-out;
   transform: translateX(-50%);
   border-radius: 5px;
 }
 
-.nav-link:hover::after, .nav-link.active::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 80%;
 }
 
-/* 3. Efecto flotante en las Tarjetas (Cards y Testimonios) */
 .card {
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease !important;
+  transition:
+    transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.4s ease !important;
 }
 
-/* Al pasar el mouse, la tarjeta "flota" hacia arriba con una sombra suave */
 .card:hover {
   transform: translateY(-10px) !important;
   box-shadow: 0 15px 35px rgba(38, 70, 83, 0.15) !important;
 }
 
-/* 4. Botón principal (verde) con efecto de crecimiento (Scale) */
 .btn-success {
-  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease !important;
 }
 
 .btn-success:hover {
-  transform: scale(1.05); /* Crece un 5% */
+  transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(42, 157, 143, 0.3) !important;
 }
-
 
 /* =========================================
    Nuevos Fondos de Sección (Colores Pastel)
 ========================================= */
-.seccion-verde { 
-  background-color: #e8f8f5 !important; /* Verde pastel muy suave */
-}
-.seccion-amarillo { 
-  background-color: #fff9e6 !important; /* Amarillo pastel */
-}
-.seccion-rojo { 
-  background-color: #ffeaea !important; /* Rojo/Rosado pastel */
-}
-.seccion-azul {
-  background-color: #ebf5fb !important; /* Azul pastel para estadísticas */
+.seccion-1 {
+  background-color: #f4fdf8 !important;
+} /* Verde agua muy claro */
+.seccion-2 {
+  background-color: #fffbeb !important;
+} /* Amarillo/Crema cálido */
+.seccion-3 {
+  background-color: #fef2f2 !important;
+} /* Rojo/Rosado pastel suave */
+.seccion-4 {
+  background-color: #f8fafc !important;
+} /* Gris/Azul pastel (Estadísticas) */
+
+/* EL NUEVO COLOR DEL NAVBAR Y FOOTER (Verde Esmeralda Profesional) */
+.bg-tema-principal {
+  background-color: #198754 !important;
 }
 
-/* VERDE ENCENDIDO Y VIVO PARA EL NAVBAR */
-.bg-navbar-verde { 
-  background-color: #00c851 !important; 
-}
-
-/* Contenedor del gráfico */
+/* Contenedor del gráfico Chart.js */
 .grafico-contenedor {
   position: relative;
   height: 300px;
   width: 100%;
 }
-
-.btn-asfalto {
-  background-color: var(--asfalto);
-  color: white !important;
-  border-color: var(--asfalto-claro);
-  transition: all 0.3s ease;
-}
-
-.btn-asfalto:hover {
-  background-color: var(--asfalto-claro);
-  color: white !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* =========================================
-   Nuevos Fondos de Sección (Colores Pastel)
-========================================= */
-.seccion-verde { background-color: #e8f8f5 !important; /* Verde pastel muy suave */ }
-.seccion-amarillo { background-color: #fff9e6 !important; /* Amarillo pastel */ }
-.seccion-rojo { background-color: #ffeaea !important; /* Rojo/Rosado pastel */ }
-.seccion-azul { background-color: #ebf5fb !important; /* Azul pastel para estadísticas */ }
-
-/* VERDE ENCENDIDO Y VIVO PARA EL NAVBAR */
-.bg-navbar-verde { background-color: #00c851 !important; }

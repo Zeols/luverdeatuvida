@@ -6,35 +6,29 @@
     <title>Luz Verde a tu Vida - Educación Vial</title>
 
     <link rel="icon" type="image/png" href="assets/img/icono.png" />
-
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <link rel="stylesheet" href="style.css" />
   </head>
   <body class="bg-light">
     <div id="app">
       <nav
-        class="navbar navbar-expand-lg navbar-dark bg-navbar-verde shadow-sm"
+        class="navbar navbar-expand-lg navbar-dark bg-tema-principal shadow-sm"
       >
         <div class="container">
           <a
@@ -44,7 +38,7 @@
           >
             <img
               src="assets/img/logo.png"
-              alt="Logo Luz Verde a tu Vida"
+              alt="Logo"
               height="40"
               class="me-2 bg-white rounded p-1"
             />
@@ -123,7 +117,7 @@
 
       <section
         v-if="seccionActual === 'inicio'"
-        class="container-fluid py-5 animate__animated animate__fadeIn seccion-verde"
+        class="container-fluid py-5 animate__animated animate__fadeIn seccion-1"
       >
         <div class="container my-4">
           <div class="row align-items-center g-5">
@@ -172,7 +166,7 @@
 
       <section
         v-if="seccionActual === 'quienes'"
-        class="container-fluid py-5 animate__animated animate__fadeIn seccion-amarillo"
+        class="container-fluid py-5 animate__animated animate__fadeIn seccion-2"
       >
         <div class="container my-4">
           <div class="row align-items-center mb-5 g-5">
@@ -184,11 +178,7 @@
                 Somos un grupo de estudiantes de undécimo grado del Centro
                 educativo Hna. Maura Clarke, comprometido con promover la
                 educación vial mediante el uso de herramientas tecnológicas
-                innovadoras. Nuestro proyecto busca fomentar el conocimiento, la
-                prevención y el respeto de las normas de tránsito, creando
-                conciencia en los jóvenes y la sociedad para contribuir a una
-                convivencia vial más segura, responsable y orientada a la
-                reducción de accidentes de tránsito.
+                innovadoras.
               </p>
             </div>
             <div class="col-lg-6 text-center">
@@ -197,53 +187,10 @@
               >
                 <img
                   src="assets/img/logo.png"
-                  alt="Luz Verde a tu Vida Logo"
+                  alt="Logo"
                   class="img-fluid"
                   style="max-height: 250px"
                 />
-              </div>
-            </div>
-          </div>
-          <div class="row g-4 text-center mt-2 justify-content-center">
-            <div class="col-md-6">
-              <div
-                class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover card"
-              >
-                <i
-                  class="fa-solid fa-lightbulb mb-3 icon-badge"
-                  style="color: var(--amarillo-preventivo)"
-                ></i>
-                <h4 class="fw-bold" style="color: var(--asfalto)">
-                  Nuestra Visión
-                </h4>
-                <p class="text-muted mb-0">
-                  Ser un proyecto educativo innovador que inspire a los jóvenes
-                  y a la sociedad a utilizar la tecnología como medio de
-                  aprendizaje y concientización, logrando fortalecer la cultura
-                  de educación vial y contribuir a la reducción de accidentes de
-                  tránsito mediante la información y la participación activa de
-                  los usuarios.
-                </p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div
-                class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover card"
-              >
-                <i
-                  class="fa-solid fa-bullseye mb-3 icon-badge"
-                  style="color: var(--rojo-alto)"
-                ></i>
-                <h4 class="fw-bold" style="color: var(--asfalto)">
-                  Nuestra Misión
-                </h4>
-                <p class="text-muted mb-0">
-                  Desarrollar un sitio web que promueva la educación vial en los
-                  usuarios, utilizando herramientas tecnológicas innovadoras
-                  para fomentar el conocimiento, la prevención y el respeto de
-                  las normas de tránsito, contribuyendo así a una convivencia
-                  vial más segura y responsable.
-                </p>
               </div>
             </div>
           </div>
@@ -252,7 +199,7 @@
 
       <section
         v-if="seccionActual === 'simulador'"
-        class="container-fluid py-5 animate__animated animate__fadeIn seccion-rojo"
+        class="container-fluid py-5 animate__animated animate__fadeIn seccion-3"
       >
         <div class="container my-4">
           <div class="d-flex flex-column align-items-center">
@@ -270,21 +217,18 @@
                 <i class="fa-solid fa-traffic-light text-warning me-1 fs-5"></i>
                 Semáforo
               </button>
-
               <button
                 v-if="!completados.alto"
                 class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-alto"
               >
                 <i class="fa-solid fa-hand text-danger me-1 fs-5"></i> ALTO
               </button>
-
               <button
                 v-if="!completados.bus"
                 class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-parada"
               >
                 <i class="fa-solid fa-bus text-info me-1 fs-5"></i> Parada
               </button>
-
               <button
                 v-if="!completados.peatonal"
                 class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-peatonal"
@@ -302,58 +246,37 @@
             </div>
 
             <div class="d-lg-none mt-4 text-center w-100">
-              <h6 class="text-muted fw-bold mb-2">
-                <i class="fa-solid fa-gamepad me-2"></i>Controles de Movimiento
-              </h6>
               <div class="joystick-container mx-auto">
                 <button
-                  class="btn-joy joy-up shadow-sm"
+                  class="btn-joy joy-up"
                   @touchstart.prevent="moverJoystick('up', true)"
                   @touchend.prevent="moverJoystick('up', false)"
-                  @mousedown="moverJoystick('up', true)"
-                  @mouseup="moverJoystick('up', false)"
-                  @mouseleave="moverJoystick('up', false)"
                 >
                   <i class="fa-solid fa-caret-up"></i>
                 </button>
                 <button
-                  class="btn-joy joy-left shadow-sm"
+                  class="btn-joy joy-left"
                   @touchstart.prevent="moverJoystick('left', true)"
                   @touchend.prevent="moverJoystick('left', false)"
-                  @mousedown="moverJoystick('left', true)"
-                  @mouseup="moverJoystick('left', false)"
-                  @mouseleave="moverJoystick('left', false)"
                 >
                   <i class="fa-solid fa-caret-left"></i>
                 </button>
                 <button
-                  class="btn-joy joy-right shadow-sm"
+                  class="btn-joy joy-right"
                   @touchstart.prevent="moverJoystick('right', true)"
                   @touchend.prevent="moverJoystick('right', false)"
-                  @mousedown="moverJoystick('right', true)"
-                  @mouseup="moverJoystick('right', false)"
-                  @mouseleave="moverJoystick('right', false)"
                 >
                   <i class="fa-solid fa-caret-right"></i>
                 </button>
                 <button
-                  class="btn-joy joy-down shadow-sm"
+                  class="btn-joy joy-down"
                   @touchstart.prevent="moverJoystick('down', true)"
                   @touchend.prevent="moverJoystick('down', false)"
-                  @mousedown="moverJoystick('down', true)"
-                  @mouseup="moverJoystick('down', false)"
-                  @mouseleave="moverJoystick('down', false)"
                 >
                   <i class="fa-solid fa-caret-down"></i>
                 </button>
               </div>
             </div>
-            <p
-              class="d-none d-lg-block mt-3 text-dark fw-bold bg-white px-3 py-1 rounded shadow-sm"
-            >
-              <i class="fa-regular fa-keyboard me-2"></i>Usa las teclas W A S D
-              o las flechas para moverte.
-            </p>
           </div>
         </div>
       </section>
@@ -367,76 +290,6 @@
             <i class="fa-solid fa-signs-post text-verde me-2"></i>Biblioteca de
             Señales
           </h2>
-          <p class="text-muted">
-            Conocer el lenguaje de las calles es el primer paso para evitar
-            accidentes.
-          </p>
-        </div>
-
-        <div class="row g-4">
-          <div class="col-md-4">
-            <div
-              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
-            >
-              <div class="forma-senal forma-octagono">
-                <i class="fa-solid fa-hand"></i>
-              </div>
-              <h5 class="card-title fw-bold" style="color: var(--rojo-alto)">
-                Señales Reglamentarias
-              </h5>
-              <p class="card-text text-muted mt-3">
-                Indican prohibiciones o restricciones físicas en la vía. Su
-                violación constituye una infracción de tránsito.<br /><br /><strong
-                  >Forma:</strong
-                >
-                Generalmente circulares u octágonos con rojo.
-              </p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div
-              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
-            >
-              <div class="forma-senal forma-rombo">
-                <i class="fa-solid fa-car-burst"></i>
-              </div>
-              <h5
-                class="card-title fw-bold"
-                style="color: var(--amarillo-preventivo)"
-              >
-                Señales Preventivas
-              </h5>
-              <p class="card-text text-muted mt-3">
-                Advierten a los usuarios sobre la existencia de peligros
-                potenciales en la carretera y su naturaleza.<br /><br /><strong
-                  >Forma:</strong
-                >
-                Rombos amarillos con símbolos negros.
-              </p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div
-              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
-            >
-              <div class="forma-senal forma-rectangulo">
-                <i class="fa-solid fa-hospital"></i>
-              </div>
-              <h5
-                class="card-title fw-bold"
-                style="color: var(--asfalto-claro)"
-              >
-                Señales Informativas
-              </h5>
-              <p class="card-text text-muted mt-3">
-                Guían al conductor en su ruta, proporcionando datos sobre
-                destinos, direcciones, sitios de interés y servicios.<br /><br /><strong
-                  >Forma:</strong
-                >
-                Rectángulos azules, verdes o marrones.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -455,7 +308,7 @@
                 <div v-if="!testIniciado" class="text-center">
                   <p class="text-muted mb-4 fs-5">
                     Demuestra qué tan buen peatón y conductor eres. Ingresa tu
-                    nombre para comenzar el desafío.
+                    nombre.
                   </p>
                   <input
                     type="text"
@@ -480,7 +333,6 @@
                   <p class="lead fw-semibold">
                     {{ preguntasTest[preguntaActual].texto }}
                   </p>
-
                   <div class="d-grid gap-3 mt-4">
                     <button
                       v-for="(opcion, index) in preguntasTest[preguntaActual].opciones"
@@ -501,18 +353,6 @@
                   >
                     {{ puntuacionTest }} / 100
                   </p>
-                  <p class="text-muted mb-1">
-                    Tu resultado ha sido sumado a las estadísticas oficiales de
-                    la feria.
-                  </p>
-
-                  <div
-                    class="mt-4"
-                    style="height: 300px; width: 100%; position: relative"
-                  >
-                    <canvas id="testChart"></canvas>
-                  </div>
-
                   <button
                     @click="reiniciarTest"
                     class="btn btn-outline-success btn-lg mt-4 fw-bold rounded-pill px-5"
@@ -528,83 +368,61 @@
 
       <section
         v-show="seccionActual === 'estadisticas'"
-        class="container my-5 animate__animated animate__fadeIn"
+        class="container-fluid py-5 animate__animated animate__fadeIn seccion-4"
       >
-        <h2 class="fw-bold text-center mb-4">
-          <i class="fa-solid fa-chart-pie text-rojo me-2"></i>Datos de
-          Accidentabilidad y Desempeño
-        </h2>
+        <div class="container my-4">
+          <h2 class="fw-bold text-center mb-4">
+            <i class="fa-solid fa-chart-pie text-rojo me-2"></i>Datos Reales y
+            Rendimiento
+          </h2>
 
-        <div class="row g-4 text-center justify-content-center">
-          <div class="col-md-6">
-            <div
-              class="p-4 bg-white rounded shadow-sm border card transition-hover h-100"
-            >
-              <i
-                class="fa-solid fa-motorcycle text-amarillo mb-3 icon-badge"
-              ></i>
-              <h4 class="fw-bold">Vehículos Involucrados</h4>
-              <p class="text-muted">
-                Las motocicletas encabezan la lista de accidentes con víctimas
-                fatales en las carreteras de Nicaragua, seguidas por camionetas
-                y automóviles.
-              </p>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div
-              class="p-4 bg-white rounded shadow-sm border card transition-hover h-100"
-            >
-              <i
-                class="fa-solid fa-beer-mug-empty text-rojo mb-3 icon-badge"
-              ></i>
-              <h4 class="fw-bold">Causas Principales</h4>
-              <p class="text-muted">
-                Conducir en estado de ebriedad, el exceso de velocidad y la
-                invasión de carril son las tres causas principales de siniestros
-                viales en el país.
-              </p>
-            </div>
-          </div>
-
-          <div class="col-md-10 mt-5">
-            <div
-              class="alert border-0 shadow-sm text-center p-4 rounded-4"
-              style="background-color: #e9ecef"
-            >
-              <h4 class="fw-bold mb-3 text-dark">
-                <i class="fa-solid fa-server text-asfalto me-2"></i>Rendimiento
-                del Test Vial (Datos Reales)
-              </h4>
-              <p class="text-muted mb-4">
-                Estos datos reflejan los aciertos y fallos de todos los usuarios
-                que han completado el test en esta feria, actualizados en tiempo
-                real desde la nube de MongoDB Atlas.
-              </p>
-
-              <div class="d-flex flex-wrap justify-content-center gap-4 mt-3">
+          <div class="row g-4 text-center justify-content-center">
+            <div class="col-md-10 mt-2">
+              <div
+                class="bg-white border-0 shadow-sm text-center p-4 rounded-4"
+              >
                 <div
-                  class="bg-white p-3 rounded-3 shadow-sm flex-fill border border-success"
-                  style="max-width: 250px"
+                  class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 border-bottom pb-3"
                 >
-                  <i
-                    class="fa-solid fa-check-circle text-success fs-1 mb-2"
-                  ></i>
-                  <h5 class="fw-bold text-dark">Aciertos Totales</h5>
-                  <span class="text-success fw-bold fs-2"
-                    >{{ totalRespuestasCorrectas }}</span
+                  <h4 class="fw-bold text-dark mb-3 mb-md-0">
+                    <i class="fa-solid fa-users text-asfalto me-2"></i
+                    >Resultados de la Feria
+                  </h4>
+
+                  <div
+                    class="d-flex align-items-center bg-light p-2 rounded shadow-sm border"
                   >
+                    <label class="fw-bold me-2 small text-muted"
+                      >Mostrar:</label
+                    >
+                    <select
+                      class="form-select border-0 shadow-none bg-transparent fw-bold text-tema-principal"
+                      v-model="tipoGraficoDinamico"
+                      @change="actualizarGraficoDinamico"
+                    >
+                      <option value="aciertos">
+                        Total de Aciertos y Fallos
+                      </option>
+                      <option value="aprobacion">
+                        Usuarios Aprobados vs Reprobados
+                      </option>
+                    </select>
+                  </div>
                 </div>
 
-                <div
-                  class="bg-white p-3 rounded-3 shadow-sm flex-fill border border-danger"
-                  style="max-width: 250px"
-                >
-                  <i class="fa-solid fa-xmark-circle text-danger fs-1 mb-2"></i>
-                  <h5 class="fw-bold text-dark">Fallos Totales</h5>
-                  <span class="text-danger fw-bold fs-2"
-                    >{{ totalRespuestasIncorrectas }}</span
+                <p class="text-muted fs-5 mb-4">
+                  Un total de
+                  <strong class="text-tema-principal fs-4"
+                    >{{ statsTest.totalJugadores }}</strong
                   >
+                  personas han realizado el desafío vial hasta ahora.
+                </p>
+
+                <div
+                  class="grafico-contenedor mx-auto"
+                  style="max-width: 400px"
+                >
+                  <canvas id="graficoDinamico"></canvas>
                 </div>
               </div>
             </div>
@@ -619,73 +437,46 @@
         <div class="text-center mb-5">
           <h2 class="fw-bold">
             <i class="fa-solid fa-users-viewfinder text-secondary me-2"></i
-            >Historias Reales, Consecuencias Reales
+            >Historias de la Comunidad
           </h2>
           <p class="text-muted">
-            Detrás de cada estadística de tránsito hay familias e historias que
-            cambiaron para siempre.
+            Testimonios reales compartidos por los usuarios de Luz Verde a tu
+            Vida.
           </p>
         </div>
-        <div class="row g-4">
-          <div class="col-md-4">
+
+        <div v-if="listaTestimonios.length > 0" class="row g-4">
+          <div
+            class="col-md-4"
+            v-for="testimonio in listaTestimonios"
+            :key="testimonio._id"
+          >
             <div
               class="card h-100 shadow-sm border-0 bg-light transition-hover"
             >
               <div class="card-body">
-                <i class="fa-solid fa-quote-left text-verde mb-3 fs-2"></i>
-                <p class="card-text fst-italic">
-                  "Solo iba a la pulpería a tres cuadras, así que no me puse el
-                  casco. Un taxi se pasó la señal de ALTO y me impactó. Pasé
-                  tres meses en el hospital y tuve que dejar la universidad ese
-                  semestre."
-                </p>
+                <i
+                  class="fa-solid fa-quote-left text-tema-principal mb-3 fs-2"
+                ></i>
+                <p class="card-text fst-italic">"{{ testimonio.historia }}"</p>
               </div>
               <div class="card-footer bg-transparent border-0 pt-0">
                 <strong class="text-dark"
-                  >- Carlos M., 21 años (Accidente en motocicleta)</strong
+                  >- {{ testimonio.nombre }}, {{ testimonio.edad }} años<br /><small
+                    class="text-muted"
+                    >({{ testimonio.tipoAccidente }})</small
+                  ></strong
                 >
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div
-              class="card h-100 shadow-sm border-0 bg-light transition-hover"
-            >
-              <div class="card-body">
-                <i class="fa-solid fa-quote-left text-rojo mb-3 fs-2"></i>
-                <p class="card-text fst-italic">
-                  "Salimos de una fiesta en Managua. Pensé que con un par de
-                  cervezas igual podía manejar bien. Perdí el control en una
-                  curva y chocamos contra un poste. Yo salí ilesa, pero mi mejor
-                  amiga no sobrevivió."
-                </p>
-              </div>
-              <div class="card-footer bg-transparent border-0 pt-0">
-                <strong class="text-dark"
-                  >- Ana P., 28 años (Conducción temeraria)</strong
-                >
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div
-              class="card h-100 shadow-sm border-0 bg-light transition-hover"
-            >
-              <div class="card-body">
-                <i class="fa-solid fa-quote-left text-amarillo mb-3 fs-2"></i>
-                <p class="card-text fst-italic">
-                  "Iba tarde al trabajo y aceleré en una zona residencial. No me
-                  fijé que había un paso de cebra y no pude frenar a tiempo
-                  cuando un niño cruzaba. El trauma me persigue todos los días."
-                </p>
-              </div>
-              <div class="card-footer bg-transparent border-0 pt-0">
-                <strong class="text-dark"
-                  >- Roberto L., 35 años (Exceso de velocidad)</strong
-                >
-              </div>
-            </div>
-          </div>
+        </div>
+
+        <div v-else class="text-center py-5">
+          <i class="fa-solid fa-folder-open text-muted fs-1 mb-3"></i>
+          <p class="text-muted fs-5">
+            Aún no hay testimonios registrados en la base de datos de la feria.
+          </p>
         </div>
 
         <div class="row mt-5 justify-content-center">
@@ -696,16 +487,14 @@
               >
                 <h4 class="mb-0">
                   <i class="fa-solid fa-pen-to-square me-2"></i>Comparte tu
-                  Historia
+                  Experiencia
                 </h4>
               </div>
               <div class="card-body p-4">
                 <form @submit.prevent="enviarTestimonio">
                   <div class="row mb-3">
                     <div class="col-md-6">
-                      <label class="form-label fw-bold"
-                        >Nombre (o iniciales)</label
-                      >
+                      <label class="form-label fw-bold">Nombre</label>
                       <input
                         type="text"
                         class="form-control"
@@ -724,7 +513,9 @@
                     </div>
                   </div>
                   <div class="mb-3">
-                    <label class="form-label fw-bold">Tipo de Accidente</label>
+                    <label class="form-label fw-bold"
+                      >Tipo de Accidente / Situación</label
+                    >
                     <select
                       class="form-select"
                       v-model="formTestimonio.tipoAccidente"
@@ -748,7 +539,6 @@
                       class="form-control"
                       rows="4"
                       v-model="formTestimonio.historia"
-                      placeholder="Cuenta tu experiencia para ayudar a concientizar a otros..."
                       required
                     ></textarea>
                   </div>
@@ -756,7 +546,7 @@
                     type="submit"
                     class="btn btn-success btn-lg w-100 fw-bold rounded-3"
                   >
-                    Enviar Testimonio
+                    Publicar Testimonio
                   </button>
                 </form>
               </div>
@@ -765,94 +555,7 @@
         </div>
       </section>
 
-      <section
-        v-if="seccionActual === 'importancia'"
-        class="container my-5 animate__animated animate__fadeIn"
-      >
-        <div class="row align-items-center mb-5">
-          <div class="col-lg-8 mx-auto text-center">
-            <h2 class="fw-bold">
-              <i class="fa-solid fa-shield-halved text-success me-2"></i>La
-              Importancia de la Educación Vial
-            </h2>
-            <p class="lead text-muted mt-3">
-              La educación vial no se trata solo de memorizar el significado de
-              las señales o saber cómo encender un vehículo. Es una herramienta
-              fundamental para preservar la vida y fomentar una convivencia
-              armónica en nuestras calles.
-            </p>
-          </div>
-        </div>
-        <div class="row g-4 justify-content-center">
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 transition-hover">
-              <div class="card-body text-center p-4">
-                <i
-                  class="fa-solid fa-heart-pulse text-rojo mb-4 icon-badge"
-                ></i>
-                <h4 class="fw-bold">Preservación de la Vida</h4>
-                <p class="text-muted">
-                  El objetivo principal es reducir drásticamente el número de
-                  accidentes, lesiones y fatalidades. Un ciudadano educado sabe
-                  anticipar riesgos y toma decisiones que protegen su integridad
-                  y la de los demás.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 transition-hover">
-              <div class="card-body text-center p-4">
-                <i
-                  class="fa-solid fa-handshake-angle text-primary mb-4 icon-badge"
-                ></i>
-                <h4 class="fw-bold">Convivencia Ciudadana</h4>
-                <p class="text-muted">
-                  Promueve el respeto mutuo entre conductores, motociclistas,
-                  ciclistas y peatones. Nos enseña a compartir el espacio
-                  público de manera ordenada, empática y tolerante, entendiendo
-                  que todos tenemos derechos y deberes.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="card h-100 shadow-sm border-0 transition-hover">
-              <div class="card-body text-center p-4">
-                <i
-                  class="fa-solid fa-seedling text-success mb-4 icon-badge"
-                ></i>
-                <h4 class="fw-bold">Cultura de Prevención</h4>
-                <p class="text-muted">
-                  Al educar desde edades tempranas, formamos futuras
-                  generaciones con hábitos seguros ya arraigados, transformando
-                  una cultura reactiva y de riesgo por una de prevención
-                  constante.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-5">
-          <div class="col-12 text-center">
-            <div class="p-5 bg-asfalto text-white rounded-4 shadow">
-              <h3 class="fw-bold mb-3">
-                Sé parte del cambio con Luz Verde a tu Vida
-              </h3>
-              <p class="mb-0 fs-5">
-                Cada regla de tránsito que respetas es una luz verde para la
-                seguridad de tu familia y tu comunidad. El cambio empieza por
-                uno mismo.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <footer
-        class="bg-asfalto text-white py-4 mt-5 border-top border-4"
-        style="border-color: var(--verde-semaforo) !important"
-      >
+      <footer class="bg-tema-principal text-white py-4 mt-5">
         <div class="container">
           <div class="row align-items-center g-4 text-center text-md-start">
             <div class="col-md-6">
@@ -868,14 +571,13 @@
                 Luz Verde a tu Vida
               </h5>
               <p class="text-white-50 small mb-0">
-                Proyecto de feria científica XXVI, elaborado por los estudiantes
-                del colegio Hna. Maura Clarke.
+                Proyecto de feria científica XXVI, Hna. Maura Clarke.
               </p>
             </div>
             <div class="col-md-6 text-center text-md-end">
               <p class="text-white-50 small mb-0">
                 &copy; 2026 Todos los derechos reservados.<br />
-                <span class="text-verde fw-bold"
+                <span class="text-white fw-bold"
                   >La seguridad vial salva vidas.</span
                 >
               </p>
