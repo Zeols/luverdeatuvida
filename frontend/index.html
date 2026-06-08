@@ -194,6 +194,49 @@
               </div>
             </div>
           </div>
+          <div class="row g-4 text-center mt-2 justify-content-center">
+            <div class="col-md-6">
+              <div
+                class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover card"
+              >
+                <i
+                  class="fa-solid fa-lightbulb mb-3 icon-badge"
+                  style="color: var(--amarillo-preventivo)"
+                ></i>
+                <h4 class="fw-bold" style="color: var(--asfalto)">
+                  Nuestra Visión
+                </h4>
+                <p class="text-muted mb-0">
+                  Ser un proyecto educativo innovador que inspire a los jóvenes
+                  y a la sociedad a utilizar la tecnología como medio de
+                  aprendizaje y concientización, logrando fortalecer la cultura
+                  de educación vial y contribuir a la reducción de accidentes de
+                  tránsito mediante la información y la participación activa de
+                  los usuarios.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div
+                class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover card"
+              >
+                <i
+                  class="fa-solid fa-bullseye mb-3 icon-badge"
+                  style="color: var(--rojo-alto)"
+                ></i>
+                <h4 class="fw-bold" style="color: var(--asfalto)">
+                  Nuestra Misión
+                </h4>
+                <p class="text-muted mb-0">
+                  Desarrollar un sitio web que promueva la educación vial en los
+                  usuarios, utilizando herramientas tecnológicas innovadoras
+                  para fomentar el conocimiento, la prevención y el respeto de
+                  las normas de tránsito, contribuyendo así a una convivencia
+                  vial más segura y responsable.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -290,6 +333,75 @@
             <i class="fa-solid fa-signs-post text-verde me-2"></i>Biblioteca de
             Señales
           </h2>
+          <p class="text-muted">
+            Conocer el lenguaje de las calles es el primer paso para evitar
+            accidentes.
+          </p>
+        </div>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div
+              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
+            >
+              <div class="forma-senal forma-octagono">
+                <i class="fa-solid fa-hand"></i>
+              </div>
+              <h5 class="card-title fw-bold" style="color: var(--rojo-alto)">
+                Señales Reglamentarias
+              </h5>
+              <p class="card-text text-muted mt-3">
+                Indican prohibiciones o restricciones físicas en la vía. Su
+                violación constituye una infracción de tránsito.<br /><br /><strong
+                  >Forma:</strong
+                >
+                Generalmente circulares u octágonos con rojo.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div
+              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
+            >
+              <div class="forma-senal forma-rombo">
+                <i class="fa-solid fa-car-burst"></i>
+              </div>
+              <h5
+                class="card-title fw-bold"
+                style="color: var(--amarillo-preventivo)"
+              >
+                Señales Preventivas
+              </h5>
+              <p class="card-text text-muted mt-3">
+                Advierten a los usuarios sobre la existencia de peligros
+                potenciales en la carretera y su naturaleza.<br /><br /><strong
+                  >Forma:</strong
+                >
+                Rombos amarillos con símbolos negros.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div
+              class="card h-100 shadow-sm border-0 rounded-4 transition-hover text-center p-4"
+            >
+              <div class="forma-senal forma-rectangulo">
+                <i class="fa-solid fa-hospital"></i>
+              </div>
+              <h5
+                class="card-title fw-bold"
+                style="color: var(--asfalto-claro)"
+              >
+                Señales Informativas
+              </h5>
+              <p class="card-text text-muted mt-3">
+                Guían al conductor en su ruta, proporcionando datos sobre
+                destinos, direcciones, sitios de interés y servicios.<br /><br /><strong
+                  >Forma:</strong
+                >
+                Rectángulos azules, verdes o marrones.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -324,7 +436,6 @@
                     Comenzar Desafío
                   </button>
                 </div>
-
                 <div v-else-if="testIniciado && !testTerminado">
                   <h5 class="mb-3 text-muted fw-bold">
                     Pregunta {{ preguntaActual + 1 }} de {{ preguntasTest.length
@@ -344,7 +455,6 @@
                     </button>
                   </div>
                 </div>
-
                 <div v-else class="text-center">
                   <h3 class="fw-bold text-dark">¡Desafío Completado!</h3>
                   <p
@@ -388,7 +498,6 @@
                     <i class="fa-solid fa-users text-asfalto me-2"></i
                     >Resultados de la Feria
                   </h4>
-
                   <div
                     class="d-flex align-items-center bg-light p-2 rounded shadow-sm border"
                   >
@@ -409,7 +518,6 @@
                     </select>
                   </div>
                 </div>
-
                 <p class="text-muted fs-5 mb-4">
                   Un total de
                   <strong class="text-tema-principal fs-4"
@@ -417,7 +525,6 @@
                   >
                   personas han realizado el desafío vial hasta ahora.
                 </p>
-
                 <div
                   class="grafico-contenedor mx-auto"
                   style="max-width: 400px"
@@ -549,6 +656,76 @@
                     Publicar Testimonio
                   </button>
                 </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        v-if="seccionActual === 'importancia'"
+        class="container my-5 animate__animated animate__fadeIn"
+      >
+        <div class="row align-items-center mb-5">
+          <div class="col-lg-8 mx-auto text-center">
+            <h2 class="fw-bold">
+              <i class="fa-solid fa-shield-halved text-success me-2"></i>La
+              Importancia de la Educación Vial
+            </h2>
+            <p class="lead text-muted mt-3">
+              La educación vial no se trata solo de memorizar el significado de
+              las señales o saber cómo encender un vehículo. Es una herramienta
+              fundamental para preservar la vida y fomentar una convivencia
+              armónica en nuestras calles.
+            </p>
+          </div>
+        </div>
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
+              <div class="card-body text-center p-4">
+                <i
+                  class="fa-solid fa-heart-pulse text-rojo mb-4 icon-badge"
+                ></i>
+                <h4 class="fw-bold">Preservación de la Vida</h4>
+                <p class="text-muted">
+                  El objetivo principal es reducir drásticamente el número de
+                  accidentes, lesiones y fatalidades. Un ciudadano educado sabe
+                  anticipar riesgos y toma decisiones que protegen su integridad
+                  y la de los demás.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
+              <div class="card-body text-center p-4">
+                <i
+                  class="fa-solid fa-handshake-angle text-primary mb-4 icon-badge"
+                ></i>
+                <h4 class="fw-bold">Convivencia Ciudadana</h4>
+                <p class="text-muted">
+                  Promueve el respeto mutuo entre conductores, motociclistas,
+                  ciclistas y peatones. Nos enseña a compartir el espacio
+                  público de manera ordenada, empática y tolerante, entendiendo
+                  que todos tenemos derechos y deberes.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 transition-hover">
+              <div class="card-body text-center p-4">
+                <i
+                  class="fa-solid fa-seedling text-success mb-4 icon-badge"
+                ></i>
+                <h4 class="fw-bold">Cultura de Prevención</h4>
+                <p class="text-muted">
+                  Al educar desde edades tempranas, formamos futuras
+                  generaciones con hábitos seguros ya arraigados, transformando
+                  una cultura reactiva y de riesgo por una de prevención
+                  constante.
+                </p>
               </div>
             </div>
           </div>

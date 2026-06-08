@@ -2,11 +2,11 @@
    Variables de Paleta de Colores Corporativos
 ========================================= */
 :root {
-  --verde-semaforo: #2a9d8f; /* Verde esmeralda mate: transmite seguridad y tranquilidad */
-  --amarillo-preventivo: #e9c46a; /* Amarillo mostaza: advierte sin deslumbrar */
-  --rojo-alto: #e76f51; /* Rojo terracota: llama la atención pero es cálido */
-  --asfalto: #264653; /* Azul pizarra oscuro: mucho más elegante que el gris oscuro */
-  --asfalto-claro: #457b9d; /* Azul acero: para botones secundarios o bordes */
+  --verde-semaforo: #2a9d8f;
+  --amarillo-preventivo: #e9c46a;
+  --rojo-alto: #e76f51;
+  --asfalto: #264653;
+  --asfalto-claro: #457b9d;
 }
 
 /* =========================================
@@ -15,17 +15,19 @@
 .bg-asfalto {
   background-color: var(--asfalto) !important;
 }
-
 .text-verde {
   color: var(--verde-semaforo) !important;
 }
-
 .text-amarillo {
   color: var(--amarillo-preventivo) !important;
 }
-
 .text-rojo {
   color: var(--rojo-alto) !important;
+}
+
+/* EL NUEVO COLOR DEL NAVBAR Y FOOTER (Verde Esmeralda Profesional) */
+.bg-tema-principal {
+  background-color: #198754 !important;
 }
 
 /* =========================================
@@ -35,26 +37,21 @@
   background-color: var(--verde-semaforo) !important;
   border-color: var(--verde-semaforo) !important;
 }
-
 .btn-success:hover {
   background-color: #008f4c !important;
 }
-
 .btn-outline-success {
   color: var(--verde-semaforo) !important;
   border-color: var(--verde-semaforo) !important;
 }
-
 .btn-outline-success:hover {
   background-color: var(--verde-semaforo) !important;
   color: #fff !important;
 }
-
 .btn-outline-asfalto {
   color: var(--asfalto) !important;
   border-color: var(--asfalto) !important;
 }
-
 .btn-outline-asfalto:hover {
   background-color: var(--asfalto) !important;
   color: #fff !important;
@@ -66,7 +63,6 @@
   border-color: var(--asfalto-claro);
   transition: all 0.3s ease;
 }
-
 .btn-asfalto:hover {
   background-color: var(--asfalto-claro);
   color: white !important;
@@ -83,10 +79,9 @@
 ========================================= */
 .contenedor-juego {
   max-width: 900px;
-  aspect-ratio: 16 / 9; /* Formato más panorámico, ideal para pantallas */
+  aspect-ratio: 16 / 9;
   border-radius: 15px !important;
   border: 5px solid var(--asfalto) !important;
-  /* Capa 1: Sol, Nubes, Cielo azul y Césped verde */
   background:
     radial-gradient(circle at 85% 15%, #f9d71c 5%, transparent 6%),
     radial-gradient(circle at 20% 20%, #fff 3%, transparent 4%),
@@ -103,10 +98,9 @@
       #333333 55%
     ) !important;
   overflow: hidden;
-  touch-action: none; /* Bloquea el scroll táctil dentro del juego */
+  touch-action: none;
 }
 
-/* Capa 2: La Carretera y el Paso Peatonal */
 .contenedor-juego::after {
   content: "";
   position: absolute;
@@ -152,7 +146,6 @@
   text-transform: uppercase;
   letter-spacing: 1px;
 }
-
 .punto-interactivo:hover {
   animation: none;
   transform: scale(1.1);
@@ -183,7 +176,7 @@
   border-radius: 12px !important;
 }
 
-/* Efecto suave para las tarjetas de la sección Quiénes Somos */
+/* Efecto suave tarjetas */
 .transition-hover {
   transition:
     transform 0.3s ease,
@@ -222,14 +215,12 @@
   );
   border: 4px solid white;
 }
-
 .forma-rombo {
   background-color: var(--amarillo-preventivo);
   color: var(--asfalto);
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   border: 4px solid var(--asfalto);
 }
-
 .forma-rectangulo {
   background-color: var(--asfalto-claro);
   border-radius: 12px;
@@ -237,7 +228,6 @@
   height: 90px;
   border: 3px solid white;
 }
-
 .forma-senal i {
   font-size: 2.5rem;
 }
@@ -252,7 +242,6 @@
   gap: 5px;
   width: max-content;
 }
-
 .btn-joy {
   background-color: var(--asfalto-claro);
   color: white;
@@ -265,7 +254,6 @@
   user-select: none;
   touch-action: none;
 }
-
 .btn-joy:active {
   background-color: var(--verde-semaforo);
   transform: scale(0.95);
@@ -322,25 +310,22 @@
 }
 
 /* =========================================
-   Animaciones y Efectos Smooth (Interacción)
+   Animaciones y Efectos Smooth
 ========================================= */
 a,
 button {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
 }
-
 .nav-link {
   position: relative;
   color: rgba(255, 255, 255, 0.7) !important;
   font-weight: 500;
 }
-
 .nav-link:hover,
 .nav-link.active {
   color: #fff !important;
   transform: translateY(-2px);
 }
-
 .nav-link::after {
   content: "";
   position: absolute;
@@ -348,34 +333,29 @@ button {
   height: 3px;
   bottom: 0;
   left: 50%;
-  background-color: #fff; /* Subrayado blanco en el menú verde */
+  background-color: #fff;
   transition: all 0.3s ease-in-out;
   transform: translateX(-50%);
   border-radius: 5px;
 }
-
 .nav-link:hover::after,
 .nav-link.active::after {
   width: 80%;
 }
-
 .card {
   transition:
     transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
     box-shadow 0.4s ease !important;
 }
-
 .card:hover {
   transform: translateY(-10px) !important;
   box-shadow: 0 15px 35px rgba(38, 70, 83, 0.15) !important;
 }
-
 .btn-success {
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease !important;
 }
-
 .btn-success:hover {
   transform: scale(1.05);
   box-shadow: 0 10px 20px rgba(42, 157, 143, 0.3) !important;
@@ -397,12 +377,6 @@ button {
   background-color: #f8fafc !important;
 } /* Gris/Azul pastel (Estadísticas) */
 
-/* EL NUEVO COLOR DEL NAVBAR Y FOOTER (Verde Esmeralda Profesional) */
-.bg-tema-principal {
-  background-color: #198754 !important;
-}
-
-/* Contenedor del gráfico Chart.js */
 .grafico-contenedor {
   position: relative;
   height: 300px;

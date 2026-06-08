@@ -2,7 +2,6 @@ const { createApp, ref, nextTick } = Vue;
 
 createApp({
   setup() {
-    // URL INTELIGENTE: Detecta si estás en tu PC o en la nube
     const API_URL =
       window.location.hostname === "127.0.0.1" ||
       window.location.hostname === "localhost"
@@ -277,7 +276,7 @@ createApp({
       aprobados: 0,
       reprobados: 0,
     });
-    const tipoGraficoDinamico = ref("aciertos"); // Controla qué muestra el gráfico
+    const tipoGraficoDinamico = ref("aciertos");
 
     const renderizarGraficoCausas = () => {
       setTimeout(() => {
@@ -355,11 +354,11 @@ createApp({
       if (tipoGraficoDinamico.value === "aciertos") {
         etiquetas = ["Respuestas Correctas", "Respuestas Incorrectas"];
         valores = [statsTest.value.correctas, statsTest.value.incorrectas];
-        colores = ["#2ecc71", "#e74c3c"]; // Verde y Rojo
+        colores = ["#2ecc71", "#e74c3c"];
       } else {
         etiquetas = ["Aprobados (70 o más)", "Reprobados (Menos de 70)"];
         valores = [statsTest.value.aprobados, statsTest.value.reprobados];
-        colores = ["#3498db", "#f39c12"]; // Azul y Naranja
+        colores = ["#3498db", "#f39c12"];
       }
 
       chartDinamicoInstancia = new Chart(ctx, {
@@ -385,7 +384,7 @@ createApp({
       tipoAccidente: "",
       historia: "",
     });
-    const listaTestimonios = ref([]); // Guarda los testimonios de la DB
+    const listaTestimonios = ref([]);
 
     const cargarTestimonios = async () => {
       try {
@@ -405,7 +404,6 @@ createApp({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formTestimonio.value),
         });
-
         if (respuesta.ok) {
           Swal.fire({
             title: "¡Gracias!",
@@ -419,7 +417,7 @@ createApp({
             tipoAccidente: "",
             historia: "",
           };
-          cargarTestimonios(); // Refresca la lista automáticamente
+          cargarTestimonios();
         }
       } catch (error) {
         Swal.fire("Error", "No hay conexión al servidor.", "error");
@@ -591,14 +589,17 @@ createApp({
           puntuacionTest.value = Math.round(
             (respuestasCorrectasTest.value / preguntasTest.value.length) * 100,
           );
+
           try {
+            // EL SEGURO ANTI-ERRORES: Mandamos 'usuario' y 'nombre' explícitamente, junto con números puros.
             await fetch(`${API_URL}/test-resultados`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                usuario: nombreUsuario.value,
-                puntuacion: puntuacionTest.value,
-                respuestasCorrectas: respuestasCorrectasTest.value,
+                usuario: String(nombreUsuario.value),
+                nombre: String(nombreUsuario.value),
+                puntuacion: Number(puntuacionTest.value),
+                respuestasCorrectas: Number(respuestasCorrectasTest.value),
               }),
             });
             cargarStatsTest();
