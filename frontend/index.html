@@ -267,25 +267,32 @@
                 v-if="!completados.semaforo"
                 class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-semaforo"
               >
-                <i class="fa-solid fa-traffic-light me-1"></i> Semáforo
+                <i class="fa-solid fa-traffic-light text-warning me-1 fs-5"></i>
+                Semáforo
               </button>
+
               <button
                 v-if="!completados.alto"
                 class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-alto"
               >
-                <i class="fa-solid fa-circle-stop me-1"></i> ALTO
+                <i class="fa-solid fa-hand text-danger me-1 fs-5"></i> ALTO
               </button>
+
               <button
                 v-if="!completados.bus"
                 class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-parada"
               >
-                <i class="fa-solid fa-bus me-1"></i> Parada
+                <i class="fa-solid fa-bus text-info me-1 fs-5"></i> Parada
               </button>
+
               <button
                 v-if="!completados.peatonal"
                 class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-peatonal"
               >
-                <i class="fa-solid fa-person-walking me-1"></i> Peatonal
+                <i
+                  class="fa-solid fa-person-walking text-warning me-1 fs-5"
+                ></i>
+                Peatonal
               </button>
 
               <div

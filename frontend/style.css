@@ -380,23 +380,29 @@ a, button {
   box-shadow: 0 10px 20px rgba(42, 157, 143, 0.3) !important;
 }
 
+
 /* =========================================
-   Nuevos Fondos de Sección (Colores Suaves)
+   Nuevos Fondos de Sección (Colores Pastel)
 ========================================= */
 .seccion-verde { 
-  background-color: rgba(42, 157, 143, 0.08) !important; 
+  background-color: #e8f8f5 !important; /* Verde pastel muy suave */
 }
 .seccion-amarillo { 
-  background-color: rgba(233, 196, 106, 0.15) !important; 
+  background-color: #fff9e6 !important; /* Amarillo pastel */
 }
 .seccion-rojo { 
-  background-color: rgba(231, 111, 81, 0.08) !important; 
+  background-color: #ffeaea !important; /* Rojo/Rosado pastel */
 }
-.bg-navbar-verde { 
-  background-color: var(--verde-semaforo) !important; 
+.seccion-azul {
+  background-color: #ebf5fb !important; /* Azul pastel para estadísticas */
 }
 
-/* Contenedor del gráfico para que no se deforme */
+/* VERDE ENCENDIDO Y VIVO PARA EL NAVBAR */
+.bg-navbar-verde { 
+  background-color: #00c851 !important; 
+}
+
+/* Contenedor del gráfico */
 .grafico-contenedor {
   position: relative;
   height: 300px;
@@ -416,3 +422,14 @@ a, button {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
+
+/* =========================================
+   Nuevos Fondos de Sección (Colores Pastel)
+========================================= */
+.seccion-verde { background-color: #e8f8f5 !important; /* Verde pastel muy suave */ }
+.seccion-amarillo { background-color: #fff9e6 !important; /* Amarillo pastel */ }
+.seccion-rojo { background-color: #ffeaea !important; /* Rojo/Rosado pastel */ }
+.seccion-azul { background-color: #ebf5fb !important; /* Azul pastel para estadísticas */ }
+
+/* VERDE ENCENDIDO Y VIVO PARA EL NAVBAR */
+.bg-navbar-verde { background-color: #00c851 !important; }
