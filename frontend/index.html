@@ -392,6 +392,7 @@
         </div>
       </section>
 
+      <!-- BIBLIOTECA DE SEÑALES CON MODALES -->
       <section
         v-if="seccionActual === 'normas'"
         class="container my-5 animate__animated animate__fadeIn"
@@ -407,7 +408,12 @@
           </p>
         </div>
         <div class="row g-4">
-          <div class="col-md-4">
+          <!-- Reglamentarias -->
+          <div
+            class="col-md-4"
+            @click="mostrarModalSenal('reglamentarias')"
+            style="cursor: pointer"
+          >
             <div class="card h-100 p-4 text-center rounded-4 transition-hover">
               <div class="forma-senal forma-octagono">
                 <i class="fa-solid fa-hand"></i>
@@ -416,14 +422,19 @@
                 Reglamentarias
               </h5>
               <p class="text-muted mt-3">
-                Indican prohibiciones o restricciones físicas en la vía.<br /><br /><strong
-                  >Forma:</strong
-                >
-                Generalmente circulares u octágonos con rojo.
+                Indican prohibiciones o restricciones físicas en la vía.<br /><br />
+                <strong>Forma:</strong> Generalmente circulares u octágonos con
+                rojo.
               </p>
             </div>
           </div>
-          <div class="col-md-4">
+
+          <!-- Preventivas -->
+          <div
+            class="col-md-4"
+            @click="mostrarModalSenal('preventivas')"
+            style="cursor: pointer"
+          >
             <div class="card h-100 p-4 text-center rounded-4 transition-hover">
               <div class="forma-senal forma-rombo">
                 <i class="fa-solid fa-car-burst"></i>
@@ -433,12 +444,18 @@
               </h5>
               <p class="text-muted mt-3">
                 Advierten a los usuarios sobre la existencia de peligros
-                potenciales en la carretera.<br /><br /><strong>Forma:</strong>
-                Rombos amarillos con símbolos negros.
+                potenciales en la carretera.<br /><br />
+                <strong>Forma:</strong> Rombos amarillos con símbolos negros.
               </p>
             </div>
           </div>
-          <div class="col-md-4">
+
+          <!-- Informativas -->
+          <div
+            class="col-md-4"
+            @click="mostrarModalSenal('informativas')"
+            style="cursor: pointer"
+          >
             <div class="card h-100 p-4 text-center rounded-4 transition-hover">
               <div class="forma-senal forma-rectangulo">
                 <i class="fa-solid fa-hospital"></i>
@@ -448,10 +465,8 @@
               </h5>
               <p class="text-muted mt-3">
                 Guían al conductor en su ruta, proporcionando datos sobre
-                destinos, direcciones y servicios.<br /><br /><strong
-                  >Forma:</strong
-                >
-                Rectángulos azules, verdes o marrones.
+                destinos, direcciones y servicios.<br /><br />
+                <strong>Forma:</strong> Rectángulos azules, verdes o marrones.
               </p>
             </div>
           </div>
@@ -506,11 +521,8 @@
                   </button>
                 </div>
               </div>
-              <!-- ... dentro de la sección v-else del test ... -->
               <div v-else class="text-center">
                 <h3 class="fw-bold text-dark">¡Desafío Completado!</h3>
-
-                <!-- Indicador de estado -->
                 <div class="my-4">
                   <h2
                     :class="puntuacionTest >= 70 ? 'text-success' : 'text-danger'"
@@ -521,7 +533,6 @@
                   <p class="fs-4">Puntaje: {{ puntuacionTest }} / 100</p>
                   <p class="text-muted small">* Nota mínima aprobatoria: 70</p>
                 </div>
-
                 <button
                   @click="reiniciarTest"
                   class="btn btn-outline-success btn-lg mt-2 fw-bold rounded-pill px-5"

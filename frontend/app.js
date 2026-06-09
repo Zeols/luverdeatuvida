@@ -72,7 +72,9 @@ createApp({
     const registrarAcierto = (clave) => {
       progreso.value += 1;
       completados.value[clave] = true;
+
       if (progreso.value === 4) {
+        // Esperar un poco antes de mostrar el modal para dar sensación de logro
         setTimeout(() => {
           Swal.fire({
             title:
@@ -82,9 +84,26 @@ createApp({
             text: "Has superado todas las situaciones demostrando gran conocimiento vial. ¡Felicidades!",
             icon: "success",
             confirmButtonColor: "#264653",
+            confirmButtonText: "Continuar",
+          }).then(() => {
+            // Reiniciar el simulador automáticamente después de cerrar el modal
+            reiniciarSimuladorCompleto();
           });
         }, 800);
       }
+    };
+
+    const reiniciarSimuladorCompleto = () => {
+      juegoIniciado.value = false;
+      progreso.value = 0;
+      // Reiniciar todas las señales completadas
+      Object.keys(completados.value).forEach(
+        (k) => (completados.value[k] = false),
+      );
+      // Resetear posición del personaje
+      personaje.value = { x: 50, y: 85 };
+      // Opcional: limpiar cualquier tecla activa
+      teclas.value = { w: false, a: false, s: false, d: false };
     };
 
     const personaje = ref({ x: 50, y: 85 });
@@ -448,6 +467,65 @@ createApp({
       } catch (error) {
         console.error("Error", error);
       }
+    };
+
+    const mostrarModalSenal = (tipo) => {
+      let titulo = "";
+      let descripcion = "";
+      let imagenUrl = "";
+      let colorTitulo = "";
+
+      switch (tipo) {
+        case "reglamentarias":
+          titulo = "Señales Reglamentarias";
+          descripcion = `
+        <p>Estas señales tienen la forma de un octágono (rojo) o un círculo con borde rojo. Su incumplimiento constituye una falta grave.</p>
+        <p><strong>Ejemplos:</strong> ALTO, CEDA EL PASO, PROHIBIDO ESTACIONAR, VELOCIDAD MÁXIMA, NO ENTRAR.</p>
+        <p><strong>Color:</strong> Rojo, blanco y negro.</p>
+      `;
+          imagenUrl = "assets/img/senal-recomendacion-reglamentaria.png";
+          colorTitulo = "#e76f51";
+          break;
+        case "preventivas":
+          titulo = "Señales Preventivas";
+          descripcion = `
+        <p>Forma de rombo o cuadrado con fondo amarillo y bordes negros. Alertan sobre peligros potenciales.</p>
+        <p><strong>Ejemplos:</strong> CURVA PELIGROSA, ZONA ESCOLAR, ANIMALES SUELTOS, OBRAS EN LA VÍA.</p>
+        <p><strong>Color:</strong> Amarillo, negro.</p>
+      `;
+          imagenUrl = "assets/img/senal-peligro-preventiva.png";
+          colorTitulo = "#e9c46a";
+          break;
+        case "informativas":
+          titulo = "Señales Informativas";
+          descripcion = `
+        <p>Rectangulares, generalmente de color azul, verde o marrón. Proporcionan información de destinos, servicios y distancias.</p>
+        <p><strong>Ejemplos:</strong> HOSPITAL, GASOLINERA, AREA DE PICNIC, RUTA PANAMERICANA.</p>
+        <p><strong>Color:</strong> Azul (servicios), verde (vías), marrón (sitios turísticos).</p>
+      `;
+          imagenUrl = "assets/img/senal-informativa.png";
+          colorTitulo = "#457b9d";
+          break;
+        default:
+          return;
+      }
+
+      Swal.fire({
+        title: titulo,
+        html: `
+      <div style="text-align: center;">
+        <img src="${imagenUrl}" alt="${titulo}" style="max-width: 180px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+        <div style="text-align: left; margin-top: 15px;">
+          ${descripcion}
+        </div>
+      </div>
+    `,
+        icon: "info",
+        confirmButtonText: "Entendido",
+        confirmButtonColor: colorTitulo,
+        background: "#fff",
+        showCloseButton: true,
+      });
     };
     const enviarTestimonio = async () => {
       try {
