@@ -209,10 +209,7 @@
                 <p class="text-muted mb-0">
                   Ser un proyecto educativo innovador que inspire a los jóvenes
                   y a la sociedad a utilizar la tecnología como medio de
-                  aprendizaje y concientización, logrando fortalecer la cultura
-                  de educación vial y contribuir a la reducción de accidentes de
-                  tránsito mediante la información y la participación activa de
-                  los usuarios.
+                  aprendizaje y concientización.
                 </p>
               </div>
             </div>
@@ -229,10 +226,8 @@
                 </h4>
                 <p class="text-muted mb-0">
                   Desarrollar un sitio web que promueva la educación vial en los
-                  usuarios, utilizando herramientas tecnológicas innovadoras
-                  para fomentar el conocimiento, la prevención y el respeto de
-                  las normas de tránsito, contribuyendo así a una convivencia
-                  vial más segura y responsable.
+                  usuarios, utilizando herramientas tecnológicas para fomentar
+                  la prevención y el respeto de las normas.
                 </p>
               </div>
             </div>
@@ -268,7 +263,10 @@
           </div>
 
           <div v-else class="d-flex flex-column align-items-center">
-            <div class="contenedor-juego position-relative shadow-lg w-100">
+            <div
+              class="contenedor-juego position-relative shadow-lg w-100"
+              :class="{'escenario-conductor': modoJuego === 'carro'}"
+            >
               <div
                 class="marcador-responsive position-absolute top-0 end-0 m-2 p-2 bg-white fw-bold shadow-sm custom-badge"
               >
@@ -307,7 +305,7 @@
               <div
                 class="personaje"
                 :class="{'sprite-carro': modoJuego === 'carro'}"
-                :style="{ top: personaje.y + '%', left: personaje.x + '%', transform: 'translate(-50%, -50%) rotate(' + personaje.rotacion + 'deg)' }"
+                :style="{ top: personaje.y + '%', left: personaje.x + '%' }"
               ></div>
             </div>
 
@@ -371,8 +369,7 @@
                 Reglamentarias
               </h5>
               <p class="text-muted mt-3">
-                Indican prohibiciones o restricciones físicas en la vía. Su
-                violación constituye una infracción de tránsito.<br /><br /><strong
+                Indican prohibiciones o restricciones físicas en la vía.<br /><br /><strong
                   >Forma:</strong
                 >
                 Generalmente circulares u octágonos con rojo.
@@ -389,9 +386,7 @@
               </h5>
               <p class="text-muted mt-3">
                 Advierten a los usuarios sobre la existencia de peligros
-                potenciales en la carretera y su naturaleza.<br /><br /><strong
-                  >Forma:</strong
-                >
+                potenciales en la carretera.<br /><br /><strong>Forma:</strong>
                 Rombos amarillos con símbolos negros.
               </p>
             </div>
@@ -406,7 +401,7 @@
               </h5>
               <p class="text-muted mt-3">
                 Guían al conductor en su ruta, proporcionando datos sobre
-                destinos, direcciones, sitios de interés y servicios.<br /><br /><strong
+                destinos, direcciones y servicios.<br /><br /><strong
                   >Forma:</strong
                 >
                 Rectángulos azules, verdes o marrones.
@@ -673,9 +668,7 @@
                 <h4 class="fw-bold">Preservación de la Vida</h4>
                 <p class="text-muted">
                   El objetivo principal es reducir drásticamente el número de
-                  accidentes, lesiones y fatalidades. Un ciudadano educado sabe
-                  anticipar riesgos y toma decisiones que protegen su integridad
-                  y la de los demás.
+                  accidentes, lesiones y fatalidades.
                 </p>
               </div>
             </div>
@@ -688,9 +681,8 @@
                 ></i>
                 <h4 class="fw-bold">Convivencia Ciudadana</h4>
                 <p class="text-muted">
-                  Promueve el respeto mutuo entre conductores, motociclistas,
-                  ciclistas y peatones. Nos enseña a compartir el espacio
-                  público de manera ordenada, empática y tolerante.
+                  Nos enseña a compartir el espacio público de manera ordenada,
+                  empática y tolerante.
                 </p>
               </div>
             </div>
@@ -704,9 +696,7 @@
                 <h4 class="fw-bold">Cultura de Prevención</h4>
                 <p class="text-muted">
                   Al educar desde edades tempranas, formamos futuras
-                  generaciones con hábitos seguros ya arraigados, transformando
-                  una cultura reactiva y de riesgo por una de prevención
-                  constante.
+                  generaciones con hábitos seguros ya arraigados.
                 </p>
               </div>
             </div>

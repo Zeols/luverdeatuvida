@@ -31,8 +31,7 @@ createApp({
     const iniciarNivel = (modo) => {
       modoJuego.value = modo;
       juegoIniciado.value = true;
-      // Reiniciamos posición y le damos 0 grados de rotación al empezar
-      personaje.value = { x: 50, y: 85, rotacion: 0 };
+      personaje.value = { x: 50, y: 85 }; // Reiniciamos posición pura
     };
 
     // ==========================================
@@ -61,8 +60,8 @@ createApp({
       }
     };
 
-    // Personaje ahora tiene "rotacion"
-    const personaje = ref({ x: 50, y: 85, rotacion: 0 });
+    // Personaje sin rotación
+    const personaje = ref({ x: 50, y: 85 });
     const teclas = ref({ w: false, a: false, s: false, d: false });
 
     window.addEventListener(
@@ -131,27 +130,17 @@ createApp({
         return;
       }
 
-      // Velocidad mayor si es un carro
+      // Carro corre a 1.5, peatón camina a 0.8
       let velocidad = modoJuego.value === "carro" ? 1.5 : 0.8;
 
-      // Movimiento y Rotación (Asume que tu carro en imagen apunta hacia ARRIBA)
-      // Si la imagen apunta a la derecha, cambiar los grados
-      if (teclas.value.w && personaje.value.y > 5) {
+      if (teclas.value.w && personaje.value.y > 5)
         personaje.value.y -= velocidad;
-        if (modoJuego.value === "carro") personaje.value.rotacion = 0; // Hacia arriba
-      }
-      if (teclas.value.s && personaje.value.y < 95) {
+      if (teclas.value.s && personaje.value.y < 95)
         personaje.value.y += velocidad;
-        if (modoJuego.value === "carro") personaje.value.rotacion = 180; // Hacia abajo
-      }
-      if (teclas.value.a && personaje.value.x > 5) {
+      if (teclas.value.a && personaje.value.x > 5)
         personaje.value.x -= velocidad;
-        if (modoJuego.value === "carro") personaje.value.rotacion = -90; // Hacia la izquierda
-      }
-      if (teclas.value.d && personaje.value.x < 95) {
+      if (teclas.value.d && personaje.value.x < 95)
         personaje.value.x += velocidad;
-        if (modoJuego.value === "carro") personaje.value.rotacion = 90; // Hacia la derecha
-      }
 
       verificarColisiones();
     }, 20);
