@@ -285,12 +285,12 @@
 }
 
 /* =========================================
-   Personaje Jugable
+   Personaje Jugable y Sprite de Carro
 ========================================= */
 .personaje {
   position: absolute;
-  width: 300px;
-  height: 300px;
+  width: 150px;
+  height: 150px;
   background-color: transparent;
   border: none;
   background-image: url("assets/img/sprite.png");
@@ -298,8 +298,12 @@
   background-repeat: no-repeat;
   background-position: center;
   z-index: 20;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s;
+}
+
+.sprite-carro {
+  background-image: url("assets/img/carro.png") !important;
+  width: 180px;
+  height: 180px;
 }
 
 /* =========================================
@@ -359,16 +363,16 @@ button {
 ========================================= */
 .seccion-1 {
   background-color: #f4fdf8 !important;
-} /* Verde agua muy claro */
+}
 .seccion-2 {
   background-color: #fffbeb !important;
-} /* Amarillo/Crema cálido */
+}
 .seccion-3 {
   background-color: #fef2f2 !important;
-} /* Rojo/Rosado pastel suave */
+}
 .seccion-4 {
   background-color: #f8fafc !important;
-} /* Gris/Azul pastel (Estadísticas) */
+}
 
 .grafico-contenedor {
   position: relative;
@@ -377,25 +381,28 @@ button {
 }
 
 /* =========================================
-   Magia Responsiva (Celulares y Tablets)
+   CORRECCIÓN FINAL PARA RESPONSIVE EN CELULARES
 ========================================= */
 @media (max-width: 768px) {
-  /* Achica al personaje en celulares */
   .personaje {
-    width: 100px !important; /* Aún más pequeño para que haya más espacio */
-    height: 100px !important;
+    width: 60px !important;
+    height: 60px !important;
   }
 
-  /* Achica los botones del simulador (joystick) en celulares */
+  .sprite-carro {
+    width: 80px !important;
+    height: 80px !important;
+  }
+
   .joystick-container {
-    grid-template-columns: 40px 40px 40px !important; /* Cuadritos mucho más chiquitos */
+    grid-template-columns: 40px 40px 40px !important;
     grid-template-rows: 40px 40px 40px !important;
     gap: 4px !important;
-    margin-bottom: 15px !important; /* Despega los botones del fondo */
+    margin-bottom: 15px !important;
   }
 
   .btn-joy {
-    font-size: 1.2rem !important; /* Íconos más pequeños */
+    font-size: 1.2rem !important;
     border-radius: 8px !important;
   }
 }

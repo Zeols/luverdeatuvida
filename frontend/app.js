@@ -9,10 +9,12 @@ createApp({
         : "/api";
 
     const seccionActual = ref("inicio");
+    const modoJuego = ref("peaton"); // 'peaton' o 'carro'
+    const juegoIniciado = ref(false); // Para mostrar el selector de nivel
 
     const cambiarSeccion = (seccion) => {
       seccionActual.value = seccion;
-
+      juegoIniciado.value = false; // Reset al cambiar de sección
       if (seccion === "estadisticas") {
         cargarStatsTest();
         renderizarGraficoCausas();
@@ -25,8 +27,16 @@ createApp({
       }
     };
 
+    // --- LÓGICA DE NIVEL ---
+    const iniciarNivel = (modo) => {
+      modoJuego.value = modo;
+      juegoIniciado.value = true;
+      // Reiniciamos posición y le damos 0 grados de rotación al empezar
+      personaje.value = { x: 50, y: 85, rotacion: 0 };
+    };
+
     // ==========================================
-    // 1. SIMULADOR
+    // 1. ESTADO Y LÓGICA DEL SIMULADOR
     // ==========================================
     const puntuacion = ref(0);
     const completados = ref({
@@ -51,7 +61,8 @@ createApp({
       }
     };
 
-    const personaje = ref({ x: 50, y: 85 });
+    // Personaje ahora tiene "rotacion"
+    const personaje = ref({ x: 50, y: 85, rotacion: 0 });
     const teclas = ref({ w: false, a: false, s: false, d: false });
 
     window.addEventListener(
@@ -86,6 +97,7 @@ createApp({
           ].includes(key)
         )
           e.preventDefault();
+
         if (["w", "a", "s", "d"].includes(key)) teclas.value[key] = true;
         if (key === "arrowup") teclas.value.w = true;
         if (key === "arrowdown") teclas.value.s = true;
@@ -118,15 +130,29 @@ createApp({
           teclas.value = { w: false, a: false, s: false, d: false };
         return;
       }
-      let velocidad = 0.8;
-      if (teclas.value.w && personaje.value.y > 5)
+
+      // Velocidad mayor si es un carro
+      let velocidad = modoJuego.value === "carro" ? 1.5 : 0.8;
+
+      // Movimiento y Rotación (Asume que tu carro en imagen apunta hacia ARRIBA)
+      // Si la imagen apunta a la derecha, cambiar los grados
+      if (teclas.value.w && personaje.value.y > 5) {
         personaje.value.y -= velocidad;
-      if (teclas.value.s && personaje.value.y < 95)
+        if (modoJuego.value === "carro") personaje.value.rotacion = 0; // Hacia arriba
+      }
+      if (teclas.value.s && personaje.value.y < 95) {
         personaje.value.y += velocidad;
-      if (teclas.value.a && personaje.value.x > 5)
+        if (modoJuego.value === "carro") personaje.value.rotacion = 180; // Hacia abajo
+      }
+      if (teclas.value.a && personaje.value.x > 5) {
         personaje.value.x -= velocidad;
-      if (teclas.value.d && personaje.value.x < 95)
+        if (modoJuego.value === "carro") personaje.value.rotacion = -90; // Hacia la izquierda
+      }
+      if (teclas.value.d && personaje.value.x < 95) {
         personaje.value.x += velocidad;
+        if (modoJuego.value === "carro") personaje.value.rotacion = 90; // Hacia la derecha
+      }
+
       verificarColisiones();
     }, 20);
 
@@ -404,6 +430,7 @@ createApp({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formTestimonio.value),
         });
+
         if (respuesta.ok) {
           Swal.fire({
             title: "¡Gracias!",
@@ -589,9 +616,7 @@ createApp({
           puntuacionTest.value = Math.round(
             (respuestasCorrectasTest.value / preguntasTest.value.length) * 100,
           );
-
           try {
-            // EL SEGURO ANTI-ERRORES: Mandamos 'usuario' y 'nombre' explícitamente, junto con números puros.
             await fetch(`${API_URL}/test-resultados`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -631,6 +656,9 @@ createApp({
     return {
       seccionActual,
       cambiarSeccion,
+      modoJuego,
+      juegoIniciado,
+      iniciarNivel,
       puntuacion,
       completados,
       evaluarSemaforo,
