@@ -270,37 +270,84 @@
               <div
                 class="marcador-responsive position-absolute top-0 end-0 m-2 p-2 bg-white fw-bold shadow-sm custom-badge"
               >
-                Puntos: <span class="text-verde">{{ puntuacion }}</span>
+                Progreso: <span class="text-verde">{{ progreso }} / 4</span>
               </div>
 
-              <button
-                v-if="!completados.semaforo"
-                class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-semaforo"
-              >
-                <i class="fa-solid fa-traffic-light text-warning me-1 fs-5"></i>
-                Semáforo
-              </button>
-              <button
-                v-if="!completados.alto"
-                class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-alto"
-              >
-                <i class="fa-solid fa-hand text-danger me-1 fs-5"></i> ALTO
-              </button>
-              <button
-                v-if="!completados.bus"
-                class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-parada"
-              >
-                <i class="fa-solid fa-bus text-info me-1 fs-5"></i> Parada
-              </button>
-              <button
-                v-if="!completados.peatonal"
-                class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-peatonal"
-              >
-                <i
-                  class="fa-solid fa-person-walking text-warning me-1 fs-5"
-                ></i>
-                Peatonal
-              </button>
+              <!-- MODO PEATON -->
+              <template v-if="modoJuego === 'peaton'">
+                <button
+                  v-if="!completados.peaton_cebra"
+                  @click="evaluarEscena('peaton_cebra')"
+                  class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-peaton-cebra"
+                >
+                  <i
+                    class="fa-solid fa-person-walking text-warning me-1 fs-5"
+                  ></i>
+                  Cebra
+                </button>
+                <button
+                  v-if="!completados.peaton_bus"
+                  @click="evaluarEscena('peaton_bus')"
+                  class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-peaton-bus"
+                >
+                  <i class="fa-solid fa-bus text-info me-1 fs-5"></i> Bus
+                </button>
+                <button
+                  v-if="!completados.peaton_puente"
+                  @click="evaluarEscena('peaton_puente')"
+                  class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-peaton-puente"
+                >
+                  <i class="fa-solid fa-road text-success me-1 fs-5"></i> Puente
+                </button>
+                <button
+                  v-if="!completados.peaton_semaforo"
+                  @click="evaluarEscena('peaton_semaforo')"
+                  class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-peaton-semaforo"
+                >
+                  <i
+                    class="fa-solid fa-traffic-light text-danger me-1 fs-5"
+                  ></i>
+                  Semáforo
+                </button>
+              </template>
+
+              <!-- MODO CONDUCTOR -->
+              <template v-if="modoJuego === 'carro'">
+                <button
+                  v-if="!completados.carro_semaforo"
+                  @click="evaluarEscena('carro_semaforo')"
+                  class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-carro-semaforo"
+                >
+                  <i
+                    class="fa-solid fa-traffic-light text-warning me-1 fs-5"
+                  ></i>
+                  Semáforo
+                </button>
+                <button
+                  v-if="!completados.carro_alto"
+                  @click="evaluarEscena('carro_alto')"
+                  class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-carro-alto"
+                >
+                  <i class="fa-solid fa-hand text-danger me-1 fs-5"></i> ALTO
+                </button>
+                <button
+                  v-if="!completados.carro_escolar"
+                  @click="evaluarEscena('carro_escolar')"
+                  class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-carro-escolar"
+                >
+                  <i class="fa-solid fa-school text-info me-1 fs-5"></i> Escolar
+                </button>
+                <button
+                  v-if="!completados.carro_ceda"
+                  @click="evaluarEscena('carro_ceda')"
+                  class="btn btn-asfalto position-absolute fw-bold border border-dark shadow-sm punto-interactivo btn-carro-ceda"
+                >
+                  <i
+                    class="fa-solid fa-triangle-exclamation text-warning me-1 fs-5"
+                  ></i>
+                  Ceda
+                </button>
+              </template>
 
               <div
                 class="personaje"
@@ -459,17 +506,25 @@
                   </button>
                 </div>
               </div>
+              <!-- ... dentro de la sección v-else del test ... -->
               <div v-else class="text-center">
                 <h3 class="fw-bold text-dark">¡Desafío Completado!</h3>
-                <p
-                  class="display-1 fw-bold my-3"
-                  :class="puntuacionTest >= 70 ? 'text-success' : 'text-danger'"
-                >
-                  {{ puntuacionTest }} / 100
-                </p>
+
+                <!-- Indicador de estado -->
+                <div class="my-4">
+                  <h2
+                    :class="puntuacionTest >= 70 ? 'text-success' : 'text-danger'"
+                    class="fw-bold display-4"
+                  >
+                    {{ puntuacionTest >= 70 ? 'APROBADO' : 'RECHAZADO' }}
+                  </h2>
+                  <p class="fs-4">Puntaje: {{ puntuacionTest }} / 100</p>
+                  <p class="text-muted small">* Nota mínima aprobatoria: 70</p>
+                </div>
+
                 <button
                   @click="reiniciarTest"
-                  class="btn btn-outline-success btn-lg mt-4 fw-bold rounded-pill px-5"
+                  class="btn btn-outline-success btn-lg mt-2 fw-bold rounded-pill px-5"
                 >
                   Intentar de nuevo
                 </button>

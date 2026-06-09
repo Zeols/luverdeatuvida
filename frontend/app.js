@@ -10,11 +10,11 @@ createApp({
 
     const seccionActual = ref("inicio");
     const modoJuego = ref("peaton"); // 'peaton' o 'carro'
-    const juegoIniciado = ref(false); // Para mostrar el selector de nivel
+    const juegoIniciado = ref(false);
 
     const cambiarSeccion = (seccion) => {
       seccionActual.value = seccion;
-      juegoIniciado.value = false; // Reset al cambiar de sección
+      juegoIniciado.value = false;
       if (seccion === "estadisticas") {
         cargarStatsTest();
         renderizarGraficoCausas();
@@ -27,32 +27,59 @@ createApp({
       }
     };
 
-    // --- LÓGICA DE NIVEL ---
-    const iniciarNivel = (modo) => {
-      modoJuego.value = modo;
-      juegoIniciado.value = true;
-      personaje.value = { x: 50, y: 85 }; // Reiniciamos posición pura
-    };
-
     // ==========================================
     // 1. ESTADO Y LÓGICA DEL SIMULADOR
     // ==========================================
-    const puntuacion = ref(0);
+    const progreso = ref(0);
     const completados = ref({
-      semaforo: false,
-      alto: false,
-      bus: false,
-      peatonal: false,
+      peaton_cebra: false,
+      peaton_bus: false,
+      peaton_puente: false,
+      peaton_semaforo: false,
+      carro_semaforo: false,
+      carro_alto: false,
+      carro_escolar: false,
+      carro_ceda: false,
     });
 
+    const iniciarNivel = (modo) => {
+      modoJuego.value = modo;
+      juegoIniciado.value = true;
+      personaje.value = { x: 50, y: 85 };
+      progreso.value = 0;
+
+      // Reiniciar todas las señales
+      Object.keys(completados.value).forEach(
+        (k) => (completados.value[k] = false),
+      );
+
+      // INSTRUCCIONES INICIALES (MODAL)
+      Swal.fire({
+        title:
+          modo === "peaton"
+            ? "Nivel 1: Modo Peatón"
+            : "Nivel 2: Modo Conductor",
+        text:
+          modo === "peaton"
+            ? "Explora la ciudad y acércate (o haz clic) en las 4 señales peatonales. ¡Demuestra que sabes cruzar seguro para obtener tu Certificado!"
+            : "Enciende tu vehículo y respeta la ley. Acércate (o haz clic) en las 4 señales vehiculares. ¡Aprueba el examen para tu Licencia!",
+        icon: "info",
+        confirmButtonText: "¡Entendido, a jugar!",
+        confirmButtonColor: "#264653",
+      });
+    };
+
     const registrarAcierto = (clave) => {
-      puntuacion.value += 10;
+      progreso.value += 1;
       completados.value[clave] = true;
-      if (puntuacion.value === 40) {
+      if (progreso.value === 4) {
         setTimeout(() => {
           Swal.fire({
-            title: "¡Zona Completada!",
-            text: "¡Buen trabajo!",
+            title:
+              modoJuego.value === "carro"
+                ? "¡Licencia Aprobada!"
+                : "¡Peatón Ejemplar!",
+            text: "Has superado todas las situaciones demostrando gran conocimiento vial. ¡Felicidades!",
             icon: "success",
             confirmButtonColor: "#264653",
           });
@@ -60,27 +87,16 @@ createApp({
       }
     };
 
-    // Personaje sin rotación
     const personaje = ref({ x: 50, y: 85 });
     const teclas = ref({ w: false, a: false, s: false, d: false });
 
+    // Controles de teclado
     window.addEventListener(
       "keydown",
       (e) => {
-        if (Swal.isVisible()) {
-          const key = e.key.toLowerCase();
-          if (key === "e") {
-            Swal.clickConfirm();
-            e.preventDefault();
-            e.stopPropagation();
-          } else if (key === "q") {
-            Swal.clickCancel();
-            e.preventDefault();
-            e.stopPropagation();
-          }
-          return;
-        }
+        if (Swal.isVisible()) return; // Bloquea controles si hay un diálogo abierto
         if (seccionActual.value !== "simulador") return;
+
         const key = e.key.toLowerCase();
         if (
           [
@@ -92,7 +108,6 @@ createApp({
             "arrowdown",
             "arrowleft",
             "arrowright",
-            " ",
           ].includes(key)
         )
           e.preventDefault();
@@ -123,6 +138,7 @@ createApp({
       if (dir === "right") teclas.value.d = estado;
     };
 
+    // Bucle de movimiento
     setInterval(() => {
       if (seccionActual.value !== "simulador" || Swal.isVisible()) {
         if (Swal.isVisible())
@@ -130,7 +146,6 @@ createApp({
         return;
       }
 
-      // Carro corre a 1.5, peatón camina a 0.8
       let velocidad = modoJuego.value === "carro" ? 1.5 : 0.8;
 
       if (teclas.value.w && personaje.value.y > 5)
@@ -146,141 +161,171 @@ createApp({
     }, 20);
 
     const verificarColisiones = () => {
-      const zonas = [
-        { id: "semaforo", x: 25, y: 15, trigger: evaluarSemaforo },
-        { id: "alto", x: 75, y: 35, trigger: evaluarAlto },
-        { id: "bus", x: 8, y: 45, trigger: evaluarBus },
-        { id: "peatonal", x: 42, y: 65, trigger: evaluarPeatonal },
+      const zonasPeaton = [
+        { id: "peaton_cebra", x: 42, y: 65 },
+        { id: "peaton_bus", x: 8, y: 45 },
+        { id: "peaton_puente", x: 70, y: 25 },
+        { id: "peaton_semaforo", x: 30, y: 10 },
       ];
-      for (let zona of zonas) {
+      const zonasConductor = [
+        { id: "carro_semaforo", x: 25, y: 15 },
+        { id: "carro_alto", x: 75, y: 35 },
+        { id: "carro_escolar", x: 20, y: 55 },
+        { id: "carro_ceda", x: 60, y: 75 },
+      ];
+
+      const zonasActivas =
+        modoJuego.value === "peaton" ? zonasPeaton : zonasConductor;
+
+      for (let zona of zonasActivas) {
         if (!completados.value[zona.id]) {
           let dist = Math.sqrt(
             Math.pow(personaje.value.x - zona.x, 2) +
               Math.pow(personaje.value.y - zona.y, 2),
           );
-          if (dist < 8) {
-            personaje.value.y += 10;
-            zona.trigger();
+          // Hitbox expandida de 8 a 15 para facilitar el toque físico
+          if (dist < 15) {
+            // Rebote suave hacia atrás para no quedar atascado
+            personaje.value.y += modoJuego.value === "carro" ? 12 : 8;
+            evaluarEscena(zona.id);
           }
         }
       }
     };
 
-    const evaluarSemaforo = () => {
-      Swal.fire({
-        title: "Semáforo en Rojo",
-        text: "¿Qué decides hacer?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#264653",
-        cancelButtonColor: "#264653",
-        confirmButtonText: "Cruzar ahora [E]",
-        cancelButtonText: "Esperar[Q]",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "¡Cuidado!",
-            text: "Cruzar en rojo causa accidentes.",
-            icon: "error",
-            confirmButtonColor: "#264653",
-          });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: "¡Excelente decisión!",
-            icon: "success",
-            confirmButtonColor: "#264653",
-          });
-          registrarAcierto("semaforo");
-        }
-      });
-    };
+    // EL SISTEMA UNIFICADO DE PREGUNTAS
+    const evaluarEscena = (id) => {
+      // Bloquea movimiento táctil si entra a una escena haciendo clic directo al botón
+      teclas.value = { w: false, a: false, s: false, d: false };
 
-    const evaluarAlto = () => {
-      Swal.fire({
-        title: "Señal de ALTO",
-        text: "¿Qué decides hacer?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#264653",
-        cancelButtonColor: "#264653",
-        confirmButtonText: "Detenerme por completo [E]",
-        cancelButtonText: "Pasar directo [Q]",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "¡Bien hecho!",
-            icon: "success",
-            confirmButtonColor: "#264653",
-          });
-          registrarAcierto("alto");
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: "¡Error grave!",
-            icon: "error",
-            confirmButtonColor: "#264653",
-          });
-        }
-      });
-    };
+      let data = {};
+      switch (id) {
+        // ---- MODO PEATÓN ----
+        case "peaton_cebra":
+          data = {
+            title: "Paso de Cebra",
+            text: "Estás frente al paso de cebra, pero viene un auto algo rápido a lo lejos.",
+            confirmBtn: "Cruzar corriendo",
+            cancelBtn: "Esperar en la acera",
+            confirmCorrect: false,
+            icon: "question",
+          };
+          break;
+        case "peaton_bus":
+          data = {
+            title: "Parada de Bus",
+            text: "Te acabas de bajar del bus. ¿Por dónde cruzas la calle?",
+            confirmBtn: "Espero que el bus avance",
+            cancelBtn: "Cruzo por delante del bus",
+            confirmCorrect: true,
+            icon: "info",
+          };
+          break;
+        case "peaton_puente":
+          data = {
+            title: "Puente Peatonal",
+            text: "Hay mucho tráfico. A 20 metros tienes un puente peatonal.",
+            confirmBtn: "Esquivo los autos rápido",
+            cancelBtn: "Camino y uso el puente",
+            confirmCorrect: false,
+            icon: "warning",
+          };
+          break;
+        case "peaton_semaforo":
+          data = {
+            title: "Semáforo Peatonal",
+            text: "El semáforo de los carros está en verde, el tuyo en rojo, pero la calle se ve vacía.",
+            confirmBtn: "Espero mi luz verde",
+            cancelBtn: "Cruzo aprovechando",
+            confirmCorrect: true,
+            icon: "warning",
+          };
+          break;
 
-    const evaluarBus = () => {
-      Swal.fire({
-        title: "Parada de Bus",
-        text: "El vehículo sigue estacionado. ¿Por dónde pasas?",
-        icon: "info",
-        showCancelButton: true,
-        confirmButtonColor: "#264653",
-        cancelButtonColor: "#264653",
-        confirmButtonText: "Por delante del bus [E]",
-        cancelButtonText: "Espero que el bus se vaya [Q]",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "¡Peligro!",
-            icon: "error",
-            confirmButtonColor: "#264653",
-          });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: "¡Correcto!",
-            icon: "success",
-            confirmButtonColor: "#264653",
-          });
-          registrarAcierto("bus");
-        }
-      });
-    };
+        // ---- MODO CONDUCTOR ----
+        case "carro_semaforo":
+          data = {
+            title: "Luz Amarilla",
+            text: "Te acercas a la intersección y el semáforo cambia a luz amarilla.",
+            confirmBtn: "Acelero para pasar",
+            cancelBtn: "Freno suavemente",
+            confirmCorrect: false,
+            icon: "warning",
+          };
+          break;
+        case "carro_alto":
+          data = {
+            title: "Señal de ALTO",
+            text: "Llegas a la esquina y la calle de cruce parece vacía.",
+            confirmBtn: "Me detengo totalmente 3 seg.",
+            cancelBtn: "Paso lento sin frenar",
+            confirmCorrect: true,
+            icon: "warning",
+          };
+          break;
+        case "carro_escolar":
+          data = {
+            title: "Zona Escolar",
+            text: "Ingresas a una calle con escuela en horario de clases.",
+            confirmBtn: "Mantengo mis 40 km/h",
+            cancelBtn: "Reduzco a 20 km/h",
+            confirmCorrect: false,
+            icon: "info",
+          };
+          break;
+        case "carro_ceda":
+          data = {
+            title: "Ceda el Paso",
+            text: "Te acercas a una rotonda y un carro ya viene girando en ella.",
+            confirmBtn: "Le cedo el paso",
+            cancelBtn: "Acelero para meterme",
+            confirmCorrect: true,
+            icon: "warning",
+          };
+          break;
+      }
 
-    const evaluarPeatonal = () => {
       Swal.fire({
-        title: "Cruzar la Carretera",
-        text: "Hay un paso de cebra cerca. ¿Qué haces?",
-        icon: "question",
+        title: data.title,
+        text: data.text,
+        icon: data.icon,
         showCancelButton: true,
         confirmButtonColor: "#264653",
-        cancelButtonColor: "#264653",
-        confirmButtonText: "Voy al paso peatonal [E]",
-        cancelButtonText: "Cruzo rápido aquí [Q]",
+        cancelButtonColor: "#e76f51",
+        confirmButtonText: data.confirmBtn,
+        cancelButtonText: data.cancelBtn,
+        reverseButtons: true, // Mezcla las posiciones visuales
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title: "¡Perfecto!",
-            icon: "success",
-            confirmButtonColor: "#264653",
-          });
-          registrarAcierto("peatonal");
+          // Le dio clic al primer botón
+          if (data.confirmCorrect) {
+            Swal.fire(
+              "¡Bien hecho!",
+              "Decisión correcta y responsable.",
+              "success",
+            );
+            registrarAcierto(id);
+          } else {
+            Swal.fire("¡Peligro!", "Esa acción puede ser fatal.", "error");
+          }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          Swal.fire({
-            title: "¡Acción de riesgo!",
-            icon: "error",
-            confirmButtonColor: "#264653",
-          });
+          // Le dio clic al segundo botón
+          if (!data.confirmCorrect) {
+            Swal.fire(
+              "¡Excelente!",
+              "Decisión correcta y responsable.",
+              "success",
+            );
+            registrarAcierto(id);
+          } else {
+            Swal.fire("¡Error Grave!", "Esa acción puede ser fatal.", "error");
+          }
         }
       });
     };
 
     // ==========================================
-    // 2. ESTADÍSTICAS GLOBALES Y GRÁFICO DINÁMICO
+    // 2. ESTADÍSTICAS Y GRÁFICOS
     // ==========================================
     let miGraficoCausas = null;
     let chartDinamicoInstancia = null;
@@ -330,19 +375,16 @@ createApp({
             fallos = 0,
             aprobados = 0,
             reprobados = 0;
-
           data.forEach((test) => {
             aciertos += test.respuestasCorrectas;
             fallos += 9 - test.respuestasCorrectas;
             if (test.puntuacion >= 70) aprobados++;
             else reprobados++;
           });
-
           statsTest.value.correctas = aciertos;
           statsTest.value.incorrectas = fallos;
           statsTest.value.aprobados = aprobados;
           statsTest.value.reprobados = reprobados;
-
           if (
             seccionActual.value === "estadisticas" ||
             seccionActual.value === "test"
@@ -361,11 +403,9 @@ createApp({
       const ctx = document.getElementById("graficoDinamico");
       if (!ctx) return;
       if (chartDinamicoInstancia) chartDinamicoInstancia.destroy();
-
       let etiquetas = [];
       let valores = [];
       let colores = [];
-
       if (tipoGraficoDinamico.value === "aciertos") {
         etiquetas = ["Respuestas Correctas", "Respuestas Incorrectas"];
         valores = [statsTest.value.correctas, statsTest.value.incorrectas];
@@ -375,7 +415,6 @@ createApp({
         valores = [statsTest.value.aprobados, statsTest.value.reprobados];
         colores = ["#3498db", "#f39c12"];
       }
-
       chartDinamicoInstancia = new Chart(ctx, {
         type: "pie",
         data: {
@@ -391,7 +430,7 @@ createApp({
     };
 
     // ==========================================
-    // 3. TESTIMONIOS (CARGADOS DE MONGODB)
+    // 3. TESTIMONIOS Y TEST VIAL
     // ==========================================
     const formTestimonio = ref({
       nombre: "",
@@ -400,7 +439,6 @@ createApp({
       historia: "",
     });
     const listaTestimonios = ref([]);
-
     const cargarTestimonios = async () => {
       try {
         const respuesta = await fetch(`${API_URL}/testimonios`);
@@ -408,10 +446,9 @@ createApp({
           listaTestimonios.value = await respuesta.json();
         }
       } catch (error) {
-        console.error("Error al cargar testimonios", error);
+        console.error("Error", error);
       }
     };
-
     const enviarTestimonio = async () => {
       try {
         const respuesta = await fetch(`${API_URL}/testimonios`, {
@@ -419,11 +456,10 @@ createApp({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formTestimonio.value),
         });
-
         if (respuesta.ok) {
           Swal.fire({
             title: "¡Gracias!",
-            text: "Testimonio guardado exitosamente.",
+            text: "Guardado exitosamente.",
             icon: "success",
             confirmButtonColor: "#264653",
           });
@@ -436,13 +472,10 @@ createApp({
           cargarTestimonios();
         }
       } catch (error) {
-        Swal.fire("Error", "No hay conexión al servidor.", "error");
+        Swal.fire("Error", "Sin conexión al servidor.", "error");
       }
     };
 
-    // ==========================================
-    // 4. DESAFÍO VIAL (TEST)
-    // ==========================================
     const nombreUsuario = ref("");
     const testIniciado = ref(false);
     const testTerminado = ref(false);
@@ -451,7 +484,6 @@ createApp({
     const puntuacionTest = ref(0);
     const preguntasTest = ref([]);
     const intentoFallido = ref(false);
-
     const bancoPreguntas = [
       {
         texto:
@@ -559,7 +591,6 @@ createApp({
         explicacion: "La distracción mental de una llamada es muy peligrosa.",
       },
     ];
-
     const mezclarArreglo = (arreglo) => {
       let nuevoArreglo = [...arreglo];
       for (let i = nuevoArreglo.length - 1; i > 0; i--) {
@@ -568,7 +599,6 @@ createApp({
       }
       return nuevoArreglo;
     };
-
     const iniciarTest = () => {
       let preguntasMezcladas = mezclarArreglo(bancoPreguntas);
       preguntasTest.value = preguntasMezcladas.slice(0, 9).map((p) => {
@@ -582,12 +612,10 @@ createApp({
       testIniciado.value = true;
       intentoFallido.value = false;
     };
-
     const responderTest = async (indiceOpcion) => {
       const pregunta = preguntasTest.value[preguntaActual.value];
       const esCorrecta =
         pregunta.opciones[indiceOpcion] === pregunta.respuestaCorrecta;
-
       if (esCorrecta) {
         if (!intentoFallido.value) respuestasCorrectasTest.value++;
         await Swal.fire({
@@ -597,14 +625,26 @@ createApp({
           confirmButtonColor: "#264653",
         });
         intentoFallido.value = false;
-
         if (preguntaActual.value < preguntasTest.value.length - 1) {
           preguntaActual.value++;
-        } else {
+        } // Busca la parte dentro de responderTest donde finaliza el test:
+        else {
           testTerminado.value = true;
           puntuacionTest.value = Math.round(
             (respuestasCorrectasTest.value / preguntasTest.value.length) * 100,
           );
+
+          // Lógica de aprobación: mínimo 70
+          const esAprobado = puntuacionTest.value >= 70;
+
+          // Feedback inmediato con Swal
+          Swal.fire({
+            title: esAprobado ? "¡Felicidades!" : "Necesitas practicar más",
+            text: `Tu puntaje fue ${puntuacionTest.value}/100. ${esAprobado ? "¡Has aprobado el desafío!" : "No alcanzaste el mínimo de 70 para aprobar."}`,
+            icon: esAprobado ? "success" : "error",
+            confirmButtonColor: "#264653",
+          });
+
           try {
             await fetch(`${API_URL}/test-resultados`, {
               method: "POST",
@@ -631,7 +671,6 @@ createApp({
         });
       }
     };
-
     const reiniciarTest = () => {
       testIniciado.value = false;
       testTerminado.value = false;
@@ -648,12 +687,9 @@ createApp({
       modoJuego,
       juegoIniciado,
       iniciarNivel,
-      puntuacion,
+      progreso,
       completados,
-      evaluarSemaforo,
-      evaluarAlto,
-      evaluarBus,
-      evaluarPeatonal,
+      evaluarEscena, // Variables de la nueva versión del juego
       formTestimonio,
       enviarTestimonio,
       nombreUsuario,
