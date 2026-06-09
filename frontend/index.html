@@ -392,7 +392,7 @@
         </div>
       </section>
 
-      <!-- BIBLIOTECA DE SEÑALES CON MODAL DE GALERÍA -->
+      <!-- BIBLIOTECA DE SEÑALES CON MODAL (SweetAlert2) -->
       <section
         v-if="seccionActual === 'normas'"
         class="container my-5 animate__animated animate__fadeIn"
@@ -411,7 +411,7 @@
           <!-- Reglamentarias -->
           <div
             class="col-md-4"
-            @click="abrirGaleriaSenales('reglamentarias')"
+            @click="mostrarModalSenal('reglamentarias')"
             style="cursor: pointer"
           >
             <div class="card h-100 p-4 text-center rounded-4 transition-hover">
@@ -432,7 +432,7 @@
           <!-- Preventivas -->
           <div
             class="col-md-4"
-            @click="abrirGaleriaSenales('preventivas')"
+            @click="mostrarModalSenal('preventivas')"
             style="cursor: pointer"
           >
             <div class="card h-100 p-4 text-center rounded-4 transition-hover">
@@ -453,7 +453,7 @@
           <!-- Informativas -->
           <div
             class="col-md-4"
-            @click="abrirGaleriaSenales('informativas')"
+            @click="mostrarModalSenal('informativas')"
             style="cursor: pointer"
           >
             <div class="card h-100 p-4 text-center rounded-4 transition-hover">
@@ -799,46 +799,6 @@
           </div>
         </div>
       </footer>
-    </div>
-
-    <!-- MODAL PARA GALERÍA DE SEÑALES -->
-    <div
-      class="modal fade"
-      id="modalSenales"
-      tabindex="-1"
-      aria-labelledby="modalSenalesLabel"
-      aria-hidden="true"
-    >
-      <div
-        class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
-      >
-        <div class="modal-content">
-          <div
-            class="modal-header"
-            style="background-color: var(--asfalto); color: white"
-          >
-            <h5 class="modal-title" id="modalSenalesLabel">Título</h5>
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              data-bs-dismiss="modal"
-              aria-label="Cerrar"
-            ></button>
-          </div>
-          <div class="modal-body" id="modalSenalesBody">
-            <!-- Contenido dinámico -->
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      </div>
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>

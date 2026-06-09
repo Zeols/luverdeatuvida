@@ -45,7 +45,11 @@ createApp({
     const iniciarNivel = (modo) => {
       modoJuego.value = modo;
       juegoIniciado.value = true;
-      personaje.value = { x: 50, y: 85 };
+      if (modo === "carro") {
+        personaje.value = { x: 15, y: 85 }; // posición segura, lejos de zonas
+      } else {
+        personaje.value = { x: 50, y: 85 };
+      }
       progreso.value = 0;
 
       // Reiniciar todas las señales
@@ -98,7 +102,11 @@ createApp({
       Object.keys(completados.value).forEach(
         (k) => (completados.value[k] = false),
       );
-      personaje.value = { x: 50, y: 85 };
+      if (modo === "carro") {
+        personaje.value = { x: 15, y: 85 }; // posición segura, lejos de zonas
+      } else {
+        personaje.value = { x: 50, y: 85 };
+      }
       teclas.value = { w: false, a: false, s: false, d: false };
     };
 
@@ -198,7 +206,7 @@ createApp({
             Math.pow(personaje.value.x - zona.x, 2) +
               Math.pow(personaje.value.y - zona.y, 2),
           );
-          if (dist < 15) {
+          if (dist < 12) {
             personaje.value.y += modoJuego.value === "carro" ? 12 : 8;
             evaluarEscena(zona.id);
           }
@@ -684,6 +692,7 @@ createApp({
     // ==========================================
     // 4. MODAL DE SEÑALES CON GALERÍA DE IMÁGENES
     // ==========================================
+
     const mostrarModalSenal = (tipo) => {
       let titulo = "";
       let imagenesHtml = "";
@@ -815,7 +824,7 @@ createApp({
       tipoGraficoDinamico,
       actualizarGraficoDinamico,
       listaTestimonios,
-      mostrarModalSenal, // <--- Nueva función para las señales
+      mostrarModalSenal,
     };
   },
 }).mount("#app");
