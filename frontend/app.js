@@ -74,7 +74,6 @@ createApp({
       completados.value[clave] = true;
 
       if (progreso.value === 4) {
-        // Esperar un poco antes de mostrar el modal para dar sensación de logro
         setTimeout(() => {
           Swal.fire({
             title:
@@ -86,7 +85,7 @@ createApp({
             confirmButtonColor: "#264653",
             confirmButtonText: "Continuar",
           }).then(() => {
-            // Reiniciar el simulador automáticamente después de cerrar el modal
+            // Reiniciar el simulador automáticamente al cerrar el modal
             reiniciarSimuladorCompleto();
           });
         }, 800);
@@ -96,13 +95,10 @@ createApp({
     const reiniciarSimuladorCompleto = () => {
       juegoIniciado.value = false;
       progreso.value = 0;
-      // Reiniciar todas las señales completadas
       Object.keys(completados.value).forEach(
         (k) => (completados.value[k] = false),
       );
-      // Resetear posición del personaje
       personaje.value = { x: 50, y: 85 };
-      // Opcional: limpiar cualquier tecla activa
       teclas.value = { w: false, a: false, s: false, d: false };
     };
 
@@ -113,7 +109,7 @@ createApp({
     window.addEventListener(
       "keydown",
       (e) => {
-        if (Swal.isVisible()) return; // Bloquea controles si hay un diálogo abierto
+        if (Swal.isVisible()) return;
         if (seccionActual.value !== "simulador") return;
 
         const key = e.key.toLowerCase();
@@ -202,9 +198,7 @@ createApp({
             Math.pow(personaje.value.x - zona.x, 2) +
               Math.pow(personaje.value.y - zona.y, 2),
           );
-          // Hitbox expandida de 8 a 15 para facilitar el toque físico
           if (dist < 15) {
-            // Rebote suave hacia atrás para no quedar atascado
             personaje.value.y += modoJuego.value === "carro" ? 12 : 8;
             evaluarEscena(zona.id);
           }
@@ -212,14 +206,11 @@ createApp({
       }
     };
 
-    // EL SISTEMA UNIFICADO DE PREGUNTAS
     const evaluarEscena = (id) => {
-      // Bloquea movimiento táctil si entra a una escena haciendo clic directo al botón
       teclas.value = { w: false, a: false, s: false, d: false };
 
       let data = {};
       switch (id) {
-        // ---- MODO PEATÓN ----
         case "peaton_cebra":
           data = {
             title: "Paso de Cebra",
@@ -260,8 +251,6 @@ createApp({
             icon: "warning",
           };
           break;
-
-        // ---- MODO CONDUCTOR ----
         case "carro_semaforo":
           data = {
             title: "Luz Amarilla",
@@ -313,10 +302,9 @@ createApp({
         cancelButtonColor: "#e76f51",
         confirmButtonText: data.confirmBtn,
         cancelButtonText: data.cancelBtn,
-        reverseButtons: true, // Mezcla las posiciones visuales
+        reverseButtons: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          // Le dio clic al primer botón
           if (data.confirmCorrect) {
             Swal.fire(
               "¡Bien hecho!",
@@ -328,7 +316,6 @@ createApp({
             Swal.fire("¡Peligro!", "Esa acción puede ser fatal.", "error");
           }
         } else if (result.dismiss === Swal.DismissReason.cancel) {
-          // Le dio clic al segundo botón
           if (!data.confirmCorrect) {
             Swal.fire(
               "¡Excelente!",
@@ -467,65 +454,6 @@ createApp({
       } catch (error) {
         console.error("Error", error);
       }
-    };
-
-    const mostrarModalSenal = (tipo) => {
-      let titulo = "";
-      let descripcion = "";
-      let imagenUrl = "";
-      let colorTitulo = "";
-
-      switch (tipo) {
-        case "reglamentarias":
-          titulo = "Señales Reglamentarias";
-          descripcion = `
-        <p>Estas señales tienen la forma de un octágono (rojo) o un círculo con borde rojo. Su incumplimiento constituye una falta grave.</p>
-        <p><strong>Ejemplos:</strong> ALTO, CEDA EL PASO, PROHIBIDO ESTACIONAR, VELOCIDAD MÁXIMA, NO ENTRAR.</p>
-        <p><strong>Color:</strong> Rojo, blanco y negro.</p>
-      `;
-          imagenUrl = "assets/img/senal-recomendacion-reglamentaria.png";
-          colorTitulo = "#e76f51";
-          break;
-        case "preventivas":
-          titulo = "Señales Preventivas";
-          descripcion = `
-        <p>Forma de rombo o cuadrado con fondo amarillo y bordes negros. Alertan sobre peligros potenciales.</p>
-        <p><strong>Ejemplos:</strong> CURVA PELIGROSA, ZONA ESCOLAR, ANIMALES SUELTOS, OBRAS EN LA VÍA.</p>
-        <p><strong>Color:</strong> Amarillo, negro.</p>
-      `;
-          imagenUrl = "assets/img/senal-peligro-preventiva.png";
-          colorTitulo = "#e9c46a";
-          break;
-        case "informativas":
-          titulo = "Señales Informativas";
-          descripcion = `
-        <p>Rectangulares, generalmente de color azul, verde o marrón. Proporcionan información de destinos, servicios y distancias.</p>
-        <p><strong>Ejemplos:</strong> HOSPITAL, GASOLINERA, AREA DE PICNIC, RUTA PANAMERICANA.</p>
-        <p><strong>Color:</strong> Azul (servicios), verde (vías), marrón (sitios turísticos).</p>
-      `;
-          imagenUrl = "assets/img/senal-informativa.png";
-          colorTitulo = "#457b9d";
-          break;
-        default:
-          return;
-      }
-
-      Swal.fire({
-        title: titulo,
-        html: `
-      <div style="text-align: center;">
-        <img src="${imagenUrl}" alt="${titulo}" style="max-width: 180px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-        <div style="text-align: left; margin-top: 15px;">
-          ${descripcion}
-        </div>
-      </div>
-    `,
-        icon: "info",
-        confirmButtonText: "Entendido",
-        confirmButtonColor: colorTitulo,
-        background: "#fff",
-        showCloseButton: true,
-      });
     };
     const enviarTestimonio = async () => {
       try {
@@ -705,24 +633,18 @@ createApp({
         intentoFallido.value = false;
         if (preguntaActual.value < preguntasTest.value.length - 1) {
           preguntaActual.value++;
-        } // Busca la parte dentro de responderTest donde finaliza el test:
-        else {
+        } else {
           testTerminado.value = true;
           puntuacionTest.value = Math.round(
             (respuestasCorrectasTest.value / preguntasTest.value.length) * 100,
           );
-
-          // Lógica de aprobación: mínimo 70
           const esAprobado = puntuacionTest.value >= 70;
-
-          // Feedback inmediato con Swal
           Swal.fire({
             title: esAprobado ? "¡Felicidades!" : "Necesitas practicar más",
             text: `Tu puntaje fue ${puntuacionTest.value}/100. ${esAprobado ? "¡Has aprobado el desafío!" : "No alcanzaste el mínimo de 70 para aprobar."}`,
             icon: esAprobado ? "success" : "error",
             confirmButtonColor: "#264653",
           });
-
           try {
             await fetch(`${API_URL}/test-resultados`, {
               method: "POST",
@@ -759,6 +681,114 @@ createApp({
       cargarStatsTest();
     };
 
+    // ==========================================
+    // 4. MODAL DE SEÑALES CON GALERÍA DE IMÁGENES
+    // ==========================================
+    const mostrarModalSenal = (tipo) => {
+      let titulo = "";
+      let imagenesHtml = "";
+
+      // Definir arrays de imágenes y textos descriptivos (cambia las rutas y textos después)
+      if (tipo === "reglamentarias") {
+        titulo = "Señales Reglamentarias";
+        const señales = [
+          {
+            img: "assets/img/senal-alto.png",
+            texto: "Señal de ALTO: Obligación de detenerse completamente.",
+          },
+          {
+            img: "assets/img/senal-ceda.png",
+            texto:
+              "CEDA EL PASO: Debes ceder el paso a los vehículos que circulan.",
+          },
+          {
+            img: "assets/img/senal-prohibido.png",
+            texto: "PROHIBIDO ESTACIONAR: No se puede estacionar en esta zona.",
+          },
+          {
+            img: "assets/img/senal-velocidad.png",
+            texto: "VELOCIDAD MÁXIMA: Límite de velocidad permitido.",
+          },
+        ];
+        imagenesHtml = señales
+          .map(
+            (s) => `
+          <div style="display: inline-block; width: 200px; margin: 10px; text-align: center;">
+            <img src="${s.img}" alt="${s.texto}" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+            <p style="margin-top: 8px; font-size: 0.9rem;">${s.texto}</p>
+          </div>
+        `,
+          )
+          .join("");
+      } else if (tipo === "preventivas") {
+        titulo = "Señales Preventivas";
+        const señales = [
+          {
+            img: "assets/img/senal-curva.png",
+            texto: "Curva peligrosa a la izquierda.",
+          },
+          {
+            img: "assets/img/senal-escolar.png",
+            texto: "Zona escolar: Reduce velocidad.",
+          },
+          {
+            img: "assets/img/senal-animales.png",
+            texto: "Cruce de animales sueltos.",
+          },
+          { img: "assets/img/senal-obras.png", texto: "Obras en la vía." },
+        ];
+        imagenesHtml = señales
+          .map(
+            (s) => `
+          <div style="display: inline-block; width: 200px; margin: 10px; text-align: center;">
+            <img src="${s.img}" alt="${s.texto}" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+            <p style="margin-top: 8px; font-size: 0.9rem;">${s.texto}</p>
+          </div>
+        `,
+          )
+          .join("");
+      } else if (tipo === "informativas") {
+        titulo = "Señales Informativas";
+        const señales = [
+          { img: "assets/img/senal-hospital.png", texto: "Hospital cercano." },
+          {
+            img: "assets/img/senal-gasolinera.png",
+            texto: "Gasolinera a 500 m.",
+          },
+          {
+            img: "assets/img/senal-comida.png",
+            texto: "Restaurante / Área de servicio.",
+          },
+          { img: "assets/img/senal-turistica.png", texto: "Sitio turístico." },
+        ];
+        imagenesHtml = señales
+          .map(
+            (s) => `
+          <div style="display: inline-block; width: 200px; margin: 10px; text-align: center;">
+            <img src="${s.img}" alt="${s.texto}" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+            <p style="margin-top: 8px; font-size: 0.9rem;">${s.texto}</p>
+          </div>
+        `,
+          )
+          .join("");
+      }
+
+      Swal.fire({
+        title: titulo,
+        html: `
+          <div style="max-height: 500px; overflow-y: auto; text-align: center;">
+            ${imagenesHtml}
+            <p style="margin-top: 20px; font-style: italic; color: gray;">* Puedes reemplazar estas imágenes y textos por los reales de tu proyecto.</p>
+          </div>
+        `,
+        icon: "info",
+        confirmButtonText: "Cerrar",
+        confirmButtonColor: "#264653",
+        width: "800px",
+        showCloseButton: true,
+      });
+    };
+
     return {
       seccionActual,
       cambiarSeccion,
@@ -767,7 +797,7 @@ createApp({
       iniciarNivel,
       progreso,
       completados,
-      evaluarEscena, // Variables de la nueva versión del juego
+      evaluarEscena,
       formTestimonio,
       enviarTestimonio,
       nombreUsuario,
@@ -785,6 +815,7 @@ createApp({
       tipoGraficoDinamico,
       actualizarGraficoDinamico,
       listaTestimonios,
+      mostrarModalSenal, // <--- Nueva función para las señales
     };
   },
 }).mount("#app");
