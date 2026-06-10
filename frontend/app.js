@@ -10,11 +10,11 @@ createApp({
 
     const seccionActual = ref("inicio");
     const modoJuego = ref("peaton"); // 'peaton' o 'carro'
-    const juegoIniciado = ref(false);
+    const juegoIniciado = ref(false); // Para mostrar el selector de nivel
 
     const cambiarSeccion = (seccion) => {
       seccionActual.value = seccion;
-      juegoIniciado.value = false;
+      juegoIniciado.value = false; // Reset al cambiar de sección
       if (seccion === "estadisticas") {
         cargarStatsTest();
         renderizarGraficoCausas();
@@ -45,19 +45,13 @@ createApp({
     const iniciarNivel = (modo) => {
       modoJuego.value = modo;
       juegoIniciado.value = true;
-      if (modo === "carro") {
-        personaje.value = { x: 15, y: 85 }; // posición segura, lejos de zonas
-      } else {
-        personaje.value = { x: 50, y: 85 };
-      }
+      personaje.value = { x: 50, y: 85 };
       progreso.value = 0;
 
-      // Reiniciar todas las señales
       Object.keys(completados.value).forEach(
         (k) => (completados.value[k] = false),
       );
 
-      // INSTRUCCIONES INICIALES (MODAL)
       Swal.fire({
         title:
           modo === "peaton"
@@ -76,7 +70,6 @@ createApp({
     const registrarAcierto = (clave) => {
       progreso.value += 1;
       completados.value[clave] = true;
-
       if (progreso.value === 4) {
         setTimeout(() => {
           Swal.fire({
@@ -87,33 +80,14 @@ createApp({
             text: "Has superado todas las situaciones demostrando gran conocimiento vial. ¡Felicidades!",
             icon: "success",
             confirmButtonColor: "#264653",
-            confirmButtonText: "Continuar",
-          }).then(() => {
-            // Reiniciar el simulador automáticamente al cerrar el modal
-            reiniciarSimuladorCompleto();
           });
         }, 800);
       }
     };
 
-    const reiniciarSimuladorCompleto = () => {
-      juegoIniciado.value = false;
-      progreso.value = 0;
-      Object.keys(completados.value).forEach(
-        (k) => (completados.value[k] = false),
-      );
-      if (modo === "carro") {
-        personaje.value = { x: 15, y: 85 }; // posición segura, lejos de zonas
-      } else {
-        personaje.value = { x: 50, y: 85 };
-      }
-      teclas.value = { w: false, a: false, s: false, d: false };
-    };
-
     const personaje = ref({ x: 50, y: 85 });
     const teclas = ref({ w: false, a: false, s: false, d: false });
 
-    // Controles de teclado
     window.addEventListener(
       "keydown",
       (e) => {
@@ -161,7 +135,6 @@ createApp({
       if (dir === "right") teclas.value.d = estado;
     };
 
-    // Bucle de movimiento
     setInterval(() => {
       if (seccionActual.value !== "simulador" || Swal.isVisible()) {
         if (Swal.isVisible())
@@ -206,7 +179,7 @@ createApp({
             Math.pow(personaje.value.x - zona.x, 2) +
               Math.pow(personaje.value.y - zona.y, 2),
           );
-          if (dist < 12) {
+          if (dist < 15) {
             personaje.value.y += modoJuego.value === "carro" ? 12 : 8;
             evaluarEscena(zona.id);
           }
@@ -339,7 +312,110 @@ createApp({
     };
 
     // ==========================================
-    // 2. ESTADÍSTICAS Y GRÁFICOS
+    // 2. LÓGICA DEL MODAL DE SEÑALES (BOOTSTRAP)
+    // ==========================================
+    // Ahora incluye arreglos para múltiples imágenes y textos
+    const senalSeleccionada = ref({
+      titulo: "",
+      texto: "",
+      imagenes: [],
+      ejemplosTexto: [],
+      colorTema: "",
+    });
+
+    const infoSenales = {
+      reglamentarias: {
+        titulo: "Señales Reglamentarias",
+        texto:
+          "Tienen forma circular u octagonal, con bordes rojos y fondo blanco. Su propósito es indicar al conductor y al peatón sobre las prohibiciones o restricciones en la vía. ¡No respetarlas es una infracción a la ley!",
+        colorTema: "text-danger",
+        imagenes: [
+          { ruta: "assets/img/reg_alto.png", nombre: "ALTO" },
+          { ruta: "assets/img/reg_no_estacionar.png", nombre: "No Estacionar" },
+          { ruta: "assets/img/reg_velocidad.png", nombre: "Velocidad" },
+          { ruta: "assets/img/reg_ceda.png", nombre: "Ceda el paso" },
+        ],
+        ejemplosTexto: [
+          {
+            nombre: "ALTO",
+            desc: "Detención total obligatoria antes de la línea.",
+          },
+          {
+            nombre: "No Estacionar",
+            desc: "Prohibido dejar el vehículo en esta zona.",
+          },
+          {
+            nombre: "Velocidad Máxima",
+            desc: "Límite legal que no debes rebasar.",
+          },
+        ],
+      },
+      preventivas: {
+        titulo: "Señales Preventivas",
+        texto:
+          "Tienen forma de rombo, con fondo amarillo y símbolos negros. Su función es advertir a los usuarios de la vía sobre peligros potenciales más adelante. ¡Exigen reducir la velocidad!",
+        colorTema: "text-warning",
+        imagenes: [
+          { ruta: "assets/img/prev_escolar.png", nombre: "Zona Escolar" },
+          { ruta: "assets/img/prev_curva.png", nombre: "Curva Peligrosa" },
+          { ruta: "assets/img/prev_peaton.png", nombre: "Peatones" },
+          { ruta: "assets/img/prev_derrumbe.png", nombre: "Derrumbe" },
+        ],
+        ejemplosTexto: [
+          {
+            nombre: "Zona Escolar",
+            desc: "Niños cruzando, reduce la velocidad a 20 km/h.",
+          },
+          {
+            nombre: "Curva Peligrosa",
+            desc: "Modera la velocidad antes de entrar al giro.",
+          },
+          {
+            nombre: "Paso Peatonal",
+            desc: "Preferencia absoluta para el peatón.",
+          },
+        ],
+      },
+      informativas: {
+        titulo: "Señales Informativas",
+        texto:
+          "Suelen ser rectangulares con fondo azul, verde o café. No prohíben ni advierten peligros, sino que guían al usuario proporcionando datos sobre destinos, hospitales, gasolineras o sitios turísticos.",
+        colorTema: "text-info",
+        imagenes: [
+          { ruta: "assets/img/info_hospital.png", nombre: "Hospital" },
+          { ruta: "assets/img/info_bus.png", nombre: "Parada de Bus" },
+          { ruta: "assets/img/info_gasolinera.png", nombre: "Gasolinera" },
+          { ruta: "assets/img/info_aeropuerto.png", nombre: "Aeropuerto" },
+        ],
+        ejemplosTexto: [
+          {
+            nombre: "Hospital",
+            desc: "Zona de silencio y asistencia médica cercana.",
+          },
+          {
+            nombre: "Parada de Bus",
+            desc: "Área destinada al transporte público.",
+          },
+          {
+            nombre: "Rutas y Distancias",
+            desc: "Letreros verdes con nombres de ciudades.",
+          },
+        ],
+      },
+    };
+
+    const mostrarModalSenal = (tipo) => {
+      senalSeleccionada.value = infoSenales[tipo];
+      const modalElement = document.getElementById("modalSenales");
+      let modalInstancia = bootstrap.Modal.getInstance(modalElement);
+      if (!modalInstancia) {
+        modalInstancia = new bootstrap.Modal(modalElement);
+      }
+      modalInstancia.show();
+    };
+
+    // ==========================================
+    // 3. ESTADÍSTICAS Y GRÁFICOS
     // ==========================================
     let miGraficoCausas = null;
     let chartDinamicoInstancia = null;
@@ -444,7 +520,7 @@ createApp({
     };
 
     // ==========================================
-    // 3. TESTIMONIOS Y TEST VIAL
+    // 4. TESTIMONIOS Y TEST VIAL
     // ==========================================
     const formTestimonio = ref({
       nombre: "",
@@ -605,6 +681,7 @@ createApp({
         explicacion: "La distracción mental de una llamada es muy peligrosa.",
       },
     ];
+
     const mezclarArreglo = (arreglo) => {
       let nuevoArreglo = [...arreglo];
       for (let i = nuevoArreglo.length - 1; i > 0; i--) {
@@ -626,6 +703,7 @@ createApp({
       testIniciado.value = true;
       intentoFallido.value = false;
     };
+
     const responderTest = async (indiceOpcion) => {
       const pregunta = preguntasTest.value[preguntaActual.value];
       const esCorrecta =
@@ -646,6 +724,7 @@ createApp({
           puntuacionTest.value = Math.round(
             (respuestasCorrectasTest.value / preguntasTest.value.length) * 100,
           );
+
           const esAprobado = puntuacionTest.value >= 70;
           Swal.fire({
             title: esAprobado ? "¡Felicidades!" : "Necesitas practicar más",
@@ -653,6 +732,7 @@ createApp({
             icon: esAprobado ? "success" : "error",
             confirmButtonColor: "#264653",
           });
+
           try {
             await fetch(`${API_URL}/test-resultados`, {
               method: "POST",
@@ -679,6 +759,7 @@ createApp({
         });
       }
     };
+
     const reiniciarTest = () => {
       testIniciado.value = false;
       testTerminado.value = false;
@@ -687,115 +768,6 @@ createApp({
       nombreUsuario.value = "";
       intentoFallido.value = false;
       cargarStatsTest();
-    };
-
-    // ==========================================
-    // 4. MODAL DE SEÑALES CON GALERÍA DE IMÁGENES
-    // ==========================================
-
-    const mostrarModalSenal = (tipo) => {
-      let titulo = "";
-      let imagenesHtml = "";
-
-      // Definir arrays de imágenes y textos descriptivos (cambia las rutas y textos después)
-      if (tipo === "reglamentarias") {
-        titulo = "Señales Reglamentarias";
-        const señales = [
-          {
-            img: "assets/img/senal-alto.png",
-            texto: "Señal de ALTO: Obligación de detenerse completamente.",
-          },
-          {
-            img: "assets/img/senal-ceda.png",
-            texto:
-              "CEDA EL PASO: Debes ceder el paso a los vehículos que circulan.",
-          },
-          {
-            img: "assets/img/senal-prohibido.png",
-            texto: "PROHIBIDO ESTACIONAR: No se puede estacionar en esta zona.",
-          },
-          {
-            img: "assets/img/senal-velocidad.png",
-            texto: "VELOCIDAD MÁXIMA: Límite de velocidad permitido.",
-          },
-        ];
-        imagenesHtml = señales
-          .map(
-            (s) => `
-          <div style="display: inline-block; width: 200px; margin: 10px; text-align: center;">
-            <img src="${s.img}" alt="${s.texto}" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <p style="margin-top: 8px; font-size: 0.9rem;">${s.texto}</p>
-          </div>
-        `,
-          )
-          .join("");
-      } else if (tipo === "preventivas") {
-        titulo = "Señales Preventivas";
-        const señales = [
-          {
-            img: "assets/img/piso-resbaloso.jpeg",
-            texto: "Advierte sobre un peligro inmediato y puede prevenir caídas que deriven en fracturas, lesiones de cadera o golpes en la cabeza. Esta señal es útil en cualquier lugar, desde edificios comerciales hasta áreas residenciales, especialmente cuando el piso está mojado por limpieza, derrames o lluvia Además, la señalización ayuda a informar a visitantes, empleados y proveedores sobre zonas de riesgo.",
-          },
-          {
-            img: "assets/img/senal-escolar.png",
-            texto: "Zona escolar: Reduce velocidad.",
-          },
-          {
-            img: "assets/img/senal-animales.png",
-            texto: "Cruce de animales sueltos.",
-          },
-          { img: "assets/img/senal-obras.png", texto: "Obras en la vía." },
-        ];
-        imagenesHtml = señales
-          .map(
-            (s) => `
-          <div style="display: inline-block; width: 200px; margin: 10px; text-align: center;">
-            <img src="${s.img}" alt="${s.texto}" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <p style="margin-top: 8px; font-size: 0.9rem;">${s.texto}</p>
-          </div>
-        `,
-          )
-          .join("");
-      } else if (tipo === "informativas") {
-        titulo = "Señales Informativas";
-        const señales = [
-          { img: "assets/img/senal-hospital.png", texto: "Hospital cercano." },
-          {
-            img: "assets/img/senal-gasolinera.png",
-            texto: "Gasolinera a 500 m.",
-          },
-          {
-            img: "assets/img/senal-comida.png",
-            texto: "Restaurante / Área de servicio.",
-          },
-          { img: "assets/img/senal-turistica.png", texto: "Sitio turístico." },
-        ];
-        imagenesHtml = señales
-          .map(
-            (s) => `
-          <div style="display: inline-block; width: 200px; margin: 10px; text-align: center;">
-            <img src="${s.img}" alt="${s.texto}" style="width: 100%; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-            <p style="margin-top: 8px; font-size: 0.9rem;">${s.texto}</p>
-          </div>
-        `,
-          )
-          .join("");
-      }
-
-      Swal.fire({
-        title: titulo,
-        html: `
-          <div style="max-height: 500px; overflow-y: auto; text-align: center;">
-            ${imagenesHtml}
-            <p style="margin-top: 20px; font-style: italic; color: gray;">* Puedes reemplazar estas imágenes y textos por los reales de tu proyecto.</p>
-          </div>
-        `,
-        icon: "info",
-        confirmButtonText: "Cerrar",
-        confirmButtonColor: "#264653",
-        width: "800px",
-        showCloseButton: true,
-      });
     };
 
     return {
@@ -807,6 +779,8 @@ createApp({
       progreso,
       completados,
       evaluarEscena,
+      senalSeleccionada,
+      mostrarModalSenal,
       formTestimonio,
       enviarTestimonio,
       nombreUsuario,
@@ -824,7 +798,6 @@ createApp({
       tipoGraficoDinamico,
       actualizarGraficoDinamico,
       listaTestimonios,
-      mostrarModalSenal,
     };
   },
 }).mount("#app");
