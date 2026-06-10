@@ -9,12 +9,12 @@ createApp({
         : "/api";
 
     const seccionActual = ref("inicio");
-    const modoJuego = ref("peaton"); // 'peaton' o 'carro'
-    const juegoIniciado = ref(false); // Para mostrar el selector de nivel
+    const modoJuego = ref("peaton");
+    const juegoIniciado = ref(false);
 
     const cambiarSeccion = (seccion) => {
       seccionActual.value = seccion;
-      juegoIniciado.value = false; // Reset al cambiar de sección
+      juegoIniciado.value = false;
       if (seccion === "estadisticas") {
         cargarStatsTest();
         renderizarGraficoCausas();
@@ -312,105 +312,144 @@ createApp({
     };
 
     // ==========================================
-    // 2. LÓGICA DEL MODAL DE SEÑALES (BOOTSTRAP)
+    // 2. LÓGICA DE LA BIBLIOTECA (GALERÍA Y SUBMODAL)
     // ==========================================
-    // Ahora incluye arreglos para múltiples imágenes y textos
     const senalSeleccionada = ref({
       titulo: "",
       texto: "",
-      imagenes: [],
-      ejemplosTexto: [],
       colorTema: "",
+      lista: [],
     });
+    const senalDetalle = ref({ nombre: "", ruta: "", desc: "", colorTema: "" });
 
+    // Base de datos de señales unificada (cada imagen tiene su nombre y descripción)
     const infoSenales = {
       reglamentarias: {
         titulo: "Señales Reglamentarias",
         texto:
-          "Tienen forma circular u octagonal, con bordes rojos y fondo blanco. Su propósito es indicar al conductor y al peatón sobre las prohibiciones o restricciones en la vía. ¡No respetarlas es una infracción a la ley!",
+          "Tienen forma circular u octagonal, con bordes rojos y fondo blanco. Indican prohibiciones o restricciones en la vía. ¡No respetarlas es una infracción a la ley!",
         colorTema: "text-danger",
-        imagenes: [
-          { ruta: "assets/img/reg_alto.png", nombre: "ALTO" },
-          { ruta: "assets/img/reg_no_estacionar.png", nombre: "No Estacionar" },
-          { ruta: "assets/img/reg_velocidad.png", nombre: "Velocidad" },
-          { ruta: "assets/img/reg_ceda.png", nombre: "Ceda el paso" },
-        ],
-        ejemplosTexto: [
+        lista: [
           {
             nombre: "ALTO",
-            desc: "Detención total obligatoria antes de la línea.",
+            ruta: "assets/img/reg_alto.png",
+            desc: "Detención total obligatoria. Debes frenar completamente antes de la línea de cruce.",
           },
           {
             nombre: "No Estacionar",
-            desc: "Prohibido dejar el vehículo en esta zona.",
+            ruta: "assets/img/reg_no_estacionar.png",
+            desc: "Prohibido dejar el vehículo en esta zona. Ayuda a mantener el flujo del tráfico libre.",
           },
           {
             nombre: "Velocidad Máxima",
-            desc: "Límite legal que no debes rebasar.",
+            ruta: "assets/img/reg_velocidad.png",
+            desc: "Límite legal que no debes rebasar bajo ninguna circunstancia por la seguridad de todos.",
+          },
+          {
+            nombre: "Ceda el Paso",
+            ruta: "assets/img/reg_ceda.png",
+            desc: "Debes reducir la velocidad y dejar pasar a los vehículos que ya circulan por la vía a la que quieres entrar.",
           },
         ],
       },
       preventivas: {
         titulo: "Señales Preventivas",
         texto:
-          "Tienen forma de rombo, con fondo amarillo y símbolos negros. Su función es advertir a los usuarios de la vía sobre peligros potenciales más adelante. ¡Exigen reducir la velocidad!",
+          "Tienen forma de rombo, con fondo amarillo y símbolos negros. Su función es advertir a los usuarios sobre peligros potenciales más adelante. ¡Exigen reducir la velocidad!",
         colorTema: "text-warning",
-        imagenes: [
-          { ruta: "assets/img/prev_escolar.png", nombre: "Zona Escolar" },
-          { ruta: "assets/img/prev_curva.png", nombre: "Curva Peligrosa" },
-          { ruta: "assets/img/prev_peaton.png", nombre: "Peatones" },
-          { ruta: "assets/img/prev_derrumbe.png", nombre: "Derrumbe" },
-        ],
-        ejemplosTexto: [
+        lista: [
           {
             nombre: "Zona Escolar",
-            desc: "Niños cruzando, reduce la velocidad a 20 km/h.",
+            ruta: "assets/img/prev_escolar.png",
+            desc: "Niños cruzando cerca. Debes reducir la velocidad obligatoriamente a 20 km/h o menos.",
           },
           {
             nombre: "Curva Peligrosa",
-            desc: "Modera la velocidad antes de entrar al giro.",
+            ruta: "assets/img/prev_curva.png",
+            desc: "El camino hace un giro brusco. Modera la velocidad antes de entrar para no perder el control.",
           },
           {
             nombre: "Paso Peatonal",
-            desc: "Preferencia absoluta para el peatón.",
+            ruta: "assets/img/prev_peaton.png",
+            desc: "Aproximación a un paso de cebra. El peatón tiene preferencia absoluta de paso.",
+          },
+          {
+            nombre: "Derrumbe",
+            ruta: "assets/img/prev_derrumbe.png",
+            desc: "Zona propensa a caída de rocas. Mantente alerta y no te estaciones cerca.",
           },
         ],
       },
       informativas: {
         titulo: "Señales Informativas",
         texto:
-          "Suelen ser rectangulares con fondo azul, verde o café. No prohíben ni advierten peligros, sino que guían al usuario proporcionando datos sobre destinos, hospitales, gasolineras o sitios turísticos.",
+          "Suelen ser rectangulares con fondo azul, verde o café. No prohíben ni advierten peligros, sino que te guían proporcionando datos útiles para tu ruta.",
         colorTema: "text-info",
-        imagenes: [
-          { ruta: "assets/img/info_hospital.png", nombre: "Hospital" },
-          { ruta: "assets/img/info_bus.png", nombre: "Parada de Bus" },
-          { ruta: "assets/img/info_gasolinera.png", nombre: "Gasolinera" },
-          { ruta: "assets/img/info_aeropuerto.png", nombre: "Aeropuerto" },
-        ],
-        ejemplosTexto: [
+        lista: [
           {
             nombre: "Hospital",
-            desc: "Zona de silencio y asistencia médica cercana.",
+            ruta: "assets/img/info_hospital.png",
+            desc: "Indica la cercanía de asistencia médica. Es una zona de silencio, no toques la bocina.",
           },
           {
             nombre: "Parada de Bus",
-            desc: "Área destinada al transporte público.",
+            ruta: "assets/img/info_bus.png",
+            desc: "Área exclusiva para que el transporte público suba y baje pasajeros de forma segura.",
           },
           {
-            nombre: "Rutas y Distancias",
-            desc: "Letreros verdes con nombres de ciudades.",
+            nombre: "Gasolinera",
+            ruta: "assets/img/info_gasolinera.png",
+            desc: "Estación de servicio y combustible a corta distancia en la carretera.",
+          },
+          {
+            nombre: "Aeropuerto",
+            ruta: "assets/img/info_aeropuerto.png",
+            desc: "Te indica la dirección o ruta directa para llegar al aeropuerto más cercano.",
           },
         ],
       },
     };
 
+    // Abre la galería (Modal 1)
     const mostrarModalSenal = (tipo) => {
       senalSeleccionada.value = infoSenales[tipo];
       const modalElement = document.getElementById("modalSenales");
       let modalInstancia = bootstrap.Modal.getInstance(modalElement);
-      if (!modalInstancia) {
-        modalInstancia = new bootstrap.Modal(modalElement);
-      }
+      if (!modalInstancia) modalInstancia = new bootstrap.Modal(modalElement);
+      modalInstancia.show();
+    };
+
+    // Abre el detalle de 1 señal (Oculta Modal 1 y abre Modal 2)
+    const abrirSubModal = (item) => {
+      senalDetalle.value = {
+        nombre: item.nombre,
+        ruta: item.ruta,
+        desc: item.desc,
+        colorTema: senalSeleccionada.value.colorTema,
+      };
+
+      // Ocultar modal principal
+      const modalElement = document.getElementById("modalSenales");
+      const modalInstancia = bootstrap.Modal.getInstance(modalElement);
+      if (modalInstancia) modalInstancia.hide();
+
+      // Mostrar submodal
+      const subModalElement = document.getElementById("subModalSenales");
+      let subModalInstancia = bootstrap.Modal.getInstance(subModalElement);
+      if (!subModalInstancia)
+        subModalInstancia = new bootstrap.Modal(subModalElement);
+      subModalInstancia.show();
+    };
+
+    // Regresa a la galería (Oculta Modal 2 y reabre Modal 1)
+    const cerrarSubModalYVolver = () => {
+      const subModalElement = document.getElementById("subModalSenales");
+      const subModalInstancia = bootstrap.Modal.getInstance(subModalElement);
+      if (subModalInstancia) subModalInstancia.hide();
+
+      const modalElement = document.getElementById("modalSenales");
+      let modalInstancia = bootstrap.Modal.getInstance(modalElement);
+      if (!modalInstancia) modalInstancia = new bootstrap.Modal(modalElement);
       modalInstancia.show();
     };
 
@@ -781,6 +820,9 @@ createApp({
       evaluarEscena,
       senalSeleccionada,
       mostrarModalSenal,
+      senalDetalle,
+      abrirSubModal,
+      cerrarSubModalYVolver, // <--- MODALES EXPORTADOS
       formTestimonio,
       enviarTestimonio,
       nombreUsuario,
