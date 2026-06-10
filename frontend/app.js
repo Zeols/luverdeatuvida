@@ -733,8 +733,8 @@ createApp({
         titulo = "Señales Preventivas";
         const señales = [
           {
-            img: "assets/img/senal-curva.png",
-            texto: "Curva peligrosa a la izquierda.",
+            img: "assets/img/piso-resbaloso.jpeg",
+            texto: "Advierte sobre un peligro inmediato y puede prevenir caídas que deriven en fracturas, lesiones de cadera o golpes en la cabeza. Esta señal es útil en cualquier lugar, desde edificios comerciales hasta áreas residenciales, especialmente cuando el piso está mojado por limpieza, derrames o lluvia Además, la señalización ayuda a informar a visitantes, empleados y proveedores sobre zonas de riesgo.",
           },
           {
             img: "assets/img/senal-escolar.png",
