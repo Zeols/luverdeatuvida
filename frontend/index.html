@@ -44,16 +44,30 @@
             />
             Luz Verde a tu Vida
           </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
+
+          <div class="d-flex align-items-center">
+            <button
+              @click="toggleModoOscuro"
+              class="btn btn-outline-light ms-2 rounded-circle px-2 py-1 d-lg-none"
+              style="border: none"
+            >
+              <i
+                class="fa-solid fs-5"
+                :class="modoOscuro ? 'fa-sun text-warning' : 'fa-moon'"
+              ></i>
+            </button>
+            <button
+              class="navbar-toggler ms-2"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+          </div>
+
           <div class="collapse navbar-collapse" id="navbarNav">
-            <div class="navbar-nav ms-auto">
+            <div class="navbar-nav ms-auto align-items-center">
               <a
                 class="nav-link"
                 :class="{ active: seccionActual === 'inicio' }"
@@ -110,6 +124,17 @@
                 @click.prevent="cambiarSeccion('importancia')"
                 >Propósito</a
               >
+
+              <button
+                @click="toggleModoOscuro"
+                class="btn btn-outline-light ms-3 rounded-circle px-3 py-2 d-none d-lg-block"
+                style="border: none; background: rgba(255, 255, 255, 0.1)"
+              >
+                <i
+                  class="fa-solid fs-5"
+                  :class="modoOscuro ? 'fa-sun text-warning' : 'fa-moon'"
+                ></i>
+              </button>
             </div>
           </div>
         </div>
@@ -139,7 +164,7 @@
                 </button>
                 <button
                   @click="cambiarSeccion('normas')"
-                  class="btn btn-warning btn-lg px-4 fw-bold text-dark shadow-sm border border-warning"
+                  class="btn btn-warning btn-lg px-4 fw-bold shadow-sm"
                 >
                   Ver Señales
                 </button>
@@ -171,7 +196,7 @@
         <div class="container my-4">
           <div class="row align-items-center mb-5 g-5">
             <div class="col-lg-6">
-              <h2 class="display-5 fw-bold mb-4" style="color: var(--asfalto)">
+              <h2 class="display-5 fw-bold mb-4 text-asfalto">
                 ¿Quiénes Somos?
               </h2>
               <p class="lead text-muted">
@@ -183,14 +208,28 @@
             </div>
             <div class="col-lg-6 text-center">
               <div
-                class="bg-white p-4 rounded-4 shadow-sm border d-inline-block transition-hover"
+                class="d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-stretch"
               >
-                <img
-                  src="assets/img/logo.png"
-                  alt="Logo"
-                  class="img-fluid"
-                  style="max-height: 250px"
-                />
+                <div
+                  class="bg-white p-3 rounded-4 shadow-sm border d-flex align-items-center justify-content-center transition-hover flex-fill"
+                >
+                  <img
+                    src="assets/img/logo.png"
+                    alt="Logo"
+                    class="img-fluid"
+                    style="max-height: 140px"
+                  />
+                </div>
+                <div
+                  class="bg-white p-3 rounded-4 shadow-sm border d-flex flex-column align-items-center justify-content-center transition-hover flex-fill"
+                >
+                  <img
+                    src="assets/img/foto_grupal.jpeg"
+                    alt="Foto del Equipo"
+                    class="img-fluid rounded-3 mb-2 shadow-sm"
+                    style="max-height: 200px; width: 100%; object-fit: cover"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -200,12 +239,9 @@
                 class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover card"
               >
                 <i
-                  class="fa-solid fa-lightbulb mb-3 icon-badge"
-                  style="color: var(--amarillo-preventivo)"
+                  class="fa-solid fa-lightbulb mb-3 icon-badge text-amarillo"
                 ></i>
-                <h4 class="fw-bold" style="color: var(--asfalto)">
-                  Nuestra Visión
-                </h4>
+                <h4 class="fw-bold text-asfalto">Nuestra Visión</h4>
                 <p class="text-muted mb-0">
                   Ser un proyecto educativo innovador que inspire a los jóvenes
                   y a la sociedad a utilizar la tecnología como medio de
@@ -217,13 +253,8 @@
               <div
                 class="p-4 bg-white rounded-4 shadow-sm border h-100 transition-hover card"
               >
-                <i
-                  class="fa-solid fa-bullseye mb-3 icon-badge"
-                  style="color: var(--rojo-alto)"
-                ></i>
-                <h4 class="fw-bold" style="color: var(--asfalto)">
-                  Nuestra Misión
-                </h4>
+                <i class="fa-solid fa-bullseye mb-3 icon-badge text-rojo"></i>
+                <h4 class="fw-bold text-asfalto">Nuestra Misión</h4>
                 <p class="text-muted mb-0">
                   Desarrollar un sitio web que promueva la educación vial en los
                   usuarios, utilizando herramientas tecnológicas para fomentar
@@ -268,7 +299,7 @@
               :class="{'escenario-conductor': modoJuego === 'carro'}"
             >
               <div
-                class="marcador-responsive position-absolute top-0 end-0 m-2 p-2 bg-white fw-bold shadow-sm custom-badge"
+                class="marcador-responsive position-absolute top-0 end-0 m-2 p-2 bg-white fw-bold shadow-sm custom-badge text-dark"
               >
                 Progreso: <span class="text-verde">{{ progreso }} / 4</span>
               </div>
@@ -395,7 +426,7 @@
         class="container my-5 animate__animated animate__fadeIn"
       >
         <div class="text-center mb-5">
-          <h2 class="fw-bold" style="color: var(--asfalto)">
+          <h2 class="fw-bold text-asfalto">
             <i class="fa-solid fa-signs-post text-verde me-2"></i>Biblioteca de
             Señales
           </h2>
@@ -418,9 +449,8 @@
               <div class="forma-senal forma-octagono">
                 <i class="fa-solid fa-hand"></i>
               </div>
-              <h5 class="fw-bold mt-3" style="color: var(--rojo-alto)">
-                Reglamentarias
-              </h5>
+              <h5 class="fw-bold mt-3 text-rojo">Reglamentarias</h5>
+              <p class="text-muted small mt-2">Ver lista de señales</p>
             </div>
           </div>
           <div
@@ -439,12 +469,8 @@
               <div class="forma-senal forma-rombo">
                 <i class="fa-solid fa-car-burst"></i>
               </div>
-              <h5
-                class="fw-bold mt-3"
-                style="color: var(--amarillo-preventivo)"
-              >
-                Preventivas
-              </h5>
+              <h5 class="fw-bold mt-3 text-amarillo">Preventivas</h5>
+              <p class="text-muted small mt-2">Ver lista de señales</p>
             </div>
           </div>
           <div
@@ -461,9 +487,8 @@
               <div class="forma-senal forma-rectangulo">
                 <i class="fa-solid fa-hospital"></i>
               </div>
-              <h5 class="fw-bold mt-3" style="color: var(--asfalto-claro)">
-                Informativas
-              </h5>
+              <h5 class="fw-bold mt-3 text-asfalto-claro">Informativas</h5>
+              <p class="text-muted small mt-2">Ver lista de señales</p>
             </div>
           </div>
         </div>
@@ -766,12 +791,10 @@
         </div>
       </section>
 
-      <!-- MODAL GRANDE DE SEÑALES (GALERÍA DINÁMICA) -->
       <div
         class="modal fade"
         id="modalSenales"
         tabindex="-1"
-        aria-labelledby="modalSenalesLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -784,76 +807,51 @@
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body p-4 pt-2">
-              <div class="row align-items-center">
-                <!-- Columna Izquierda: Galería de Imágenes (Grid 2x2) -->
-                <div class="col-md-5 text-center mb-4 mb-md-0">
+            <div
+              class="modal-body p-4 pt-2"
+              style="max-height: 75vh; overflow-y: auto"
+            >
+              <div class="mb-4 text-center">
+                <h2 class="fw-bold mb-2" :class="senalSeleccionada.colorTema">
+                  {{ senalSeleccionada.titulo }}
+                </h2>
+                <p class="fs-5 text-muted lh-base px-md-4">
+                  {{ senalSeleccionada.texto }}
+                </p>
+              </div>
+
+              <div class="d-flex flex-column gap-3">
+                <div
+                  v-for="(item, i) in senalSeleccionada.lista"
+                  :key="i"
+                  class="card shadow-sm border-0 bg-light p-3 flex-row align-items-center transition-hover border-dash-custom"
+                >
                   <div
-                    class="p-3 rounded-4 bg-light shadow-inner h-100 d-flex flex-column justify-content-center"
-                    style="min-height: 280px; border: 2px dashed #ddd"
+                    class="me-4 d-flex justify-content-center align-items-center bg-white rounded-3 p-2"
+                    style="width: 120px; height: 120px; flex-shrink: 0"
                   >
-                    <div class="row g-3">
-                      <!-- Iteramos sobre el array de imágenes -->
-                      <div
-                        class="col-6"
-                        v-for="(img, index) in senalSeleccionada.imagenes"
-                        :key="index"
-                      >
-                        <div
-                          class="bg-white p-2 rounded-3 shadow-sm transition-hover h-100 d-flex flex-column align-items-center justify-content-center"
-                        >
-                          <img
-                            :src="img.ruta"
-                            :alt="img.nombre"
-                            class="img-fluid"
-                            style="max-height: 70px; object-fit: contain"
-                          />
-                          <p class="small text-muted mt-2 mb-0 fw-bold lh-sm">
-                            {{ img.nombre }}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                    <img
+                      :src="item.ruta"
+                      :alt="item.nombre"
+                      class="img-fluid"
+                      style="max-height: 100px; object-fit: contain"
+                    />
+                  </div>
+                  <div class="flex-grow-1 text-start">
+                    <h4 class="fw-bold mb-2 text-dark">{{ item.nombre }}</h4>
+                    <p class="mb-0 text-muted fs-5 lh-sm">{{ item.desc }}</p>
                   </div>
                 </div>
+              </div>
 
-                <!-- Columna Derecha: Información y Ejemplos Dinámicos -->
-                <div class="col-md-7 px-md-4">
-                  <h2 class="fw-bold mb-3" :class="senalSeleccionada.colorTema">
-                    {{ senalSeleccionada.titulo }}
-                  </h2>
-                  <p class="fs-5 text-muted lh-base">
-                    {{ senalSeleccionada.texto }}
-                  </p>
-
-                  <hr class="my-4" />
-
-                  <h5 class="fw-bold text-dark mb-3">
-                    <i class="fa-solid fa-list-check me-2"></i>Ejemplos comunes:
-                  </h5>
-
-                  <!-- Iteramos sobre la lista de descripciones -->
-                  <ul class="text-muted fs-6">
-                    <li
-                      class="mb-2"
-                      v-for="(ejemplo, i) in senalSeleccionada.ejemplosTexto"
-                      :key="i"
-                    >
-                      <strong class="text-dark">{{ ejemplo.nombre }}:</strong>
-                      {{ ejemplo.desc }}
-                    </li>
-                  </ul>
-
-                  <div class="mt-4 text-end">
-                    <button
-                      type="button"
-                      class="btn btn-asfalto px-4 fw-bold"
-                      data-bs-dismiss="modal"
-                    >
-                      Entendido
-                    </button>
-                  </div>
-                </div>
+              <div class="mt-4 text-center">
+                <button
+                  type="button"
+                  class="btn btn-asfalto px-5 py-2 fw-bold rounded-pill"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
               </div>
             </div>
           </div>

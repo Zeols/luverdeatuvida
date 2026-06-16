@@ -15,6 +15,12 @@
 .bg-asfalto {
   background-color: var(--asfalto) !important;
 }
+.text-asfalto {
+  color: var(--asfalto) !important;
+}
+.text-asfalto-claro {
+  color: var(--asfalto-claro) !important;
+}
 .text-verde {
   color: var(--verde-semaforo) !important;
 }
@@ -25,7 +31,7 @@
   color: var(--rojo-alto) !important;
 }
 
-/* EL NUEVO COLOR DEL NAVBAR Y FOOTER (Verde Esmeralda Profesional) */
+/* EL COLOR DEL NAVBAR Y FOOTER (Modo Claro) */
 .bg-tema-principal {
   background-color: #198754 !important;
 }
@@ -74,8 +80,13 @@
   font-size: 3rem;
 }
 
+/* Borde del Modal (Dashed) */
+.border-dash-custom {
+  border: 2px dashed #ddd;
+}
+
 /* =========================================
-   Fondo Vectorial 2D del Simulador (NIVEL 1 - PEATÓN)
+   Fondo Vectorial 2D del Simulador 
 ========================================= */
 .contenedor-juego {
   max-width: 900px;
@@ -343,8 +354,8 @@
 ========================================= */
 .personaje {
   position: absolute;
-  width: 150px;
-  height: 150px;
+  width: 300px;
+  height: 300px;
   background-color: transparent;
   border: none;
   background-image: url("assets/img/sprite.png");
@@ -360,8 +371,8 @@
 
 .sprite-carro {
   background-image: url("assets/img/carro.png") !important;
-  width: 180px;
-  height: 180px;
+  width: 150px !important;
+  height: 150px !important;
 }
 
 /* =========================================
@@ -443,17 +454,17 @@ button {
 ========================================= */
 @media (max-width: 768px) {
   .personaje {
-    width: 60px !important;
-    height: 60px !important;
+    width: 120px !important;
+    height: 120px !important;
   }
   .sprite-carro {
-    width: 80px !important;
-    height: 80px !important;
+    width: 75px !important;
+    height: 75px !important;
   }
 
   .joystick-container {
-    grid-template-columns: 40px 40px 40px !important;
-    grid-template-rows: 40px 40px 40px !important;
+    grid-template-columns: 45px 45px 45px !important;
+    grid-template-rows: 45px 45px 45px !important;
     gap: 4px !important;
     margin-bottom: 15px !important;
   }
@@ -463,8 +474,98 @@ button {
   }
 }
 
-.swal2-popup img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
+/* =========================================
+   MODO OSCURO (Nuevo, Elegante y Premium)
+========================================= */
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #d1d5db !important; /* Texto principal gris claro */
+}
+
+/* Textos adaptados para legibilidad */
+body.dark-mode .text-dark,
+body.dark-mode .text-asfalto,
+body.dark-mode .text-asfalto-claro {
+  color: #f3f4f6 !important; /* Casi blanco */
+}
+body.dark-mode .text-muted {
+  color: #9ca3af !important; /* Gris intermedio */
+}
+body.dark-mode p:not(.text-verde):not(.text-rojo):not(.text-amarillo) {
+  color: #d1d5db !important;
+}
+
+/* Cajas y Fondos */
+body.dark-mode .bg-white,
+body.dark-mode .bg-light,
+body.dark-mode .card,
+body.dark-mode .modal-content,
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0 !important;
+  border-color: #333 !important;
+}
+
+body.dark-mode .border-dash-custom {
+  border-color: #4b5563 !important;
+}
+
+/* 🌟 COLOR GRIS PIZARRA OSCURO PARA NAVBAR Y FOOTER */
+body.dark-mode .bg-tema-principal {
+  background-color: #1f2937 !important; /* Gris oscuro elegante */
+  border-bottom: 1px solid #374151 !important;
+  border-top: 1px solid #374151 !important;
+}
+
+/* Ajuste de Botones para que no encandilen */
+body.dark-mode .btn-success {
+  background-color: #059669 !important; /* Verde esmeralda relajado */
+  border-color: #059669 !important;
+  color: white !important;
+}
+body.dark-mode .btn-success:hover {
+  background-color: #047857 !important;
+}
+
+body.dark-mode .btn-warning {
+  background-color: #d97706 !important; /* Naranja/Amarillo oscuro */
+  border-color: #d97706 !important;
+  color: white !important;
+}
+body.dark-mode .btn-warning:hover {
+  background-color: #b45309 !important;
+}
+
+body.dark-mode .btn-asfalto {
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+}
+body.dark-mode .btn-asfalto:hover {
+  background-color: #4b5563 !important;
+}
+
+/* Sobreescritura de fondos de las secciones pastel */
+body.dark-mode .seccion-1,
+body.dark-mode .seccion-2,
+body.dark-mode .seccion-3,
+body.dark-mode .seccion-4 {
+  background-color: #121212 !important;
+}
+
+/* Ajustes SweetAlert */
+body.dark-mode .swal2-popup {
+  background-color: #1e1e1e !important;
+  color: #ffffff !important;
+}
+body.dark-mode .swal2-title,
+body.dark-mode .swal2-html-container {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #888;
+}
+body.dark-mode .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
 }

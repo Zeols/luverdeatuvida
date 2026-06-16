@@ -9,8 +9,19 @@ createApp({
         : "/api";
 
     const seccionActual = ref("inicio");
-    const modoJuego = ref("peaton");
+    const modoJuego = ref("peaton"); // 'peaton' o 'carro'
     const juegoIniciado = ref(false);
+
+    // --- LÓGICA DEL MODO OSCURO ---
+    const modoOscuro = ref(false);
+    const toggleModoOscuro = () => {
+      modoOscuro.value = !modoOscuro.value;
+      if (modoOscuro.value) {
+        document.body.classList.add("dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
+      }
+    };
 
     const cambiarSeccion = (seccion) => {
       seccionActual.value = seccion;
@@ -312,7 +323,7 @@ createApp({
     };
 
     // ==========================================
-    // 2. LÓGICA DE LA BIBLIOTECA (GALERÍA Y SUBMODAL)
+    // 2. LÓGICA DE LA BIBLIOTECA DE SEÑALES
     // ==========================================
     const senalSeleccionada = ref({
       titulo: "",
@@ -320,9 +331,7 @@ createApp({
       colorTema: "",
       lista: [],
     });
-    const senalDetalle = ref({ nombre: "", ruta: "", desc: "", colorTema: "" });
 
-    // Base de datos de señales unificada (cada imagen tiene su nombre y descripción)
     const infoSenales = {
       reglamentarias: {
         titulo: "Señales Reglamentarias",
@@ -332,7 +341,7 @@ createApp({
         lista: [
           {
             nombre: "ALTO",
-            ruta: "assets/img/reg_alto.png",
+            ruta: "/assets/img/carro.png",
             desc: "Detención total obligatoria. Debes frenar completamente antes de la línea de cruce.",
           },
           {
@@ -410,43 +419,8 @@ createApp({
       },
     };
 
-    // Abre la galería (Modal 1)
     const mostrarModalSenal = (tipo) => {
       senalSeleccionada.value = infoSenales[tipo];
-      const modalElement = document.getElementById("modalSenales");
-      let modalInstancia = bootstrap.Modal.getInstance(modalElement);
-      if (!modalInstancia) modalInstancia = new bootstrap.Modal(modalElement);
-      modalInstancia.show();
-    };
-
-    // Abre el detalle de 1 señal (Oculta Modal 1 y abre Modal 2)
-    const abrirSubModal = (item) => {
-      senalDetalle.value = {
-        nombre: item.nombre,
-        ruta: item.ruta,
-        desc: item.desc,
-        colorTema: senalSeleccionada.value.colorTema,
-      };
-
-      // Ocultar modal principal
-      const modalElement = document.getElementById("modalSenales");
-      const modalInstancia = bootstrap.Modal.getInstance(modalElement);
-      if (modalInstancia) modalInstancia.hide();
-
-      // Mostrar submodal
-      const subModalElement = document.getElementById("subModalSenales");
-      let subModalInstancia = bootstrap.Modal.getInstance(subModalElement);
-      if (!subModalInstancia)
-        subModalInstancia = new bootstrap.Modal(subModalElement);
-      subModalInstancia.show();
-    };
-
-    // Regresa a la galería (Oculta Modal 2 y reabre Modal 1)
-    const cerrarSubModalYVolver = () => {
-      const subModalElement = document.getElementById("subModalSenales");
-      const subModalInstancia = bootstrap.Modal.getInstance(subModalElement);
-      if (subModalInstancia) subModalInstancia.hide();
-
       const modalElement = document.getElementById("modalSenales");
       let modalInstancia = bootstrap.Modal.getInstance(modalElement);
       if (!modalInstancia) modalInstancia = new bootstrap.Modal(modalElement);
@@ -810,6 +784,8 @@ createApp({
     };
 
     return {
+      modoOscuro,
+      toggleModoOscuro,
       seccionActual,
       cambiarSeccion,
       modoJuego,
@@ -820,9 +796,6 @@ createApp({
       evaluarEscena,
       senalSeleccionada,
       mostrarModalSenal,
-      senalDetalle,
-      abrirSubModal,
-      cerrarSubModalYVolver, // <--- MODALES EXPORTADOS
       formTestimonio,
       enviarTestimonio,
       nombreUsuario,
