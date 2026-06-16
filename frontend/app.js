@@ -341,12 +341,12 @@ createApp({
         lista: [
           {
             nombre: "ALTO",
-            ruta: "/assets/img/carro.png",
+            ruta: "assets/img/alto.jpeg",
             desc: "Detención total obligatoria. Debes frenar completamente antes de la línea de cruce.",
           },
           {
             nombre: "No Estacionar",
-            ruta: "assets/img/reg_no_estacionar.png",
+            ruta: "assets/img/reg_no_estacionar.jpeg",
             desc: "Prohibido dejar el vehículo en esta zona. Ayuda a mantener el flujo del tráfico libre.",
           },
           {
