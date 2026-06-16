@@ -356,7 +356,7 @@ createApp({
           },
           {
             nombre: "Ceda el Paso",
-            ruta: "assets/img/reg_ceda.png",
+            ruta: "assets/img/ceda-el-paso.png",
             desc: "Debes reducir la velocidad y dejar pasar a los vehículos que ya circulan por la vía a la que quieres entrar.",
           },
         ],
@@ -369,22 +369,22 @@ createApp({
         lista: [
           {
             nombre: "Zona Escolar",
-            ruta: "assets/img/prev_escolar.png",
+            ruta: "assets/img/zona-escolar.jpeg",
             desc: "Niños cruzando cerca. Debes reducir la velocidad obligatoriamente a 20 km/h o menos.",
           },
           {
             nombre: "Curva Peligrosa",
-            ruta: "assets/img/prev_curva.png",
+            ruta: "assets/img/curva-peligrosa.webp",
             desc: "El camino hace un giro brusco. Modera la velocidad antes de entrar para no perder el control.",
           },
           {
             nombre: "Paso Peatonal",
-            ruta: "assets/img/prev_peaton.png",
+            ruta: "assets/img/paso-peatonal.jpg",
             desc: "Aproximación a un paso de cebra. El peatón tiene preferencia absoluta de paso.",
           },
           {
             nombre: "Derrumbe",
-            ruta: "assets/img/prev_derrumbe.png",
+            ruta: "assets/img/derrumbe-señal.webp",
             desc: "Zona propensa a caída de rocas. Mantente alerta y no te estaciones cerca.",
           },
         ],
@@ -397,22 +397,22 @@ createApp({
         lista: [
           {
             nombre: "Hospital",
-            ruta: "assets/img/info_hospital.png",
+            ruta: "assets/img/hospital.jpg",
             desc: "Indica la cercanía de asistencia médica. Es una zona de silencio, no toques la bocina.",
           },
           {
             nombre: "Parada de Bus",
-            ruta: "assets/img/info_bus.png",
+            ruta: "assets/img/bus-señal.webp",
             desc: "Área exclusiva para que el transporte público suba y baje pasajeros de forma segura.",
           },
           {
             nombre: "Gasolinera",
-            ruta: "assets/img/info_gasolinera.png",
+            ruta: "assets/img/gasolinera.jpg",
             desc: "Estación de servicio y combustible a corta distancia en la carretera.",
           },
           {
             nombre: "Aeropuerto",
-            ruta: "assets/img/info_aeropuerto.png",
+            ruta: "assets/img/aeropuerto.png",
             desc: "Te indica la dirección o ruta directa para llegar al aeropuerto más cercano.",
           },
         ],
