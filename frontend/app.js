@@ -86,7 +86,7 @@ createApp({
           Swal.fire({
             title:
               modoJuego.value === "carro"
-                ? "¡Licencia Aprobada!"
+                ? "¡Simulador terminado!"
                 : "¡Peatón Ejemplar!",
             text: "Has superado todas las situaciones demostrando gran conocimiento vial. ¡Felicidades!",
             icon: "success",
